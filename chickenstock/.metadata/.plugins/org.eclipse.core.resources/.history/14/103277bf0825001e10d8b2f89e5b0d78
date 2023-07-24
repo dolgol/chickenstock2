@@ -1,9 +1,0 @@
-package util;
-
-import org.springframework.web.servlet.view.AbstractView;
-
-public class DownloadView extends AbstractView{
-	
-	
-
-}

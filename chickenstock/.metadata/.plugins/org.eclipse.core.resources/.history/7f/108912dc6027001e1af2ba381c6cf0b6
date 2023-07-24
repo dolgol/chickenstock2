@@ -1,5 +1,0 @@
-package ssg.com.a.controller;
-
-public interface stocksController {
-
-}

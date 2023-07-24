@@ -1,8 +1,0 @@
-// https://tvc4.investing.com/eb2c84dc1932410c44e0512dce762d91/1689913327/18/18/88/history?symbol=43433&resolution=D&from=1613622230&to=1615609429
-
-const request = require('request');
-request('https://tvc4.investing.com/eb2c84dc1932410c44e0512dce762d91/1689913327/18/18/88/history?symbol=43433&resolution=D&from=1613622230&to=1615609429', function (error, response, body) {
-  console.error('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
-});
