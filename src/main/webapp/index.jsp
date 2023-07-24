@@ -8,7 +8,7 @@
 </head>
 <body>
 	<%
-	response.sendRedirect("login.do");
+	response.sendRedirect("home.do");
 	%>
 
 </body>

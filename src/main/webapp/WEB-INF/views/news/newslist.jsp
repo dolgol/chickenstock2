@@ -1,7 +1,6 @@
 <%@page import="ssg.com.a.dto.NewsParam"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@page import="util.BbsUtil"%>
-<%@page import="ssg.com.a.dto.MemberDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
