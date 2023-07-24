@@ -1,0 +1,14 @@
+package ssg.com.a.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import ssg.com.a.service.PdsService;
+
+@Controller
+public class PdsController {
+	
+	@Autowired
+	PdsService service;
+
+}

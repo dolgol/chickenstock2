@@ -1,0 +1,19 @@
+package ssg.com.a.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import ssg.com.a.service.PdsService;
+
+@Controller
+public class PdsController {
+	
+	@Autowired
+	PdsService service;
+
+	@GetMapping("pdslist")
+	public String pdslist() {
+		System.out.println("PdsController pdslist() " + new Date());
+	}
+}

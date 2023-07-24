@@ -1,0 +1,157 @@
+package ssg.com.a.dto;
+
+import java.io.Serializable;
+
+public class stocksDto implements Serializable{
+
+	private int stock_number;
+	private String stock_name;
+	private int market_cap;
+	private int price;
+	private int tr_count;
+	private double per;
+	private double pbr;
+	private double roe;
+	private int sales;
+	private double alloper;
+	private int allo;
+	private int ebit;
+	private double ebitper;
+	
+	public stocksDto() {
+	}
+
+	public stocksDto(int stock_number, String stock_name, int market_cap, int price, int tr_count, double per,
+			double pbr, double roe, int sales, double alloper, int allo, int ebit, double ebitper) {
+		super();
+		this.stock_number = stock_number;
+		this.stock_name = stock_name;
+		this.market_cap = market_cap;
+		this.price = price;
+		this.tr_count = tr_count;
+		this.per = per;
+		this.pbr = pbr;
+		this.roe = roe;
+		this.sales = sales;
+		this.alloper = alloper;
+		this.allo = allo;
+		this.ebit = ebit;
+		this.ebitper = ebitper;
+	}
+
+	public int getStock_number() {
+		return stock_number;
+	}
+
+	public void setStock_number(int stock_number) {
+		this.stock_number = stock_number;
+	}
+
+	public String getStock_name() {
+		return stock_name;
+	}
+
+	public void setStock_name(String stock_name) {
+		this.stock_name = stock_name;
+	}
+
+	public int getMarket_cap() {
+		return market_cap;
+	}
+
+	public void setMarket_cap(int market_cap) {
+		this.market_cap = market_cap;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getTr_count() {
+		return tr_count;
+	}
+
+	public void setTr_count(int tr_count) {
+		this.tr_count = tr_count;
+	}
+
+	public double getPer() {
+		return per;
+	}
+
+	public void setPer(double per) {
+		this.per = per;
+	}
+
+	public double getPbr() {
+		return pbr;
+	}
+
+	public void setPbr(double pbr) {
+		this.pbr = pbr;
+	}
+
+	public double getRoe() {
+		return roe;
+	}
+
+	public void setRoe(double roe) {
+		this.roe = roe;
+	}
+
+	public int getSales() {
+		return sales;
+	}
+
+	public void setSales(int sales) {
+		this.sales = sales;
+	}
+
+	public double getAlloper() {
+		return alloper;
+	}
+
+	public void setAlloper(double alloper) {
+		this.alloper = alloper;
+	}
+
+	public int getAllo() {
+		return allo;
+	}
+
+	public void setAllo(int allo) {
+		this.allo = allo;
+	}
+
+	public int getEbit() {
+		return ebit;
+	}
+
+	public void setEbit(int ebit) {
+		this.ebit = ebit;
+	}
+
+	public double getEbitper() {
+		return ebitper;
+	}
+
+	public void setEbitper(double ebitper) {
+		this.ebitper = ebitper;
+	}
+
+	@Override
+	public String toString() {
+		return "stocksDto [stock_number=" + stock_number + ", stock_name=" + stock_name + ", market_cap=" + market_cap
+				+ ", price=" + price + ", tr_count=" + tr_count + ", per=" + per + ", pbr=" + pbr + ", roe=" + roe
+				+ ", sales=" + sales + ", alloper=" + alloper + ", allo=" + allo + ", ebit=" + ebit + ", ebitper="
+				+ ebitper + "]";
+	}
+	
+	
+	
+	
+}

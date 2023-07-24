@@ -1,0 +1,8 @@
+package ssg.com.a.dto;
+
+public class stockDataDto {
+
+	private String name;
+	private int number;
+	
+}

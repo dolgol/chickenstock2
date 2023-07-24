@@ -1,0 +1,90 @@
+package ssg.com.a.dao;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class stockDao {
+
+    public static void main(String[] args) {
+        String csvFilePath = "D:\\SpringFrameWorkSamples\\semitest\\korstocks.csv";
+        String dbUrl = "jdbc:mysql://localhost:3306/your_database_name";
+        String dbUser = "your_database_username";
+        String dbPassword = "your_database_password";
+
+        try {
+            // Establish database connection
+            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+
+            // Parse CSV and insert into the database
+            parseCsvAndInsertData(conn, csvFilePath);
+
+            // Close the database connection
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void parseCsvAndInsertData(Connection conn, String csvFilePath) throws SQLException {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+            String line;
+            int lineCount = 0;
+
+            // Skip the header line if present
+            reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length >= 8) {
+                    int number = Integer.parseInt(data[0].trim());
+                    String kos = data[1].trim();
+                    String name = data[2].trim();
+                    String up = data[3].trim();
+                    String upup = data[4].trim();
+                    String createDay = data[5].trim();
+                    String president = data[6].trim();
+                    String http = data[7].trim();
+                    String area = data[8].trim();
+
+                    // Insert data into the database
+                    insertDataIntoSkapiTable(conn, number, kos, name, up, upup, createDay, president, http, area);
+                    lineCount++;
+                }
+            }
+
+            System.out.println("Inserted " + lineCount + " rows into the skapi table.");
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void insertDataIntoSkapiTable(Connection conn, int number, String kos, String name, String up, String upup,
+                                                String createDay, String president, String http, String area) throws SQLException {
+        String insertQuery = "INSERT INTO skapi (number, kos, name, up, upup, createDay, president, http, area) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+        pstmt.setInt(1, number);
+        pstmt.setString(2, kos);
+        pstmt.setString(3, name);
+        pstmt.setString(4, up);
+        pstmt.setString(5, upup);
+        pstmt.setString(6, createDay);
+        pstmt.setString(7, president);
+        pstmt.setString(8, http);
+        pstmt.setString(9, area);
+
+        pstmt.executeUpdate();
+        pstmt.close();
+    }
+}

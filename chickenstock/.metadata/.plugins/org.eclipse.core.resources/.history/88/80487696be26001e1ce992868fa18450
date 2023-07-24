@@ -1,0 +1,16 @@
+
+create table skapi(
+	number int primary key,
+	kos varchar(50) not null,
+	name varchar(200) not null,
+	up varchar(50),
+	upup varchar(100),
+	createDay varchar(20),
+	president varchar(50),
+	http varchar(100),
+	area varchar(50)	
+);
+
+
+select * from skapi;
+	

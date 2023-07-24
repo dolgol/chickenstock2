@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- spring MVC annotation(주석문, 지시문)을 사용하기 위한 설정 -->
+	<context:annotation-config/>
+	
+	<!-- bean : 객체 생성 태그 -->
+	<!-- view가 어디있느냐 알려주는 부분 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"/> 	<!-- view 파일들(html, jsp)의 위치 -->
+		<property name="suffix" value=".jsp"/>				<!-- view 파일의 확장자명 -->
+	</bean>
+	
+	<!-- 
+		// 위에 거가 이것과 동일한 과정 !
+		// java로 해도 되지만 web.xml에 하면 싱글턴을 따로 만들 필요가 없음 -> 언제든지 접근 가능
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver
+		 viewResolver.prefix = "/WEB-INF/views/"
+		 viewResolver.suffix = ".jsp"
+	 -->
+	
+	<!-- 공통 패키지 -->
+	<!-- 현재 우리가 만들어놓은 이 패키지만큼은 주요하게 다 인식하도록 -->
+	<context:component-scan base-package="ssg.com.a"></context:component-scan>
+	
+	<!-- Ajax 사용 허가 -->
+	<mvc:annotation-driven/>
+	
+	<!-- spring에서 처리할 수 없는 요청은 tomcat이 처리 -->
+	<mvc:default-servlet-handler/>
+            
+</beans>

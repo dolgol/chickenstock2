@@ -1,0 +1,50 @@
+package ssg.com.a.dto;
+
+import java.io.Serializable;
+
+public class PdsDto implements Serializable{
+	private int seq;
+	private String id;
+	private String title;
+	private String content;
+	
+	private String filename;	// 원본	abc.txt
+	private String newfilename;	//업로드파일명	3242423432.txt
+	
+	private int readcount;
+	private int downcount;
+	private String regdate;
+	
+	
+	public PdsDto() {
+	}
+	
+	public PdsDto(String id, String title, String content, String filename) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.filename = filename;
+	}
+
+
+	public PdsDto(int seq, String id, String title, String content, String filename, String newfilename, int readcount,
+			int downcount, String regdate) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.filename = filename;
+		this.newfilename = newfilename;
+		this.readcount = readcount;
+		this.downcount = downcount;
+		this.regdate = regdate;
+	}
+
+
+	
+	
+	
+	
+}

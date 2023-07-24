@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;jquery&apos; to &apos;webapp&apos;&#x0D;&#x0A;- Original project: &apos;pagination&apos;&#x0D;&#x0A;- Destination element: &apos;webapp&apos;&#x0D;&#x0A;- Original element: &apos;jquery&apos;" description="Copy folder" element1="src/main/webapp/jquery" files="0" flags="589830" folders="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1689314290302" target="/springSamples/src/main/webapp" units="0" version="1.0"/>
+</session>

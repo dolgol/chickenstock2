@@ -1,0 +1,13 @@
+package ssg.com.a.dao;
+
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class PdsDaoImpl implements PdsDao{
+
+	SqlSessionTemplate session;
+	
+	String ns = "Pds.";
+}

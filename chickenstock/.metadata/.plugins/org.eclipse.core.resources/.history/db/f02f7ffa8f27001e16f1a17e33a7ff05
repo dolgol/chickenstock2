@@ -1,0 +1,8 @@
+package ssg.com.a.controller;
+
+public interface stocksController {
+
+	public static void main(String[] args) {
+		
+	}
+}

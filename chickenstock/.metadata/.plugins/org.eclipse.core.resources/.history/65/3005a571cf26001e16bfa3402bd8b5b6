@@ -1,0 +1,54 @@
+package ssg.com.a.dao;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+public class stockDao {
+    public static Map<String, String> getSise(String code, String startTime, String endTime, String timeFrom) throws Exception {
+        Map<String, String> getParam = new HashMap<>();
+        getParam.put("symbol", code);
+        getParam.put("requestType", "1");
+        getParam.put("startTime", startTime);
+        getParam.put("endTime", endTime);
+        getParam.put("timeframe", timeFrom);
+
+        StringBuilder paramBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : getParam.entrySet()) {
+            if (paramBuilder.length() > 0) {
+                paramBuilder.append("&");
+            }
+            paramBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+        }
+
+        String url = "https://api.finance.naver.com/siseJson.naver?" + paramBuilder.toString();
+        URL apiUrl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+        connection.setRequestMethod("GET");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+        reader.close();
+
+        // JSON parsing logic for the response string in Java
+        // ...
+
+        return parsedData; // Return the parsed data as a Map
+    }
+
+    public static void main(String[] args) {
+        try {
+            Map<String, String> result = getSise("005930", "20210601", "20210605", "day");
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

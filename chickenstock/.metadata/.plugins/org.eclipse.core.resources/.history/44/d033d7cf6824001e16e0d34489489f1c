@@ -1,0 +1,26 @@
+<%@page import="ssg.com.a.dto.MemberDto"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	MemberDto login = (MemberDto)session.getAttribute("login");
+%>    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>자료올리기(upload)</h1>
+<br>
+
+<div align="center">
+<form action="pdsupload.do" method="post" enctype="multipart/form-data">
+
+
+</form>
+
+</div>
+
+</body>
+</html>

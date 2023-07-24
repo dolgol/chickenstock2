@@ -1,0 +1,55 @@
+import java.io.*;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.*;
+
+public class CSVDataLoader {
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/database_name";
+    private static final String DB_USER = "username";
+    private static final String DB_PASSWORD = "password";
+
+    public static void main(String[] args) {
+        CSVDataLoader dataLoader = new CSVDataLoader();
+        List<List<String>> csvData = dataLoader.readCSV("path/to/csv/file.csv");
+        dataLoader.insertDataToDatabase(csvData);
+    }
+
+    public List<List<String>> readCSV(String filePath) {
+        List<List<String>> csvData = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                List<String> row = Arrays.asList(line.split(","));
+                csvData.add(row);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return csvData;
+    }
+
+    public void insertDataToDatabase(List<List<String>> csvData) {
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
+            String insertQuery = "INSERT INTO stocks (stock_name, market_cap, price, tr_count, per, pbr, roe, sales, alloper, allo, ebit, ebitper) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+                for (List<String> row : csvData) {
+                    stmt.setString(1, row.get(0)); // stock_name
+                    stmt.setInt(2, Integer.parseInt(row.get(1))); // market_cap
+                    stmt.setInt(3, Integer.parseInt(row.get(2))); // price
+                    stmt.setInt(4, Integer.parseInt(row.get(3))); // tr_count
+                    stmt.setBigDecimal(5, new BigDecimal(row.get(4))); // per
+                    stmt.setBigDecimal(6, new BigDecimal(row.get(5))); // pbr
+                    stmt.setBigDecimal(7, new BigDecimal(row.get(6))); // roe
+                    stmt.setInt(8, Integer.parseInt(row.get(7))); // sales
+                    stmt.setBigDecimal(9, new BigDecimal(row.get(8))); // alloper
+                    stmt.setInt(10, Integer.parseInt(row.get(9))); // allo
+                    stmt.setInt(11, Integer.parseInt(row.get(10))); // ebit
+                    stmt.setBigDecimal(12, new BigDecimal(row.get(11))); // ebitper
+                    stmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

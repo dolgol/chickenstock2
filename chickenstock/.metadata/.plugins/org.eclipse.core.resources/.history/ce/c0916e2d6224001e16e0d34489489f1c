@@ -1,0 +1,14 @@
+package ssg.com.a.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ssg.com.a.dao.PdsDao;
+
+@Service
+public class PdsServiceImpl implements PdsService{
+	
+	@Autowired
+	PdsDao dao;
+
+}
