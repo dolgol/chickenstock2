@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="stocks">
+<select id="stockslist" resultType="ssg.com.a.dto.stocksDto" parameterType="ssg.com.a.dto.stockParam">
+ 		select Symbol, Name
+ 		from stocks
+ 		
+ 		<if test="choice != null and choice !='' and search != null and search != '' ">
+ 			<if test="choice == 'Name' ">
+				where name like concat('%', #{search}, '%')
+			</if>
+			
+			<if test="choice == 'Symbol' ">
+				where Symbol like concat('%', #{search}, '%')
+			</if>
+ 		</if>
+ 		order by Symbol desc
+</select>
+
+<select id="getstocks" parameterType="ssg.com.a.dto.stockParam" resultType="Integer">
+	select count(*) from bbs 
+		
+		<if test="choice != null and choice !='' and search != null and search != '' ">
+ 			<if test="choice == 'Name' ">
+				where name like concat('%', #{search}, '%')
+			</if>
+			
+			<if test="choice == 'Symbol' ">
+				where Symbol like concat('%', #{search}, '%')
+			</if>
+ 		</if>
+</select>
+
+ </mapper>
