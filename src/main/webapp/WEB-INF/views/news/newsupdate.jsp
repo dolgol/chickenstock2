@@ -1,6 +1,5 @@
 <%@page import="ssg.com.a.dto.UserDto"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
-<%@page import="ssg.com.a.dto.BbsDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	NewsDto dto = (NewsDto)request.getAttribute("newsDto");

@@ -1,7 +1,6 @@
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@page import="ssg.com.a.dto.UserDto"%>
-<%@page import="ssg.com.a.dto.BbsDto"%>
-<%@page import="ssg.com.a.dto.MemberDto"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
