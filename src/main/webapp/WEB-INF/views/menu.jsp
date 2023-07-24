@@ -1,64 +1,66 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-.navbar-nav > li > a { padding-top:15px; padding-bottom: 15px; font-size: 20px }
-.nav-link > li > a { color:white; font-size: 20px; }
-.bg-company-blue {	background-color: rgb(9, 95, 234); }
-.nav-link > li > a:hover { color: yellow; text-decoration: none; }
-.centered {	 margin: auto;	}	/* navbar에 ul을 중앙배치함. 왼쪽 배치시에는 <-이 부분 삭제 */
-.nav-item { padding-left: 30px; padding-right: 30px}  /* ul의 컬럼간에 간격 */ 
+<meta charset="UTF-8">
+<title>CHICKEN STOCK</title>
+
+<style>
+
+	.navbar {
+		background-color: #fff;
+	}
+	
+	.navbar-brand {
+		margin-right: 40px;
+	}
+	
+	.nav-item {
+		margin-right: 12px;
+	}
+
 </style>
+
 </head>
 <body>
- 
-<nav class="navbar navbar-expand-md navbar-dark bg-company-blue sticky-top">
-	<div class="container">
+
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<a class="navbar-brand" href="home.do">
+				<img alt="CHICKEN STOCK 사이트 로고" src="./images/logo.png" width="120px"/>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarsExample07">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">
+							사이트소개
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#">
+							뉴스게시판
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#">
+							종목게시판
+						</a>
+					</li>
+				</ul>
+				<div class="my-2 my-lg-0">
+					<!-- 분기처리 -->
+					<a class="btn btn-primary my-2 my-sm-0" href="#">로그인</a>
+					<a class="btn btn-primary my-2 my-sm-0" href="mypageLike.do">마이페이지</a>
+					<a class="btn btn-outline-primary my-2 my-sm-0" href="#">로그아웃</a>
+			    </div>
+			</div>
+		</div>
+	</nav>
 	
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-    
-	<div class="collapse navbar-collapse" id="navbar-content">
-       <ul class="navbar-nav mr-auto centered">       
-          <li class="nav-item" class="nav-link">
-            <a href="./home.do" class="nav-link">Home</a>
-          </li>
-          
-          <li class="nav-item" class="nav-link">
-            <a href="./home2.do" class="nav-link">Home2</a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="./newslist.do" class="nav-link" >게시판</a>
-          </li>
-          
-          <li class="nav-item dropdown">
-	        <a class="nav-link dropdown-toggle" href="./newslist.do" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          게시판(Dropdown)
-	        </a>
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	          <a class="dropdown-item" href="./newswrite.do">글추가</a>
-	          <a class="dropdown-item" href="./newslist.do">글목록</a>
-	          <div class="dropdown-divider"></div>
-	          <a class="dropdown-item" href="#">그외의 메뉴</a>
-	        </div>
-	      </li> 
-	    
-          
-          <li class="nav-item">
-            <a href="./pdslist.do" class="nav-link">자료실</a>
-          </li> 
-          <li class="nav-item">
-            <a href="./calendar.do" class="nav-link">일정</a>
-          </li> 
-          <li class="nav-item">
-            <a href="./map.do" class="nav-link">오시는 길</a>
-          </li>          
-		</ul>
-	</div>
-	</div>
-</nav>
- 
 </body>
 </html>
