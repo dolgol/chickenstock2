@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="User">
+	<select id="idcheck" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*)
+		from users
+		where user_id=#{user_id}
+	</select>
+	
+	<select id="nicknamecheck" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*)
+		from users
+		where nick_name=#{nick_name}
+	</select>
+
+	<insert id="adduser" parameterType="ssg.com.a.dto.UserDto">
+		insert into users(auth, nick_name, address, phone_number, sex, birthday, password, user_name, user_id)
+		values(1, #{nick_name}, #{address}, #{phone_number}, #{sex}, #{birthday}, #{password}, #{user_name}, #{user_id})
+	</insert>
+
+	<select id="login" parameterType="ssg.com.a.dto.UserDto"
+		resultType="ssg.com.a.dto.UserDto">
+		select  user_id, password, user_name, birthday, sex, phone_number, address, nick_name, auth
+		from users
+		where user_id=#{user_id} and password=#{password}
+	</select>
+	
+	
+	
+	
+	<select id="findUserByAddressAndPhoneNumber" parameterType="string" resultType="ssg.com.a.dto.UserDto">
+        SELECT * FROM users WHERE address = #{address} and phone_number = #{phone_number}
+    </select>
+
+  
+	
+	
+	 
+
+</mapper>
