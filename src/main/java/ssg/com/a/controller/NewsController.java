@@ -277,7 +277,7 @@ public class NewsController {
 	
 	private List<NewsParam> newsSummary(List<NewsParam> newsList) throws Exception {
 		Gson gson = new Gson();
-        String apiKey = "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"; // OpenAI API Key
+        String apiKey = ""; // OpenAI API Key
         String engine = "text-davinci-002"; // Engine id
         int maxTokens = 60; // Maximum number of tokens in the response
         // Prepare the API URL
