@@ -35,6 +35,10 @@ CREATE TABLE stocks(
   ,Region         VARCHAR(7)
 );
 
+CREATE TABLE 
+
+
+
 CREATE TABLE stocks_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   post_num INT NOT NULL,
@@ -46,6 +50,8 @@ CREATE TABLE stocks_comment (
   depth INT,
   del INT
 );
+
+
 
 CREATE TABLE news (
   seq INT PRIMARY KEY AUTO_INCREMENT,
@@ -71,6 +77,18 @@ CREATE TABLE news_comment (
   del INT
 );
 
+CREATE TABLE stocks_like (
+  seq INT PRIMARY KEY AUTO_INCREMENT,
+  Symbol VARCHAR(8) NOT NULL,
+  user_id VARCHAR(100) NOT NULL
+);
+
+alter table stocks_like 
+add foreign key(Symbol) references stocks(Symbol);
+
+alter table stocks_like 
+add foreign key(user_id) references users(user_id);
+
 drop table if exists users;
 drop table if exists stocks;
 drop table if exists stocks_comment;
@@ -83,3 +101,14 @@ add foreign key(user_id) references users(user_id);
 ALTER TABLE stocks_comment 
 ADD FOREIGN KEY(user_id) REFERENCES users(user_id);
 
+alter table news_comment 
+add foreign key(post_num) references news(seq);
+
+alter table stocks_comment
+add foreign key(post_num) references stocks(Symbol);
+
+select * from stocks_comment;
+
+ALTER TABLE stocks_comment MODIFY user_id varchar(100);
+
+ALTER TABLE stocks_comment modify post_num varchar(8);
