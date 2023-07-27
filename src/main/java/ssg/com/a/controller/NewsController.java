@@ -172,7 +172,7 @@ public class NewsController {
 	}
 	
 	@ResponseBody
-	@GetMapping("commentList.do")
+	@GetMapping("newscommentList.do")
 	public List<NewsComment> commentList(int seq){
 		System.out.println("newsController commentList() "+ seq + " " + new Date());
 		List<NewsComment> temp = service.commentList(seq);

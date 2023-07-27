@@ -159,7 +159,7 @@ function deletenews( seq ) {
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajax({
-		url:"commentList.do",
+		url:"newscommentList.do",
 		type:"get",
 		data:{seq:<%=dto.getSeq() %>},
 		success: function(list){
