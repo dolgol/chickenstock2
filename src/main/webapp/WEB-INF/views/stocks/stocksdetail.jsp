@@ -169,7 +169,9 @@ $.ajax({
 	url:"commentList.do",
 	type:"get",
 	success:function( comment ){
-$('#tbody').html("");
+		
+		
+	$('#tbody').html("");
 		
 		$.each(comment, function(i, item) {
 			let str = "<tr class = 'table-info'>"
