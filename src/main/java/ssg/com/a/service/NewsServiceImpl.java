@@ -61,7 +61,21 @@ public class NewsServiceImpl implements NewsService{
 		return dao.commentList(seq);
 	}
 
+	@Override
+	public NewsComment commentGet(NewsComment comment) {
+		return dao.commentGet(comment);
+	}
+
+	@Override
+	public boolean commentDelete(NewsComment comment) {
+		return dao.commentDelete(comment)>0;
+	}
+
+	@Override
+	public boolean commentAnswer(NewsComment comment) {
+		dao.commentAnswerUpdate(comment);
+		return dao.commentAnswer(comment)>0;
+	}
 	
-			
 	
 }

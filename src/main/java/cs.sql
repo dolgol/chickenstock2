@@ -1,3 +1,15 @@
+
+use csdb;
+use mydb;
+show TABLES;
+
+select * from users
+select * from news
+select * from news_comment
+select * from stocks
+select * from stocks_comment
+
+
 CREATE TABLE users (
   user_id VARCHAR(100) PRIMARY KEY,
   user_name VARCHAR(100) NOT NULL,
@@ -10,20 +22,17 @@ CREATE TABLE users (
   auth TINYINT NOT NULL
 );
 
-CREATE TABLE stocks (
-  stock_number int PRIMARY KEY,
-  stock_name LONGTEXT NOT NULL,
-  market_cap int NOT NULL,
-  price int NOT NULL,
-  tr_count int NOT NULL,
-  per decimal(5, 2),
-  pbr decimal(5, 2),
-  roe decimal(5, 2),
-  sales int,
-  alloper decimal(5, 2),
-  allo int,
-  ebit int,
-  ebitper decimal(5, 2)
+CREATE TABLE stocks(
+   Symbol         VARCHAR(8) NOT NULL PRIMARY KEY
+  ,Market         VARCHAR(6) NOT NULL
+  ,Name           VARCHAR(21) NOT NULL
+  ,Sector         VARCHAR(37)
+  ,Industry       VARCHAR(112)
+  ,ListingDate    DATE 
+  ,SettleMonth    VARCHAR(3)
+  ,Representative VARCHAR(58)
+  ,HomePage       VARCHAR(48)
+  ,Region         VARCHAR(7)
 );
 
 CREATE TABLE 

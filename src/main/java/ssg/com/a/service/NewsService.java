@@ -21,6 +21,11 @@ public interface NewsService {
 	
 	boolean commentWrite(NewsComment comment);
 	List<NewsComment> commentList(int seq);
+	NewsComment commentGet(NewsComment comment);
+	boolean commentDelete(NewsComment comment);
+	
+	boolean commentAnswer(NewsComment comment);
+	//List<NewsComment> commentAnswerUpdate(NewsComment comment);
 }
 
 

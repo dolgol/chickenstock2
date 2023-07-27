@@ -21,6 +21,11 @@ public interface NewsDao {
 	
 	int commentWrite(NewsComment comment);
 	List<NewsComment> commentList(int seq);
+	NewsComment commentGet(NewsComment comment);
+	int commentDelete(NewsComment comment);
+	
+	int commentAnswer(NewsComment comment);
+	void commentAnswerUpdate(NewsComment comment);
 	
 }
 
