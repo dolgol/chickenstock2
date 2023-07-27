@@ -58,7 +58,7 @@ CREATE TABLE news (
 
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
-  post_num INT NOT NULL,
+  symbol varchar(8) NOT NULL,
   user_id VARCHAR(100) UNIQUE NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
