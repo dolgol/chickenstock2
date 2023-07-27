@@ -40,5 +40,16 @@ public class UserServiceImpl implements UserService{
 	public UserDto login(UserDto dto) {
 		return dao.login(dto);
 	}
+	
+	
+	@Override
+	public boolean mypageEdit(UserDto dto) {
+		return dao.mypageEdit(dto) > 0 ? true : false;
+	}
+
+	@Override
+	public UserDto userGet(String user_id) {
+		return dao.userGet(user_id);
+	}
 
 }

@@ -11,4 +11,8 @@ public interface UserService {
 	
 	// 아이디 찾기
 	 UserDto findUserByAddressAndPhoneNumber(String address, String phone_number);
+
+	 
+	 UserDto userGet(String user_id);
+	 boolean mypageEdit(UserDto dto);
 }

@@ -306,4 +306,37 @@ public class UserController {
 	      }
 	   
 }
+	   
+	   
+	   @GetMapping("mypageEdit.do")
+		public String mypageEdit(HttpServletRequest request, Model model) {
+			
+			System.out.println("UserController mypageEdit() " + new Date());
+			
+			UserDto login = (UserDto)request.getSession().getAttribute("login");
+			UserDto userDto = service.userGet(login.getUser_id());
+			
+			model.addAttribute("content", "user/mypage");
+			model.addAttribute("mypageContent", "mypageEdit");
+			model.addAttribute("userDto", userDto);
+			
+			return "main";
+		}
+		
+		@PostMapping("mypageEditAf.do")
+		public String mypageEditAf(UserDto dto, Model model) {
+			
+			System.out.println("UserController mypageEditAf() " + new Date());
+			System.out.println(dto.toString());
+			
+			boolean isS = service.mypageEdit(dto);
+			String mypageEditAf_message = "true";
+			
+			if(isS == false) {
+				mypageEditAf_message = "false";
+			}
+			
+			model.addAttribute("mypageEditAf_message", mypageEditAf_message);
+			return "message";
+		}
 }

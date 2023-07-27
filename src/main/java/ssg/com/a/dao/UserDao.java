@@ -14,4 +14,6 @@ public interface UserDao {
 	
 	UserDto findUserByAddressAndPhoneNumber(String address,String phone_number);
 
+	UserDto userGet(String user_id);
+	int mypageEdit(UserDto dto);
 }

@@ -48,5 +48,17 @@ public class UserDaoImpl implements UserDao{
 		int count = session.selectOne(ns+ "nicknamecheck", nick_name);
 		return count;
 	}
+	
+	
+	
+	@Override
+	public int mypageEdit(UserDto dto) {
+		return session.update(ns + "mypageEdit", dto);
+	}
+
+	@Override
+	public UserDto userGet(String user_id) {
+		return session.selectOne(ns + "userGet", user_id);
+	}
 
 }
