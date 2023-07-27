@@ -133,6 +133,28 @@
 	where post_num=#{post_num} and seq=#{seq}
 </update>
 
+
+
+<select id="mypageNewsAllComment" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select count(*) 
+	from news_comment
+	where user_id=#{user_id} and del=0
+</select>
+
+<select id="mypageNewsCommentList" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.MypageNewsComment">
+	select nc.seq as ncseq, nc.user_id as ncuser_id, nc.content, nc.write_date, nc.del as ncdel, n.seq as nseq, n.title
+	from news_comment nc, news n
+	where nc.post_num = n.seq and nc.user_id=#{user_id} and nc.del=0
+	order by nc.write_date desc
+	limit ${(pageNumber * 10)}, 10
+</select>
+
+<update id="mypageNewsCommentDel" parameterType="java.lang.Integer">
+	update news_comment
+	set del=1
+	where seq=#{seq}
+</update>
+
 </mapper>
 
 

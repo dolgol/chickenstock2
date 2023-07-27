@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ssg.com.a.dao.NewsDao;
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.NewsComment;
 import ssg.com.a.dto.NewsDto;
 import ssg.com.a.dto.NewsParam;
@@ -78,4 +80,19 @@ public class NewsServiceImpl implements NewsService{
 	}
 	
 	
+	
+	@Override
+	public int mypageNewsAllComment(String user_id) {
+		return dao.mypageNewsAllComment(user_id);
+	}
+	
+	@Override
+	public List<MypageNewsComment> mypageNewsCommentList(MypageParam param) {
+		return dao.mypageNewsCommentList(param);
+	}
+
+	@Override
+	public boolean mypageNewsCommentDel(List<Integer> deleteList) {
+		return dao.mypageNewsCommentDel(deleteList) == deleteList.size() ? true : false;
+	}
 }
