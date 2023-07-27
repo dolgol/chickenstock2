@@ -52,4 +52,25 @@
 
 
 
+<select id="mypageLikeList" parameterType="String" resultType="ssg.com.a.dto.StocksDto">
+	select *
+	from stocks
+	where Symbol in 
+		(select Symbol
+		from stocks_like
+		where user_id=#{user_id})
+</select>
+
+<select id="mypageLikeScroll" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.StocksDto">
+	select *
+	from stocks
+	where Symbol in 
+		(select Symbol
+		from stocks_like
+		where user_id=#{user_id})
+	limit ${(pageNumber * 10)}, 10
+</select>
+
+
+
  </mapper>

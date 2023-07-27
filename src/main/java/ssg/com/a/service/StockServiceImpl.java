@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ssg.com.a.dao.StocksDao;
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -40,4 +41,13 @@ public class StockServiceImpl implements StockService{
 		
 		
 		
+		@Override
+		public List<StocksDto> mypageLikeList(String user_id) {
+			return dao.mypageLikeList(user_id);
+		}
+
+		@Override
+		public List<StocksDto> mypageLikeScroll(MypageParam param) {
+			return dao.mypageLikeScroll(param);
+		}
 }

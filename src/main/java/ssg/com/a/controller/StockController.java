@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
+import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
 @Controller
@@ -240,5 +244,34 @@ public class StockController {
 	
 	
 	
+	@GetMapping("mypageLike.do")
+	public String mypageLike(Model model, HttpServletRequest request) {
+		
+		System.out.println("stockController mypageLike() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		List<StocksDto> list = service.mypageLikeList(login.getUser_id());
+		
+		model.addAttribute("content", "user/mypage");
+//		model.addAttribute("mypageContent", "mypageLike");
+		model.addAttribute("mypageContent", "mypageLikeScroll");
+		model.addAttribute("mypageLikeList", list);
+		
+		return "main";
+	}
 	
+	@ResponseBody
+	@GetMapping("mypageScroll.do")
+	public List<StocksDto> mypageScroll(MypageParam param) {
+		
+		System.out.println("stockController mypageScroll() " + new Date());
+		System.out.println(param.toString());
+		
+		List<StocksDto> list = service.mypageLikeScroll(param);
+		System.out.println(list.size());
+		System.out.println(list);
+		
+		return list;
+	}
 }

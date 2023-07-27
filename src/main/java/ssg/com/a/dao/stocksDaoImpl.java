@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -44,4 +45,14 @@ public class StocksDaoImpl implements StocksDao{
 		 return session.selectList(ns +"stockscommentlist", symbol); 
 	}
 	
+	 
+	@Override
+	public List<StocksDto> mypageLikeList(String user_id) {
+		return session.selectList(ns + "mypageLikeList", user_id);
+	}
+
+	@Override
+	public List<StocksDto> mypageLikeScroll(MypageParam param) {
+		return session.selectList(ns + "mypageLikeScroll", param);
+	}
 }
