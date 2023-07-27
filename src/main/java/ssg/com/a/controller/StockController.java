@@ -1,3 +1,14 @@
+package ssg.com.a.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +27,6 @@ import ssg.com.a.service.StockService;
 public class StockController {
 	@Autowired
 	StockService service;
-	
-	
 	
 	@GetMapping("stockMain.do")
 	public String stockMain(Model model, @ModelAttribute ("param") StockParam param) throws Exception{
@@ -44,6 +53,17 @@ public class StockController {
 		// 거래량
 		
 		String KEY_WORD = "quant.naver";
+
+		System.out.println("URL :: " + URL + getcount(KEY_WORD, 1));
+
+		// 1. document가져오기
+		Document doc = Jsoup.connect(URL + getcount(KEY_WORD, 1)).get();
+
+		// 2.목록가져오기
+		/* System.out.println("" + doc.toString()); */
+
+		Elements elements = doc.select(".type_2 tbody");
+
 		// 3. 배열에서 정보를 가져온다.
 		List<String> slist = new ArrayList<>();
 		for (Element element : elements) {
@@ -88,6 +108,7 @@ public class StockController {
 		}
 
 		//------------------------------------------------------------------------
+		model.addAttribute("stocklist", list);
 		model.addAttribute("param", param);
 		model.addAttribute("slist",slist);
 		model.addAttribute("sslist",sslist);
@@ -97,6 +118,13 @@ public class StockController {
 	}
 	
 	/**
+	* URL 완성
+	*@Param KEY_WORD
+	*@Param PAGE
+	*@return
+	*/
+	
+	public static String getcount(String KEY_WORD, int PAGE) {
 		return KEY_WORD ;
 	}
 	
@@ -174,7 +202,7 @@ public class StockController {
 			}
 			
 		
-		//크롤링끝-------------------------------------------------------------------------
+		//크롤링끝------------------------------------------------------------------------------
 		model.addAttribute("symbol", dto);
 		model.addAttribute("stock", stock);
 				
