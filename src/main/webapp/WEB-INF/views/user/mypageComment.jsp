@@ -1,95 +1,120 @@
+<%@page import="ssg.com.a.dto.MypageParam"%>
+<%@page import="util.BbsUtil"%>
+<%@page import="ssg.com.a.dto.MypageNewsComment"%>
+<%@page import="ssg.com.a.dto.NewsComment"%>
+<%@page import="java.util.List"%>
+<%@page import="ssg.com.a.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	List<MypageNewsComment> mypageNewsCommentList = (List<MypageNewsComment>)request.getAttribute("mypageNewsCommentList");
+	
+	int pageBbs = (Integer)request.getAttribute("pageBbs");
+	
+	MypageParam param = (MypageParam)request.getAttribute("param");
+	int pageNumber = param.getPageNumber();
+	
+	System.out.println(pageNumber);
+	
+%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CHICKEN STOCK</title>
+
+<script type="text/javascript" src="jquery/jquery.twbsPagination.min.js"></script>
+
+<style>
+	
+	.nonView {
+		display: none;
+	}
+
+</style>
+
 </head>
 <body>
 
-	<div class="mypage-right">
-		<div class="mypage-right-name">
-			<span class="material-symbols-outlined">account_circle</span>
-			&nbsp;&nbsp;개미개미 님
-		</div>
-		<div>
-			내가 쓴 댓글
-		</div>
-		<div>
-			<form>
-				<input type="button" value="삭제" onclick="commentSelectDelete()" />
-				<table border="1">
-					<thead>
-						<tr>
-							<th>
-								<input type="checkbox" id="commentAll" name="comment" onclick='commentAllChecked(event)' />
-							</th>
-							<th>번호</th> 
-							<th>내용</th> 
-							<th>댓글 작성일</th> 
-							<th>삭제</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- 분기 처리 -->
-						<tr>
-							<td>
-								<input type="checkbox" name="comment" class="commentOne" value="seq1">
-							</td>
-							<td>
-								1
-							</td>
-							<td>
-								<div>
-									<a href="#">
-										댓글내용
-									</a>
-								</div>
-								<div>
-									<a href="#">
-										뉴스 제목 or 종목 이름
-									</a>
-								</div>
-							</td>
-							<td>
-								2023.07.20
-							</td>
-							<td>
-								<input type="button" value="하나삭제" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="checkbox" name="comment" class="commentOne" value="seq2">
-							</td>
-							<td>
-								2
-							</td>
-							<td>
-								<div>
-									<a href="#">
-										그냥 일들이나 하고 있거라따라다니면서 보채지 말고.
-									</a>
-								</div>
-								<div>
-									<a href="#">
-										뉴스 제목 or 종목 이름
-									</a>
-								</div>
-							</td>
-							<td>
-								2023.07.20
-							</td>
-							<td>
-								<input type="button" value="하나삭제" />
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
+	<div>
+		내가 쓴 댓글
+	</div>
+	<div>
+		<form>
+			<input type="button" value="뉴스게시판" /> <input type="button" value="종목게시판" />
 			
+			<!-- 뉴스게시판 -->
+			<table border="1" id="newsTable">
+				<thead>
+					<tr>
+						<th>
+							<input type="checkbox" id="commentAll" name="comment" onclick='commentAllChecked(event)' />
+						</th>
+						<th>번호</th> 
+						<th>내용</th> 
+						<th>댓글 작성일</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 댓글 유무 분기 처리, ... 처리, 페이징 처리 -->
+						<%
+							if(mypageNewsCommentList == null || mypageNewsCommentList.size() == 0) {
+								%>
+								<tr>
+									<td colspan="4">
+										아직 작성한 댓글이 없습니다<br/>
+										뉴스게시판 바로가기 >>
+									</td>
+								</tr>
+								<%
+							}
+							else {
+								for(int i = 0; i < mypageNewsCommentList.size(); i++) {
+									MypageNewsComment comment = mypageNewsCommentList.get(i);
+									
+									if(comment.getNcdel() == 0) {
+										%>
+										<tr>
+											<td>
+												<input type="checkbox" name="comment" class="commentOne" value="<%=comment.getNcseq() %>">
+											</td>
+											<td>
+												<%=(i + 1) %>
+											</td>
+											<td>
+												<div>
+													<a href="#">
+														<%=BbsUtil.titleDot(comment.getContent()) %>
+													</a>
+												</div>
+												<div>
+													<a href="#">
+														<%=BbsUtil.titleDot(comment.getTitle()) %>
+													</a>
+												</div>
+											</td>
+											<td>
+												<%=comment.getWrite_date().substring(0, 10) %>
+											</td>
+										</tr>
+										<%
+									}
+								}
+							}
+						%>
+				</tbody>
+			</table>
+			<input type="button" value="삭제" onclick="commentSelectDelete()" />
+		</form>
+		
+		<div class="container">
+			<nav aria-label="Page navigation">
+				<ul class="pagination" id="pagination" style="justify-content: center;"></ul>
+			</nav>
 		</div>
+		
 	</div>
 	
 	<script type="text/javascript">
@@ -140,18 +165,54 @@
 					deleteList.push(commentOneList[i].value);
 				}
 			}
-			console.log(deleteList);
+			console.log("deleteList >> ", deleteList);
+			
+			if(deleteList.length == 0) {
+				return;
+			}
 			
 			let deleteConfirm = confirm("선택한 댓글을 삭제하시겠습니까?");
 			
 			if(deleteConfirm) {
 				console.log("확인 클릭");
+				$.ajax({
+					url: "mypageNewsCommentDel.do",
+					type: "get",
+					data: { "deleteList": deleteList },
+					success: function(response) {
+						alert("success");
+						if(response == "true") {
+							alert("정상 삭제 성공");
+							location.href = "mypageComment.do";
+						}
+						else {
+							alert("정상 삭제 실패");
+						}
+					},
+					error: function() {
+						alert("error");
+					}
+				});
 			}
 			else {
 				console.log("취소 클릭");
 			}
-			
 		}
+		
+		<!-- pagination -->
+		$("#pagination").twbsPagination({
+			startPage : <%=pageNumber + 1 %>,
+			totalPages : <%=pageBbs %>,
+			visiblePages : 10,
+			first : '<span srid-hidden="true">«</span>',
+			prev : "이전",
+			next : "다음",
+			last : '<span srid-hidden="true">»</span>',
+			initiateStartPageClick: false,
+			onPageClick: function(event, page) {
+				location.href = "mypageComment.do?pageNumber=" + (page - 1);
+			}
+		});
 			
 	</script>
 
