@@ -1,5 +1,11 @@
+<%@page import="ssg.com.a.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	UserDto login = (UserDto)session.getAttribute("login");
+%> 
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,10 +59,28 @@
 					</li>
 				</ul>
 				<div class="my-2 my-lg-0">
-					<!-- 분기처리 -->
-					<a class="btn btn-primary my-2 my-sm-0" href="login.do">로그인</a>
-					<a class="btn btn-primary my-2 my-sm-0" href="mypageLike.do">마이페이지</a>
-					<a class="btn btn-outline-primary my-2 my-sm-0" href="logout.do">로그아웃</a>
+					<%
+						if(login == null) {
+							%>
+							<a class="btn btn-primary my-2 my-sm-0" href="login.do">
+								<span class="material-symbols-outlined">login</span>
+								로그인
+							</a>
+							<%
+						}
+						else {
+							%>
+							<a class="btn btn-primary my-2 my-sm-0" href="mypageLike.do">
+								<span class="material-symbols-outlined">face</span>
+								마이페이지
+							</a>
+							<a class="btn btn-outline-primary my-2 my-sm-0" href="logout.do">
+								<span class="material-symbols-outlined">logout</span>
+								로그아웃
+							</a>
+							<%
+						}
+					%>
 			    </div>
 			</div>
 		</div>
