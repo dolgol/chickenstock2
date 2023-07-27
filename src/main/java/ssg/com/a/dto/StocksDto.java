@@ -3,7 +3,7 @@ package ssg.com.a.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class stocksDto implements Serializable{
+public class StocksDto implements Serializable{
 
 	private String Symbol;
 	private String Market;
@@ -15,10 +15,10 @@ public class stocksDto implements Serializable{
 	private String Representative;
 	private String HomePage;
 	
-	public stocksDto() {
+	public StocksDto() {
 	}
-	
-	public stocksDto(String symbol, String market, String name, String sector, String industry, Date listingDate,
+
+	public StocksDto(String symbol, String market, String name, String sector, String industry, Date listingDate,
 			String settleMonth, String representative, String homePage) {
 		super();
 		Symbol = symbol;
@@ -104,12 +104,15 @@ public class stocksDto implements Serializable{
 		HomePage = homePage;
 	}
 
-
 	@Override
 	public String toString() {
 		return "stocksDto [Symbol=" + Symbol + ", Market=" + Market + ", Name=" + Name + ", Sector=" + Sector
 				+ ", Industry=" + Industry + ", ListingDate=" + ListingDate + ", SettleMonth=" + SettleMonth
 				+ ", Representative=" + Representative + ", HomePage=" + HomePage + "]";
-	}	
+	}
+
+	
+	
+
 	
 }

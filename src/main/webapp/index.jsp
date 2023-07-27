@@ -11,7 +11,8 @@
 	<h1>index</h1>
 	
 	<%
-		response.sendRedirect("home.do");
+		response.sendRedirect("stockMain.do");
+	
 	%>
 
 </body>
