@@ -1,20 +1,19 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="ssg.com.a.dto.stockParam"%>
-<%@page import="ssg.com.a.dto.stocksDto"%>
+<%@page import="ssg.com.a.dto.StockParam"%>
+<%@page import="ssg.com.a.dto.StocksDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%
-   List<stocksDto> list = (List)request.getAttribute("stocklist"); 
-   stockParam param = (stockParam)request.getAttribute("param");
-   List<ArrayList> slist = (List)request.getAttribute("slist");
-   List<ArrayList> sslist = (List)request.getAttribute("sslist");
-   List<ArrayList> ssslist = (List)request.getAttribute("ssslist");
-   String choice = param.getChoice();
-   String search = param.getSearch();
-   
-%>
+		List<StocksDto> list = (List<StocksDto>)request.getAttribute("stocklist"); 
+		StockParam param = (StockParam)request.getAttribute("param");
+		List<String> slist = (List<String>)request.getAttribute("slist");
+		List<String> sslist = (List<String>)request.getAttribute("sslist");
+		String choice = param.getChoice();
+		String search = param.getSearch();
+        	
+    %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,12 +29,14 @@
 </head>
 <body>
 <div align="center">
-<select id="choice">
-	<option value="Name">종목명</option>
-	<option value="Symbol">종목번호</option>
-	<input type="text" value=""  id="search" >
-	<button type="button"  onclick="searchBtn()">검색</button>
+
+<select id="choice" name="param.choice">
+	<option value="name">종목명</option>
+	<option value="symbol">종목번호</option>
 </select>
+<input type="text" value="<%=search %>" id="search" name="param.search">
+<button type="button"  onclick="searchBtn()">검색</button>
+
 <table border="1"  id="capsc">
 	<thead>
 		<tr>
@@ -46,12 +47,12 @@
 				<input type="button" id="cap" value="시가총액 100위">
 			</td>
 		</tr>
-		<th>NO.</th><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>거래량</th><th>거래대금</th><th>매수호가</th><th>매도호가</th><th>시가총액</th><th>PER</th><th>ROE</th>		
+		<th>NO.</th><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>액면가</th><th>시가총액</th><th>상장주식수</th><th>외인비율</th><th>거래량</th><th>PER</th><th>ROE</th>		
 	</thead>
-	<tbody>		
+	<tbody id="td">		
 			<tr>
 				<%=sslist.get(0)%>
-				<%=ssslist.get(0) %>
+				<%=sslist.get(1)%>
 			</tr>
 
 	</tbody>
@@ -60,7 +61,7 @@
 <table border="1" id="countsc" style="display: none;">
 	<thead>		
 	</thead>
-	<tbody>		
+	<tbody id="td1">		
 		<tr>
 			<td colspan="5">
 				<input type="button" id="count1" value="거래량 100위">
@@ -71,7 +72,7 @@
 		</tr>
 	
 			<tr>
-				<%=slist.get(0) %>
+				<%=slist.get(0)%>
 			</tr>
 	</tbody>
 </table>
@@ -99,14 +100,34 @@ $(document).ready(function(){
 		 $("#count1").click(function() {
 			$("#capsc").hide();
 			$("#countsc").show();
-		});
-	
-	
-	
+		});			
 });
+function mouseOver(element) {
+	element.style.backgroundColor = "#FFFACD";
+	
+}
+
+function mouseOut(element) {
+	element.style.backgroundColor = "";
+}
+
+function searchBtn() {
+	let choice = document.getElementById("choice").value;
+	let search = document.getElementById("search").value;
+	
+	location.href = "stockMain.do?choice=" + choice + "&search=" + search;
+	
+	
+	
+}
+
+	
+
+
+
+
+
 </script>
-
-
 
 </body>
 </html>

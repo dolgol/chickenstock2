@@ -1,15 +1,17 @@
 package ssg.com.a.dto;
 
-public class stockParam {
+import java.io.Serializable;
+
+public class StockParam implements Serializable{
 
 	private String choice;	// 카테고리(제목/내용/작성자)
 	private String search;
 	
 		
-	public stockParam() {
+	public StockParam() {
 	}	
 
-	public stockParam(String choice, String search) {
+	public StockParam(String choice, String search) {
 		super();
 		this.choice = choice;
 		this.search = search;
@@ -31,6 +33,11 @@ public class stockParam {
 
 	public void setSearch(String search) {
 		this.search = search;
+	}
+
+	@Override
+	public String toString() {
+		return "stockParam [choice=" + choice + ", search=" + search + "]";
 	}
 	
 }
