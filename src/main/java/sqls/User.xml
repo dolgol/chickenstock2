@@ -26,18 +26,16 @@
 		resultType="ssg.com.a.dto.UserDto">
 		select  user_id, password, user_name, birthday, sex, phone_number, address, nick_name, auth
 		from users
-		where user_id=#{user_id} and password=#{password}
+		where user_id=#{user_id} and password=SHA2(#{password}, 256)
 	</select>
 	
 	
 	
-	
+<!-- 아이디 찾기  -->	
 	<select id="findUserByAddressAndPhoneNumber" parameterType="string" resultType="ssg.com.a.dto.UserDto">
         SELECT * FROM users WHERE address = #{address} and phone_number = #{phone_number}
     </select>
 
-  
-	
 	
 	 
 

@@ -84,7 +84,26 @@ if(newsdelete != null && newsdelete.equals("") == false){
 
 %>
 
-
+<%
+String message = (String)request.getAttribute("message");
+if(message != null && message.equals("") == false){
+	if(message.equals("USER_YES")){
+		%>
+		<script>
+		alert("환영합니다. 가입을 축하드립니다 !");
+		location.href = "login.do";
+		</script>
+		<%	
+	}else{
+		%>
+		<script>
+		alert("가입되지 않았습니다. 다시 가입해 주세요");
+		location.href = "regi.do";
+		</script>
+		<%
+	}	
+}
+%>
 
 
 
