@@ -63,6 +63,26 @@ public class NewsDaoImpl implements NewsDao{
 		return session.selectList(ns + "commentList", seq);
 	}
 
+	@Override
+	public NewsComment commentGet(NewsComment comment) {
+		return session.selectOne(ns + "commentGet", comment);
+	}
+
+	@Override
+	public int commentDelete(NewsComment comment) {
+		return session.update(ns + "commentDelete", comment);
+	}
+
+	@Override
+	public int commentAnswer(NewsComment comment) {
+		return session.insert(ns + "commentAnswer", comment);
+	}
+
+	@Override
+	public void commentAnswerUpdate(NewsComment comment) {
+		session.selectList(ns + "commentAnswerUpdate", comment);
+	}
+
 	
 	
 	

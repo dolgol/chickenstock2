@@ -1,6 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="ssg.com.a.dto.NewsComment"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@page import="ssg.com.a.dto.UserDto"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -18,6 +19,8 @@
 
 <%	
 	NewsDto dto = (NewsDto)request.getAttribute("newsdto");
+	List<NewsComment> comDtoList = (List)request.getAttribute("comdto");
+	int j = 0;
 %>    
     
 <!DOCTYPE html>
@@ -79,10 +82,11 @@ if(login != null && login.getAuth() == 0){
 %>
 
 </div>
-</div>
+
 <br><br>
 
 <script type="text/javascript">
+
 $(document).ready(function(){		
 	
 	// textarea를 글자수와 개행수에 따라서 크기를 설정한다
@@ -106,9 +110,9 @@ function deletenews( seq ) {
 <br><br>
 <!-- 댓글 -->
 <div id="app" class="container">
-<form action="commentWriteAf.do" method="post">
-<input type="hidden" name="seq" value="<%=dto.getSeq() %>">
-<input type="hidden" name="id" value="<%=login.getUser_id() %>">
+<form action="commentWrite.do" method="post">
+<input type="hidden" name="seq" id="seq" value="<%=dto.getSeq() %>">
+<input type="hidden" name="user_id" id="user_id" value="<%=login.getUser_id() %>">
 
 <table>
 <col width="1500px"><col width="150px">
@@ -118,11 +122,14 @@ function deletenews( seq ) {
 </tr>
 <tr>
 	<td>
-		<textarea rows="3" class="form-control" name="content"></textarea>
+		<textarea rows="3" class="form-control" name="content" id="content"></textarea>
 	</td>
 	<td style="padding-left: 30px ">
 		<button type="submit" class="btn btn-primary btn-block p-4">완료</button>
 	</td>
+</tr>
+<tr>
+	<td colspan="4"><p style="display: inline-block; margin-right: 10px;">총 댓글 수: <h4 style="display: inline-block; color:red;" id="comment-count"></h4></p></td>
 </tr>
 </table>
 
@@ -133,6 +140,18 @@ function deletenews( seq ) {
 <col width="500"><col width="500">
 
 <tbody id="tbody">
+	<div id="replyInput" style="display: none;">
+	    <b id="replyUsername"></b>
+	    <br>
+	    <input type="hidden" id="post_num">
+	    <input type="hidden" id="seq">
+	    <input type="hidden" id="ref">
+	    <input type="hidden" id="step">
+	    <input type="hidden" id="depth">
+	    <input type="text" id="replyContent" class="form-control">
+	    <button type="button" class="btn btn-primary" onclick="sendReply()">OK</button>
+	    <button type="button" class="btn btn-secondary" onclick="cancelReply()">Cancel</button>
+	</div>
 </tbody>
 
 </table>
@@ -157,17 +176,46 @@ $(document).ready(function(){
 			
 			// tbody 태그안의 값을 모두 초기화 후 다시 게시
 			$("#tbody").html("");
-			
+			let count = 0;
 			$.each(list, function(i, item){
-				let str = "<tr class='table-info'>"
-						+		"<td>작성자:" + item.id + "</td>"
-						+		"<td>작성일:" + item.wdate + "</td>"
+				let post_num = <%=dto.getSeq()%>;
+				let del = item.del;
+				let str = "";
+				let padding_range = (item.depth*25);
+				if (del == 0){
+					count ++;
+					console.log("Condition met: del == 0");
+					str = "<tr class='table-info' >"
+						+		"<td><div ' style='padding-left:" + padding_range + "px;'>작성자:" + item.user_id + "</div></td>"
+						+		"<td>작성일:" + item.write_date + "</td>"
+						+		"<td>"
+						+			"<button type='button' id='replyBtn-" + item.seq + "' class='reply' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
+						+		"</td>"
+						+		"<td>"
+						+			"<button type='button' class='commentDelete' onclick='commentDelete(" + post_num + "," + item.seq + ")'>X</button>"
+						+		"</td>"
 						+	"</tr>"
+						+	"<tr id='commentRow-" + item.seq + "'>"
+						+		"<td colspan='2' class='table-content'><div <div ' style='padding-left:" + padding_range + "px;'>" + item.content + "</div></td>"
+						+	"</tr>"
+				}else{
+					console.log("Condition met: del == 1 '");
+					str = "<tr class='table-info'>"
+						+		"<td><div ' style='padding-left:" + padding_range + "px;'>작성자:" + item.user_id + "</div></td>"
+						+		"<td>작성일:" + item.write_date + "</td>"
 						+	"<tr>"
-						+		"<td colspan='2'>" + item.content + "</td>"
-						+	"</tr>";
+						+		"<td><div ' style='padding-left:" + padding_range + "px;'>"
+						+			"<font color='#ff0000'> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>"
+						+	  	"</div></td>"
+						+	"</tr>"
+						+	"</tr>"
+
+				}
+
+						
 				$("#tbody").append(str);
 			});
+			$("#comment-count").text(count);
 		},
 		error:function(){
 			alert('error');
@@ -176,6 +224,65 @@ $(document).ready(function(){
 	});
 	
 })
+
+function reply(post_num, comment_user_id, seq) {
+    const replyInputBox = $("#replyInput");
+    const commentRow = $("#commentRow-" + seq);
+
+    replyInputBox.insertAfter(commentRow);
+    replyInputBox.show();
+
+    $("#replyUsername").text("" + comment_user_id );
+    $("#post_num").val(post_num);
+    $("#seq").val(seq);
+    
+	//location.href = "commentAnswer.do?user_id=" + user_id + "&post_num=" + post_num + "&seq=" + seq;
+}
+function commentDelete( post_num, seq ) {
+
+	location.href = "commentDelete.do?post_num=" + post_num + "&seq=" + seq;
+}
+
+function sendReply() {
+    const post_num = $("#post_num").val();
+    const seq = $("#seq").val(); // 댓글에 대한 답글이므로 이것을 parent_seq로 사용합니다.
+    const replyContent = $("#replyContent").val();
+    const user_id = "<%=login.getUser_id() %>"; // 현재 로그인한 사용자 ID
+    const ref = $("#ref").val();
+    const step = $("#step").val();
+    const depth = $("#depth").val();
+
+    $.ajax({
+        url: "commentAnswer.do",
+        type: "post",
+        data: {
+            post_num: post_num,
+            seq: seq,
+            content: replyContent,
+            user_id: user_id,
+            ref: ref,
+            step: step,
+            depth: depth
+        },
+        success: function() {
+            // 서버에서 성공적으로 응답하면 댓글 목록을 새로 고침합니다.
+            location.reload();
+        },
+        error: function() {
+            alert('Error while requesting server');
+        }
+    });
+}
+
+function cancelReply(){
+	const replyInputBox = $("#replyInput");
+	replyInputBox.hide();
+}
+
+</script>
+
+</div>
+</div>
 
 </body>
 </html>

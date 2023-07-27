@@ -19,7 +19,7 @@
 </select>
 
 <select id="getstocks" parameterType="ssg.com.a.dto.stockParam" resultType="Integer">
-	select count(*) from bbs 
+	select count(*) from stocks 
 		
 		<if test="choice != null and choice !='' and search != null and search != '' ">
  			<if test="choice == 'Name' ">

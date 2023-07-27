@@ -3,7 +3,7 @@
 
 <%
 String login = (String)request.getAttribute("loginmsg");
-if(login != null && login.equals("") == false){
+if(login != null && !login.equals("")){
 	if(login.equals("LOGIN_NO")){		
 		%>
 		<script>
@@ -42,7 +42,7 @@ if(newswrite != null && !newswrite.equals("")){
 }
 
 String newsupdate = (String)request.getAttribute("newsupdate");
-if(newsupdate != null && newsupdate.equals("") == false){
+if(newsupdate != null && !newsupdate.equals("")){
 	if(newsupdate.equals("NEWSUPDATE_YES")){
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		%>
@@ -62,7 +62,7 @@ if(newsupdate != null && newsupdate.equals("") == false){
 	}
 }
 String newsdelete = (String)request.getAttribute("newsdelete");
-if(newsdelete != null && newsdelete.equals("") == false){
+if(newsdelete != null && !newsdelete.equals("")){
 	if(newsdelete.equals("NEWSDELETE_YES")){
 
 		%>
@@ -79,6 +79,68 @@ if(newsdelete != null && newsdelete.equals("") == false){
 	    location.href = "newsdetail.do?seq=" + <%=seq %>;
 		</script>
 		<%		
+	}
+}
+String commentwrite = (String)request.getAttribute("commentwrite");
+if(commentwrite != null && !commentwrite.equals("")){
+	int seq = Integer.parseInt(request.getParameter("seq"));
+	if(commentwrite.equals("COMMENT_ADD_OK")){
+		%>
+		<script type="text/javascript">
+		alert("성공적으로 작성되었습니다");
+		location.href = "newsdetail.do?seq=" + <%=seq %>;
+		</script>
+		<%
+	}
+	else{
+		%>
+		<script type="text/javascript">
+		alert("다시 작성해 주십시오");
+		location.href = "newsdetail.do?seq=" + <%=seq %>;
+		</script>
+		<%
+	}
+}
+
+String commentDelete = (String)request.getAttribute("commentDelete");
+if(commentDelete != null && !commentDelete.equals("")){
+	int post_num = Integer.parseInt(request.getParameter("post_num"));
+	if(commentDelete.equals("COMMENTDELETE_YES")){
+		%>
+		<script type="text/javascript">
+		alert("성공적으로 작성되었습니다");
+		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		</script>
+		<%
+	}
+	else{
+		%>
+		<script type="text/javascript">
+		alert("다시 작성해 주십시오");
+		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		</script>
+		<%
+	}
+}
+
+String commentAnswer = (String)request.getAttribute("commentAnswer");
+if(commentAnswer != null && !commentAnswer.equals("")){
+	int post_num = Integer.parseInt(request.getParameter("post_num"));
+	if(commentAnswer.equals("COMMENTANSWER_YES")){
+		%>
+		<script type="text/javascript">
+		alert("성공적으로 작성되었습니다");
+		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		</script>
+		<%
+	}
+	else{
+		%>
+		<script type="text/javascript">
+		alert("다시 작성해 주십시오");
+		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		</script>
+		<%
 	}
 }
 

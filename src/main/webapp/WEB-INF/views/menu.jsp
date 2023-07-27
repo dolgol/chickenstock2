@@ -42,19 +42,19 @@
 						</a>
 					</li>
 					<li class="nav-item active">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="newslist.do">
 							뉴스게시판
 						</a>
 					</li>
 					<li class="nav-item active">
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="stockMain.do">
 							종목게시판
 						</a>
 					</li>
 				</ul>
 				<div class="my-2 my-lg-0">
 					<!-- 분기처리 -->
-					<a class="btn btn-primary my-2 my-sm-0" href="#">로그인</a>
+					<a class="btn btn-primary my-2 my-sm-0" href="login.do">로그인</a>
 					<a class="btn btn-primary my-2 my-sm-0" href="mypageLike.do">마이페이지</a>
 					<a class="btn btn-outline-primary my-2 my-sm-0" href="#">로그아웃</a>
 			    </div>

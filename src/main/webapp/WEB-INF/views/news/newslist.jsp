@@ -13,6 +13,7 @@
 	int pageNumber = param.getPageNumber();
 	String choice = param.getChoice();
 	String search = param.getSearch();
+	
 %>    
     
 <!DOCTYPE html>
@@ -118,6 +119,7 @@ if(list == null || list.size() == 0){
 
 <br><br>
 <a href="newswrite.do">글쓰기</a>
+<a href="newsScrap.do">뉴스 스크랩</a>
 </div>
 
 <br><br>
