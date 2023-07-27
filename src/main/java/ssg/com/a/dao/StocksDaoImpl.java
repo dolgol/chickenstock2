@@ -6,12 +6,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ssg.com.a.dto.StockParam;
-import ssg.com.a.dto.StocksComment;
-import ssg.com.a.dto.StocksDto;
+import ssg.com.a.dto.stockParam;
+import ssg.com.a.dto.stocksDto;
 
 @Repository
-public class StocksDaoImpl implements StocksDao{
+public class stocksDaoImpl implements stocksDao{
 	
 	@Autowired
 	SqlSessionTemplate session;	
@@ -19,30 +18,13 @@ public class StocksDaoImpl implements StocksDao{
 	String ns = "stocks.";
 
 	@Override
-	public List<StocksDto> stockslist(StockParam param) {
+	public List<stocksDto> stockslist(stockParam param) {
 		return session.selectList(ns + "stockslist", param);
 	}
 
 	@Override
-	public int getstocks(StockParam param) {
+	public int getstocks(stockParam param) {
 		return session.selectOne(ns + "getstocks", param);
-	}
-
-	@Override
-	public StocksDto stocksdetail(String symbol) {
-		int symbolNum = Integer.parseInt(symbol);
-		symbol = String.valueOf(symbolNum); 
-		return session.selectOne(ns + "stocksdetail", symbol);
-		// return session.selectOne(ns + "stocksdetail", symbol);
-	}
-
-	
-	 @Override public int stockscommentwrite(StocksComment comment) {
-		 return session.insert(ns + "stockscommentwrite",comment); 
-	}
-	 
-	 @Override public List<StocksComment> stockscommentlist(String symbol) {
-		 return session.selectList(ns +"stockscommentlist", symbol); 
 	}
 	
 }
