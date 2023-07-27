@@ -167,6 +167,29 @@ if(message != null && message.equals("") == false){
 }
 %>
 
+<%
+String mypageEditAf_message = (String)request.getAttribute("mypageEditAf_message");
+if(mypageEditAf_message != null && mypageEditAf_message.equals("") == false){
+	if(mypageEditAf_message.equals("false")){
+		%>
+			<script>
+			    alert("내 정보 수정에 실패했습니다");
+			    location.href = "mypageEdit.do";
+			</script>
+		<%	
+	} 
+	else if(mypageEditAf_message.equals("true")){
+		%>
+			<script>
+			    alert("내 정보 수정에 성공했습니다");
+			    location.href = "mypageEdit.do";
+			</script>
+		<%	
+	} 
+}
+
+%>
+
 
 
 
