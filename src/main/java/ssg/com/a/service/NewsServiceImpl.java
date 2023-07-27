@@ -76,6 +76,11 @@ public class NewsServiceImpl implements NewsService{
 		dao.commentAnswerUpdate(comment);
 		return dao.commentAnswer(comment)>0;
 	}
+
+	@Override
+	public NewsDto newsFind(NewsDto dto) {
+		return dao.newsFind(dto);
+	}
 	
 	
 }

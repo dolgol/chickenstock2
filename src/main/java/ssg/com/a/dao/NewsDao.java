@@ -27,6 +27,8 @@ public interface NewsDao {
 	int commentAnswer(NewsComment comment);
 	void commentAnswerUpdate(NewsComment comment);
 	
+	NewsDto newsFind(NewsDto dto);
+	
 }
 
 

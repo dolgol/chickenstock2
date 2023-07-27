@@ -2,6 +2,7 @@
 use csdb;
 use mydb;
 show TABLES;
+CREATE DATABASE mydb2;
 
 select * from users
 select * from news
@@ -61,9 +62,11 @@ CREATE TABLE news (
   views INT,
   content LONGTEXT NOT NULL,
   del INT,
-  publication_date DATE,
+  publication_date VARCHAR(100),
   image LONGBLOB
 );
+alter table news modify publication_date VARCHAR(100); 
+
 
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,

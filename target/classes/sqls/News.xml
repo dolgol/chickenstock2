@@ -40,12 +40,22 @@
 		</if>	
 	</if>
 </select>
-
+<!-- 
 <insert id="newswrite" parameterType="ssg.com.a.dto.NewsDto">
 	insert into news(write_id, source, title, views, content, del, publication_date, image)
 	values(#{write_id}, #{source}, #{title}, 0, #{content}, 0, now(), null)
 </insert>
+-->
 <!-- (select ifnull(max(ref), 0)+1 from news b) -->
+
+<insert id="newswrite" parameterType="ssg.com.a.dto.NewsDto">
+	insert into news( title, write_id, content, publication_date, source, views, del, image)
+	values(#{title}, #{write_id}, #{content}, #{publication_date}, #{source}, 0, 0, null)
+</insert>
+
+<select id="newsFind" parameterType="ssg.com.a.dto.NewsDto" resultType="ssg.com.a.dto.NewsDto">
+    select * from news where title = #{title}
+</select>
 
 <select id="newsdetail" parameterType="java.lang.Integer" 
 				resultType="ssg.com.a.dto.NewsDto">

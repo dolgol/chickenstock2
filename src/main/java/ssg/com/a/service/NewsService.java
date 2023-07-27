@@ -26,6 +26,8 @@ public interface NewsService {
 	
 	boolean commentAnswer(NewsComment comment);
 	//List<NewsComment> commentAnswerUpdate(NewsComment comment);
+	
+	NewsDto newsFind(NewsDto dto);
 }
 
 

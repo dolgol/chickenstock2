@@ -83,6 +83,14 @@ public class NewsDaoImpl implements NewsDao{
 		session.selectList(ns + "commentAnswerUpdate", comment);
 	}
 
+	@Override
+	public NewsDto newsFind(NewsDto dto) {
+		return session.selectOne(ns + "newsFind", dto);
+	}
+
+	
+	
+
 	
 	
 	
