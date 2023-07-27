@@ -17,6 +17,8 @@ public class StockController {
 	@Autowired
 	StockService service;
 	
+	
+	
 	@GetMapping("stockMain.do")
 	public String stockMain(Model model, @ModelAttribute ("param") StockParam param) throws Exception{
 		
