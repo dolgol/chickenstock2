@@ -91,6 +91,7 @@
 					%>
 					<tr>
 						<td colspan="12">
+							<span class="material-symbols-rounded">favorite</span><br/>
 							아직 관심종목이 없습니다<br/>
 							종목 게시판 바로가기 >>
 						</td>
