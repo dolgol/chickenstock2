@@ -28,15 +28,36 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
 <!-- google fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <style>
 
+	* {
+		color: #4c4843;
+		font-size: 16px;
+		font-family: 'Noto Sans KR', sans-serif;
+		/* font-weight: 300; */
+		letter-spacing: -1px;
+	}
+	
+	a {
+		text-decoration: none; 
+		outline: none;
+	}
+
+ 	a:hover, a:active {
+ 		text-decoration: none;
+	}
+	
 	.main-table {
 		width: 100%;
 	}
 	
-	.btn-primary {
+	/* .btn-primary {
 		background-color: #ff9406;
 		border-color: #ff9406;
 	}
@@ -55,7 +76,7 @@
 		color: #fff;
 		background-color: #ff9406;
 		border-color: #ff9406;
-	}
+	} */
 
 </style>
 
