@@ -377,7 +377,7 @@ public class NewsController {
 	
 	private List<NewsDto> newsSummary(List<NewsDto> newsList) throws Exception {
 		Gson gson = new Gson();
-        String apiKey = "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"; // OpenAI API Key
+        String apiKey = ""; // OpenAI API Key
         //String engine = "gpt-3.5-turbo"; // Engine id
         int maxTokens = 10;//300; // Maximum number of tokens in the response
         // Prepare the API URL
@@ -493,7 +493,7 @@ public class NewsController {
 			try {
 		        // Papago API에 필요한 정보를 설정
 		        String clientId = "EmpNiTFgTYBn4eJ30Af1";
-		        String clientSecret = "Ju_ydxZFmr";
+		        String clientSecret = "";
 		        String apiUrl = "https://openapi.naver.com/v1/papago/n2mt";
 	
 		        // HTTP 클라이언트를 생성
