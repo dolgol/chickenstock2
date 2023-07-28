@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ssg.com.a.dto.MypageParam;
+import ssg.com.a.dto.MypageStocksComment;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -54,5 +55,27 @@ public class StocksDaoImpl implements StocksDao{
 	@Override
 	public List<StocksDto> mypageLikeScroll(MypageParam param) {
 		return session.selectList(ns + "mypageLikeScroll", param);
+	}
+
+	@Override
+	public int mypageStocksAllComment(String user_id) {
+		return session.selectOne(ns + "mypageStocksAllComment", user_id);
+	}
+
+	@Override
+	public List<MypageStocksComment> mypageStocksCommentList(MypageParam param) {
+		return session.selectList(ns + "mypageStocksCommentList", param);
+	}
+
+	@Override
+	public int mypageStocksCommentDel(List<Integer> deleteList) {
+		
+		int count = 0;
+		
+		for (int i = 0; i < deleteList.size(); i++) {
+			count += session.update(ns + "mypageStocksCommentDel", deleteList.get(i));
+		}
+		
+		return count;
 	}
 }
