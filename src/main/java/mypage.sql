@@ -72,3 +72,38 @@ where Symbol in
 	(select Symbol
 	from stocks_like
 	where user_id=#{user_id})
+	
+	
+<select id="mypageStocksAllComment" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select count(*) 
+	from stocks_comment
+	where user_id=#{user_id} and del=0
+</select>
+
+<select id="mypageStocksCommentList" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.MypageStocksComment">
+	select sc.seq as scseq, sc.user_id, sc.content, sc.write_date, sc.del, s.Symbol, s.Market, s.Name
+	from stocks_comment sc, stocks s
+	where sc.post_num = s.Symbol
+	and sc.user_id=#{user_id}
+	order by sc.write_date desc
+	limit ${(pageNumber * 10)}, 10
+</select>
+
+<update id="mypageStocksCommentDel" parameterType="java.lang.Integer">
+	update stocks_comment
+	set del=1
+	where seq=#{seq}
+</update>
+
+select user_id, user_name, birthday, sex, phone_number, address, nick_name, auth
+from users
+where auth!=0
+order by user_id
+limit ${(pageNumber * 10)}, 10	
+
+
+
+	
+	
+	
+	
