@@ -1,3 +1,4 @@
+<%@page import="ssg.com.a.dto.NewsParam"%>
 <%@page import="ssg.com.a.dto.UserDto"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -5,6 +6,7 @@
 	NewsDto dto = (NewsDto)request.getAttribute("newsDto");
 	System.out.println(dto);
 	UserDto login = (UserDto)session.getAttribute("login");
+	NewsParam param = (NewsParam)request.getAttribute("param");
 %>
 
 <!DOCTYPE html>
@@ -18,6 +20,7 @@
     <h2>글 수정</h2>
     <form action="newsupdateAf.do" method="post">
         <input type="hidden" name="seq" value="<%=dto.getSeq() %>">
+        <input type="hidden" name="pageNumber" value="<%=param.getPageNumber() %>">
         <table border="1">
             <col width="200"><col width="500">
             <tr>

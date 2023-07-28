@@ -1,13 +1,22 @@
 package ssg.com.a.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import ssg.com.a.dto.NewsComment;
+import ssg.com.a.dto.NewsParam;
 
 @Controller
 public class TestController {
+	
+
+	
+	
 	
 	@GetMapping("home.do")
 	public String home(Model model) {

@@ -32,6 +32,11 @@ public class NewsServiceImpl implements NewsService{
 	}
 	
 	@Override
+	public boolean newsnotice(NewsDto dto) {		
+		return dao.newsnotice(dto)>0?true:false;
+	}
+	
+	@Override
 	public NewsDto newsdetail(int seq) {		
 		return dao.newsdetail(seq);
 	}
@@ -39,6 +44,11 @@ public class NewsServiceImpl implements NewsService{
 	@Override
 	public NewsDto newsget(int seq) {
 		return dao.newsget(seq);
+	}
+
+	@Override
+	public boolean newsViewUpdate(NewsDto dto) {
+		return dao.newsViewUpdate(dto)>0;
 	}
 
 	@Override
@@ -57,8 +67,13 @@ public class NewsServiceImpl implements NewsService{
 	}
 
 	@Override
-	public List<NewsComment> commentList(int seq) {		
-		return dao.commentList(seq);
+	public List<NewsComment> commentList(NewsParam param) {		
+		return dao.commentList(param);
+	}
+
+	@Override
+	public int getAllComment(int seq) {
+		return dao.getAllComment(seq);
 	}
 
 	@Override

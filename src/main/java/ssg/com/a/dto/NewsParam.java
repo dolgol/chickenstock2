@@ -7,6 +7,8 @@ public class NewsParam implements Serializable{
 	private String choice;	// 카테고리(제목/내용/작성자)
 	private String search;	// 검색어
 	private int pageNumber;
+	private int seq;
+	
 	
 	private String newstitle;
 	private String author;
@@ -23,6 +25,12 @@ public class NewsParam implements Serializable{
 	public NewsParam(String summaryContent) {
 		super();
 		this.originContent = summaryContent;
+	}
+	
+	public NewsParam(int seq, int pageNumber) {
+		super();
+		this.seq = seq;
+		this.pageNumber = pageNumber;
 	}
 	
 	public NewsParam( String newstitle, String author, String write_date, String originContent, String source ) {
@@ -125,10 +133,24 @@ public class NewsParam implements Serializable{
 		this.source = source;
 	}
 
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+
 	public String toStringNews() {
 		return "NewsParam [choice=" + choice + ", search=" + search + ", pageNumber=" + pageNumber + ", originContent="
 				+ originContent + ", summaryContent=" + summaryContent + ", newstitle=" + newstitle + "]";
 	}
+	
+	public String toStringComment() {
+		return "NewsSummary [seq= " + seq + ", pageNumber= " + pageNumber + "]";
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "NewsSummary [newstitle= " + newstitle + ", author= " + author + ", write date= " + write_date + ", originContent=" + originContent + ", source= " + source + "]";
