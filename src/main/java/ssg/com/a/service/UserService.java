@@ -1,5 +1,7 @@
 package ssg.com.a.service;
 
+import java.util.List;
+
 import ssg.com.a.dto.UserDto;
 
 public interface UserService {
@@ -15,4 +17,6 @@ public interface UserService {
 	 
 	 UserDto userGet(String user_id);
 	 boolean mypageEdit(UserDto dto);
+	 List<UserDto> userGetAll(int pageNumber);
+	 boolean userDelete(List<Integer> deleteList);
 }
