@@ -2,19 +2,19 @@
  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="stocks">
 <select id="stockslist" resultType="ssg.com.a.dto.StocksDto" parameterType="ssg.com.a.dto.StockParam">
- 		select Symbol, Market, Name , Sector, Industry
+ 		select Symbol, Market, Name , Sector, ListingDate, Representative
  		from stocks
  		
  		<if test="choice != null and choice !='' and search != null and search != '' ">
- 			<if test="choice == 'Name' ">
+ 			<if test="choice == 'name' ">
 				where Name like concat('%', #{search}, '%')
 			</if>
 			
-			<if test="choice == 'Symbol' ">
+			<if test="choice == 'symbol' ">
+				where Symbol like concat('%', #{search}, '%')
 			</if>
  		</if>
  		order by Symbol desc
- 		
 </select>
 
 <select id="getstocks" parameterType="ssg.com.a.dto.StockParam" resultType="Integer">

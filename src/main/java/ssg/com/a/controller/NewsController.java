@@ -541,6 +541,8 @@ public class NewsController {
 		}
 		
 		return msg;
+	}
+	
 	private Map<String, String> translationCache = new HashMap<>();
 	
 	public String translateToKorean(String text) {
