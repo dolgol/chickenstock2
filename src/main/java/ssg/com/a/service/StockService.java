@@ -2,6 +2,7 @@ package ssg.com.a.service;
 
 import java.util.List;
 
+import ssg.com.a.dto.StockLike;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -14,5 +15,15 @@ public interface StockService {
 	
 	boolean stockscommentwrite(StocksComment comment); 
 	List<StocksComment> stockscommentlist(String symbol);
+	
+	void insertlike(StockLike stocklike);
+	void deletelike(StockLike stocklike);
+	List<StockLike> getlike(String user_id);
+	boolean checklike(StockLike stocklike);
+	
+	boolean stockcommentdelete(StocksComment comment);
+	StocksComment stockcommentget(StocksComment comment);
+	int stockgetall(int seq);
+
 	 
 }

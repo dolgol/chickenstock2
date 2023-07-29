@@ -10,7 +10,7 @@ public class StocksDto implements Serializable{
 	private String Name;
 	private String Sector;
 	private String Industry;
-	private Date ListingDate;
+	private String ListingDate;
 	private String SettleMonth;
 	private String Representative;
 	private String HomePage;
@@ -18,7 +18,7 @@ public class StocksDto implements Serializable{
 	public StocksDto() {
 	}
 
-	public StocksDto(String symbol, String market, String name, String sector, String industry, Date listingDate,
+	public StocksDto(String symbol, String market, String name, String sector, String industry, String listingDate,
 			String settleMonth, String representative, String homePage) {
 		super();
 		Symbol = symbol;
@@ -72,11 +72,11 @@ public class StocksDto implements Serializable{
 		Industry = industry;
 	}
 
-	public Date getListingDate() {
+	public String getListingDate() {
 		return ListingDate;
 	}
 
-	public void setListingDate(Date listingDate) {
+	public void setListingDate(String listingDate) {
 		ListingDate = listingDate;
 	}
 
@@ -106,7 +106,7 @@ public class StocksDto implements Serializable{
 
 	@Override
 	public String toString() {
-		return "stocksDto [Symbol=" + Symbol + ", Market=" + Market + ", Name=" + Name + ", Sector=" + Sector
+		return "StocksDto [Symbol=" + Symbol + ", Market=" + Market + ", Name=" + Name + ", Sector=" + Sector
 				+ ", Industry=" + Industry + ", ListingDate=" + ListingDate + ", SettleMonth=" + SettleMonth
 				+ ", Representative=" + Representative + ", HomePage=" + HomePage + "]";
 	}

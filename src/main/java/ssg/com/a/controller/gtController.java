@@ -1,15 +1,11 @@
 package ssg.com.a.controller;
 
-import java.net.http.HttpResponse;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -17,21 +13,9 @@ import ssg.com.a.dto.StockLike;
 import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
-@Controller
-public class TestController {
-	
+public class gtController {
 	@Autowired
 	StockService stockService;
-	
-	@GetMapping("home.do")
-	public String home(Model model) {
-		
-		System.out.println("TestController home() " + new Date());
-		
-		model.addAttribute("content", "home");
-		
-		return "main";
-	}
 	
 	@GetMapping("mypageLike.do")
 	public String mypageLike(Model model, HttpSession session) {
@@ -56,26 +40,4 @@ public class TestController {
 		return "main";
 	}
 	
-	@GetMapping("mypageComment.do")
-	public String mypageComment(Model model) {
-		
-		System.out.println("TestController mypageComment() " + new Date());
-		
-		model.addAttribute("content", "user/mypage");
-		model.addAttribute("mypageContent", "mypageComment");
-		
-		return "main";
-	}
-	
-	@GetMapping("mypageEdit.do")
-	public String mypageEdit(Model model) {
-		
-		System.out.println("TestController mypageEdit() " + new Date());
-		
-		model.addAttribute("content", "user/mypage");
-		model.addAttribute("mypageContent", "mypageEdit");
-		
-		return "main";
-	}
-
 }

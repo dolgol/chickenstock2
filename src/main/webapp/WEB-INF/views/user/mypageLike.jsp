@@ -1,9 +1,15 @@
+<%@page import="ssg.com.a.dto.StocksDto"%>
+<%@page import="ssg.com.a.dto.UserDto"%>
+<%@page import="ssg.com.a.dto.StockLike"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%
 
-	/* UserDto user = (UserDto)session.getAttribute("login"); */
+	UserDto user = (UserDto)session.getAttribute("login");
+	StocksDto dto = (StocksDto)session.getAttribute("symbol");
+	List<StockLike> likeList = (List<StockLike>) request.getAttribute("listList");
 
 %>
     
@@ -31,14 +37,20 @@
 					</tr>
 				</thead>
 				<tbody>
+					<%
+						for(StockLike sl:likeList) {
+					%>
 					<tr>
 						<td>
-							1
+							<%=sl.getSeq()%>
 						</td>
 						<td>
-							삼성전자
+							<%=sl.getCompanyName()%>
 						</td>
 					</tr>
+					<%		
+						}
+					%>
 				</tbody>
 			</table>
 		</div>
