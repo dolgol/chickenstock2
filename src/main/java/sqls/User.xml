@@ -35,8 +35,33 @@
 	<select id="findUserByAddressAndPhoneNumber" parameterType="string" resultType="ssg.com.a.dto.UserDto">
         SELECT * FROM users WHERE address = #{address} and phone_number = #{phone_number}
     </select>
+    
+    
+    <delete id="userDelete" parameterType="String">
+    	delete
+		from users
+		where user_id=#{user_id}
+    </delete>
 
+	<select id="userGet" parameterType="java.lang.String" resultType="ssg.com.a.dto.UserDto">
+    	select user_id, user_name, birthday, sex, phone_number, address, nick_name, auth
+    	from users
+    	where user_id=#{user_id}
+    </select>
+    
+     <select id="userGetAll" parameterType="Integer" resultType="ssg.com.a.dto.UserDto">
+    	select user_id, user_name, birthday, sex, phone_number, address, nick_name, auth
+    	from users
+    	where auth!=0
+    	order by user_id
+		limit ${(pageNumber * 10)}, 10	
+    </select>
 	
-	 
+	<update id="mypageEdit" parameterType="ssg.com.a.dto.UserDto">
+    	update users
+    	set user_name=#{user_name}, birthday=#{birthday}, sex=#{sex}, 
+    		phone_number=#{phone_number}, address=#{address}, nick_name=#{nick_name}
+    	where user_id=#{user_id}
+    </update>
 
 </mapper>

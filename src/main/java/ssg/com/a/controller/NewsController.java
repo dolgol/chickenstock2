@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ import com.google.gson.JsonParser;
 import org.apache.commons.text.StringEscapeUtils;
 import com.google.gson.Gson;
 
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
 import org.json.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -56,6 +59,7 @@ import ssg.com.a.dto.MessageDto;
 import ssg.com.a.dto.NewsComment;
 import ssg.com.a.dto.NewsDto;
 import ssg.com.a.dto.NewsParam;
+import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.NewsService;
 import util.NewsUtil;
 
@@ -478,6 +482,65 @@ public class NewsController {
 		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
 	    return responseJsonResult; 
 	    
+	}
+	
+	
+	
+	@GetMapping("mypageComment.do")
+	public String mypageComment(HttpServletRequest request, Model model, MypageParam param) {
+		
+		System.out.println("NewsController mypageComment() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		System.out.println(" 1 >> " + param.toString());
+		if(param == null) {
+			param = new MypageParam(login.getUser_id(), 0);
+		}
+
+		if(param.getUser_id() == null) {
+			param.setUser_id(login.getUser_id());
+		}
+		System.out.println(" 2 >> " + param.toString());
+		
+		List<MypageNewsComment> list = service.mypageNewsCommentList(param);
+		
+		// 글의 총수
+		int count = service.mypageNewsAllComment(login.getUser_id());
+		
+		// 페이지를 계산
+		int pageBbs = count / 10;	
+		if((count % 10) > 0) {
+			pageBbs = pageBbs + 1;	
+		}	
+		
+		model.addAttribute("mypageNewsCommentList", list);
+		model.addAttribute("pageBbs", pageBbs);
+		model.addAttribute("param", param);
+		model.addAttribute("content", "user/mypage");
+		model.addAttribute("mypageContent", "mypageComment");
+		
+		return "main";
+	}
+	
+	@ResponseBody
+	@GetMapping("mypageNewsCommentDel.do")
+	public String mypageNewsCommentDel(@RequestParam(value="deleteList[]") List<Integer> deleteList) {
+		
+		System.out.println("NewsController mypageNewsCommentDel() " + new Date());
+		
+		for (int i = 0; i < deleteList.size(); i++) {
+			System.out.println("deleteList " + i + " / " + deleteList.get(i));
+		}
+		
+		boolean isS = service.mypageNewsCommentDel(deleteList);
+		String msg = "true";
+		
+		if(isS == false) {
+			msg = "false";
+		}
+		
+		return msg;
 	}
 	
 	private Map<String, String> translationCache = new HashMap<>();

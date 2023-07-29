@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
+import ssg.com.a.dto.MypageStocksComment;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
+import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
 @Controller
@@ -240,5 +246,91 @@ public class StockController {
 	
 	
 	
+	@GetMapping("mypageLike.do")
+	public String mypageLike(Model model, HttpServletRequest request) {
+		
+		System.out.println("StockController mypageLike() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		List<StocksDto> list = service.mypageLikeList(login.getUser_id());
+		
+		model.addAttribute("content", "user/mypage");
+//		model.addAttribute("mypageContent", "mypageLike");
+		model.addAttribute("mypageContent", "mypageLikeScroll");
+		model.addAttribute("mypageLikeList", list);
+		
+		return "main";
+	}
 	
+	@ResponseBody
+	@GetMapping("mypageScroll.do")
+	public List<StocksDto> mypageScroll(MypageParam param) {
+		
+		System.out.println("StockController mypageScroll() " + new Date());
+		System.out.println(param.toString());
+		
+		List<StocksDto> list = service.mypageLikeScroll(param);
+		System.out.println(list.size());
+		System.out.println(list);
+		
+		return list;
+	}
+	
+	@GetMapping("mypageStocksComment.do")
+	public String mypageStocksComment(HttpServletRequest request, Model model, MypageParam param) {
+		
+		System.out.println("StockController mypageStocksComment() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		System.out.println(" 1 >> " + param.toString());
+		if(param == null) {
+			param = new MypageParam(login.getUser_id(), 0);
+		}
+
+		if(param.getUser_id() == null) {
+			param.setUser_id(login.getUser_id());
+		}
+		System.out.println(" 2 >> " + param.toString());
+		
+		List<MypageStocksComment> list = service.mypageStocksCommentList(param);
+		
+		// 글의 총수
+		int count = service.mypageStocksAllComment(login.getUser_id());
+		
+		// 페이지를 계산
+		int pageBbs = count / 10;	
+		if((count % 10) > 0) {
+			pageBbs = pageBbs + 1;	
+		}	
+		
+		model.addAttribute("mypageStocksCommentList", list);
+		model.addAttribute("pageBbs", pageBbs);
+		model.addAttribute("param", param);
+		model.addAttribute("content", "user/mypage");
+		model.addAttribute("mypageContent", "mypageCommentStocks");
+		
+		return "main";
+	}
+	
+	@ResponseBody
+	@GetMapping("mypageStocksCommentDel.do")
+	public String mypageStocksCommentDel(@RequestParam(value="deleteList[]") List<Integer> deleteList) {
+		
+		System.out.println("StockController mypageStocksCommentDel() " + new Date());
+		
+		for (int i = 0; i < deleteList.size(); i++) {
+			System.out.println("deleteList " + i + " / " + deleteList.get(i));
+		}
+		
+		boolean isS = service.mypageStocksCommentDel(deleteList);
+		String msg = "true";
+		
+		if(isS == false) {
+			msg = "false";
+		}
+		
+		return msg;
+	}
 }

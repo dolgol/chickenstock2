@@ -1,5 +1,7 @@
 package ssg.com.a.service;
 
+import java.util.List;
+
 import ssg.com.a.dto.UserDto;
 
 public interface UserService {
@@ -11,4 +13,10 @@ public interface UserService {
 	
 	// 아이디 찾기
 	 UserDto findUserByAddressAndPhoneNumber(String address, String phone_number);
+
+	 
+	 UserDto userGet(String user_id);
+	 boolean mypageEdit(UserDto dto);
+	 List<UserDto> userGetAll(int pageNumber);
+	 boolean userDelete(List<Integer> deleteList);
 }

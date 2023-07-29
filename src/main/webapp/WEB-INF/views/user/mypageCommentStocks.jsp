@@ -1,3 +1,4 @@
+<%@page import="ssg.com.a.dto.MypageStocksComment"%>
 <%@page import="ssg.com.a.dto.MypageParam"%>
 <%@page import="util.BbsUtil"%>
 <%@page import="ssg.com.a.dto.MypageNewsComment"%>
@@ -8,7 +9,7 @@
     pageEncoding="UTF-8"%>
     
 <%
-	List<MypageNewsComment> mypageNewsCommentList = (List<MypageNewsComment>)request.getAttribute("mypageNewsCommentList");
+	List<MypageStocksComment> mypageStocksCommentList = (List<MypageStocksComment>)request.getAttribute("mypageStocksCommentList");
 	
 	int pageBbs = (Integer)request.getAttribute("pageBbs");
 	
@@ -62,39 +63,41 @@
 				<tbody>
 					<!-- 댓글 유무 분기 처리, ... 처리, 페이징 처리 -->
 						<%
-							if(mypageNewsCommentList == null || mypageNewsCommentList.size() == 0) {
+							if(mypageStocksCommentList == null || mypageStocksCommentList.size() == 0) {
 								%>
 								<tr>
 									<td colspan="4">
 										<span class="material-symbols-rounded">rate_review</span><br/>
 										아직 작성한 댓글이 없습니다<br/>
-										<a href="newslist.do">뉴스게시판 바로가기 >></a>
+										<a href="stockMain.do">종목게시판 바로가기 >></a>
 									</td>
 								</tr>
 								<%
 							}
 							else {
-								for(int i = 0; i < mypageNewsCommentList.size(); i++) {
-									MypageNewsComment comment = mypageNewsCommentList.get(i);
+								for(int i = 0; i < mypageStocksCommentList.size(); i++) {
+									MypageStocksComment comment = mypageStocksCommentList.get(i);
 									
-									if(comment.getNcdel() == 0) {
+									if(comment.getDel() == 0) {
 										%>
 										<tr>
 											<td>
-												<input type="checkbox" name="comment" class="commentOne" value="<%=comment.getNcseq() %>">
+												<input type="checkbox" name="comment" class="commentOne" value="<%=comment.getScseq() %>">
 											</td>
 											<td>
 												<%=(i + 1) %>
 											</td>
 											<td>
 												<div>
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
+													<a href="stocksdetail.do?symbol=<%=comment.getSymbol() %>">
 														<%=BbsUtil.titleDot(comment.getContent()) %>
 													</a>
 												</div>
 												<div>
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
-														<%=BbsUtil.titleDot(comment.getTitle()) %>
+													<a href="stocksdetail.do?symbol=<%=comment.getSymbol() %>">
+														<%=BbsUtil.titleDot(comment.getSymbol()) %>&nbsp;&nbsp;
+														<%=BbsUtil.titleDot(comment.getMarket()) %>&nbsp;&nbsp;
+														<%=BbsUtil.titleDot(comment.getName()) %>
 													</a>
 												</div>
 											</td>
@@ -111,7 +114,7 @@
 			</table>
 			
 			<%
-				if(mypageNewsCommentList.size() != 0) {
+				if(mypageStocksCommentList.size() != 0) {
 					%>
 					<input type="button" value="삭제" onclick="commentSelectDelete()" />
 					<%
@@ -186,14 +189,14 @@
 			if(deleteConfirm) {
 				console.log("확인 클릭");
 				$.ajax({
-					url: "mypageNewsCommentDel.do",
+					url: "mypageStocksCommentDel.do",
 					type: "get",
 					data: { "deleteList": deleteList },
 					success: function(response) {
 						alert("success");
 						if(response == "true") {
 							alert("정상 삭제 성공");
-							location.href = "mypageComment.do";
+							location.href = "mypageStocksComment.do";
 						}
 						else {
 							alert("정상 삭제 실패");
@@ -220,7 +223,7 @@
 			last : '<span srid-hidden="true">»</span>',
 			initiateStartPageClick: false,
 			onPageClick: function(event, page) {
-				location.href = "mypageComment.do?pageNumber=" + (page - 1);
+				location.href = "mypageStocksComment.do?pageNumber=" + (page - 1);
 			}
 		});
 			

@@ -1,7 +1,14 @@
+<%@page import="ssg.com.a.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%
+
+	UserDto user = (UserDto)session.getAttribute("login");
+
+	if(user == null) {
+		response.sendRedirect("login.do");
+	}
 
 	String mypageContent = (String)request.getAttribute("mypageContent");
 
@@ -9,15 +16,13 @@
 		mypageContent = "mypageLike";
 	}
 	
-	System.out.println("mypageContent >> " + mypageContent);
-	
 %>    
     
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CHICKEN STOCK</title>
 
 <style>
 
@@ -67,9 +72,15 @@
 					</li>
 				</ul>
 			</div>
-
-			<jsp:include page='<%=mypageContent + ".jsp"%>' flush="false" />
 			
+			<div class="mypage-right">
+				<div class="mypage-right-name">
+					<span class="material-symbols-outlined">face</span>
+					&nbsp;&nbsp;<%=user.getNick_name() %> 님
+				</div>
+				
+				<jsp:include page='<%=mypageContent + ".jsp"%>' flush="false" />
+			</div>
 		</div>
 		
 		<div>

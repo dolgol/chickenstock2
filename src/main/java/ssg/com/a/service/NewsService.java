@@ -2,6 +2,8 @@ package ssg.com.a.service;
 
 import java.util.List;
 
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.NewsComment;
 import ssg.com.a.dto.NewsDto;
 import ssg.com.a.dto.NewsParam;
@@ -30,6 +32,10 @@ public interface NewsService {
 	boolean commentAnswer(NewsComment comment);
 	//List<NewsComment> commentAnswerUpdate(NewsComment comment);
 	
+	
+	int mypageNewsAllComment(String user_id);
+	List<MypageNewsComment> mypageNewsCommentList(MypageParam param);
+	boolean mypageNewsCommentDel(List<Integer> deleteList);
 	NewsDto newsFind(NewsDto dto);
 }
 

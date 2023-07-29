@@ -1,3 +1,16 @@
+package ssg.com.a.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,17 +20,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
+import ssg.com.a.dto.MypageStocksComment;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
+import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
 @Controller
 public class StockController {
 	@Autowired
 	StockService service;
-	
-	
 	
 	@GetMapping("stockMain.do")
 	public String stockMain(Model model, @ModelAttribute ("param") StockParam param) throws Exception{
@@ -44,6 +59,17 @@ public class StockController {
 		// 거래량
 		
 		String KEY_WORD = "quant.naver";
+
+		System.out.println("URL :: " + URL + getcount(KEY_WORD, 1));
+
+		// 1. document가져오기
+		Document doc = Jsoup.connect(URL + getcount(KEY_WORD, 1)).get();
+
+		// 2.목록가져오기
+		/* System.out.println("" + doc.toString()); */
+
+		Elements elements = doc.select(".type_2 tbody");
+
 		// 3. 배열에서 정보를 가져온다.
 		List<String> slist = new ArrayList<>();
 		for (Element element : elements) {
@@ -88,6 +114,7 @@ public class StockController {
 		}
 
 		//------------------------------------------------------------------------
+		model.addAttribute("stocklist", list);
 		model.addAttribute("param", param);
 		model.addAttribute("slist",slist);
 		model.addAttribute("sslist",sslist);
@@ -97,6 +124,13 @@ public class StockController {
 	}
 	
 	/**
+	* URL 완성
+	*@Param KEY_WORD
+	*@Param PAGE
+	*@return
+	*/
+	
+	public static String getcount(String KEY_WORD, int PAGE) {
 		return KEY_WORD ;
 	}
 	
@@ -174,7 +208,7 @@ public class StockController {
 			}
 			
 		
-		//크롤링끝-------------------------------------------------------------------------
+		//크롤링끝------------------------------------------------------------------------------
 		model.addAttribute("symbol", dto);
 		model.addAttribute("stock", stock);
 				
@@ -212,5 +246,91 @@ public class StockController {
 	
 	
 	
+	@GetMapping("mypageLike.do")
+	public String mypageLike(Model model, HttpServletRequest request) {
+		
+		System.out.println("StockController mypageLike() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		List<StocksDto> list = service.mypageLikeList(login.getUser_id());
+		
+		model.addAttribute("content", "user/mypage");
+//		model.addAttribute("mypageContent", "mypageLike");
+		model.addAttribute("mypageContent", "mypageLikeScroll");
+		model.addAttribute("mypageLikeList", list);
+		
+		return "main";
+	}
 	
+	@ResponseBody
+	@GetMapping("mypageScroll.do")
+	public List<StocksDto> mypageScroll(MypageParam param) {
+		
+		System.out.println("StockController mypageScroll() " + new Date());
+		System.out.println(param.toString());
+		
+		List<StocksDto> list = service.mypageLikeScroll(param);
+		System.out.println(list.size());
+		System.out.println(list);
+		
+		return list;
+	}
+	
+	@GetMapping("mypageStocksComment.do")
+	public String mypageStocksComment(HttpServletRequest request, Model model, MypageParam param) {
+		
+		System.out.println("StockController mypageStocksComment() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		System.out.println(" 1 >> " + param.toString());
+		if(param == null) {
+			param = new MypageParam(login.getUser_id(), 0);
+		}
+
+		if(param.getUser_id() == null) {
+			param.setUser_id(login.getUser_id());
+		}
+		System.out.println(" 2 >> " + param.toString());
+		
+		List<MypageStocksComment> list = service.mypageStocksCommentList(param);
+		
+		// 글의 총수
+		int count = service.mypageStocksAllComment(login.getUser_id());
+		
+		// 페이지를 계산
+		int pageBbs = count / 10;	
+		if((count % 10) > 0) {
+			pageBbs = pageBbs + 1;	
+		}	
+		
+		model.addAttribute("mypageStocksCommentList", list);
+		model.addAttribute("pageBbs", pageBbs);
+		model.addAttribute("param", param);
+		model.addAttribute("content", "user/mypage");
+		model.addAttribute("mypageContent", "mypageCommentStocks");
+		
+		return "main";
+	}
+	
+	@ResponseBody
+	@GetMapping("mypageStocksCommentDel.do")
+	public String mypageStocksCommentDel(@RequestParam(value="deleteList[]") List<Integer> deleteList) {
+		
+		System.out.println("StockController mypageStocksCommentDel() " + new Date());
+		
+		for (int i = 0; i < deleteList.size(); i++) {
+			System.out.println("deleteList " + i + " / " + deleteList.get(i));
+		}
+		
+		boolean isS = service.mypageStocksCommentDel(deleteList);
+		String msg = "true";
+		
+		if(isS == false) {
+			msg = "false";
+		}
+		
+		return msg;
+	}
 }

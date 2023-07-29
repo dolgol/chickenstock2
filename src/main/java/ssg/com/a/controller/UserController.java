@@ -30,9 +30,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
+import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.UserDto;
 import ssg.com.a.dao.UserDao; // 카카오 로그인 DB 저장을 위함
 import ssg.com.a.service.UserService;
@@ -306,4 +309,76 @@ public class UserController {
 	      }
 	   
 }
+	   
+	   
+	   @GetMapping("mypageEdit.do")
+		public String mypageEdit(HttpServletRequest request, Model model) {
+			
+			System.out.println("UserController mypageEdit() " + new Date());
+			
+			UserDto login = (UserDto)request.getSession().getAttribute("login");
+			UserDto userDto = service.userGet(login.getUser_id());
+			
+			model.addAttribute("content", "user/mypage");
+			model.addAttribute("mypageContent", "mypageEdit");
+			model.addAttribute("userDto", userDto);
+			
+			return "main";
+		}
+		
+		@PostMapping("mypageEditAf.do")
+		public String mypageEditAf(UserDto dto, Model model) {
+			
+			System.out.println("UserController mypageEditAf() " + new Date());
+			System.out.println(dto.toString());
+			
+			boolean isS = service.mypageEdit(dto);
+			String mypageEditAf_message = "true";
+			
+			if(isS == false) {
+				mypageEditAf_message = "false";
+			}
+			
+			model.addAttribute("mypageEditAf_message", mypageEditAf_message);
+			return "message";
+		}
+		
+		@GetMapping("adminuser.do")
+		public String adminuser(Model model, Integer pageNumber) {
+			
+			System.out.println("UserController adminuser() " + new Date());
+			
+			if(pageNumber == null) {
+				pageNumber = 0;
+			}
+			
+			List<UserDto> list = service.userGetAll(pageNumber);
+			
+			// 글의 총수
+			int count = list.size();
+			
+			// 페이지를 계산
+			int pageBbs = count / 10;	
+			if((count % 10) > 0) {
+				pageBbs = pageBbs + 1;	
+			}
+			
+			model.addAttribute("userList", list);
+			model.addAttribute("pageBbs", pageBbs);
+			model.addAttribute("pageNumber", pageNumber);
+			model.addAttribute("content", "user/adminUser");
+			
+			return "main";
+		}
+		
 }
+
+
+
+
+
+
+
+
+
+
