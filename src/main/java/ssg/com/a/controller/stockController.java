@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ssg.com.a.dto.MypageNewsComment;
 import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.MypageStocksComment;
+import ssg.com.a.dto.StockLike;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -45,9 +47,6 @@ public class StockController {
 		if(param == null || param.getSearch() == null || param.getChoice() == null) {
 			param = new StockParam("", "");
 		}
-	
-		
-		
 		
 		List<StocksDto> list = service.stockslist(param);
 		int count = service.getstocks(param);
@@ -141,18 +140,28 @@ public class StockController {
 	
 	
 	@GetMapping("stocksdetail.do")
-	public String stockdetail(@RequestParam ("symbol") String symbol, Model model) throws Exception{
-		System.out.println("StockController stocksdetail() " + new Date());
-		System.out.println(symbol);
-		
-		
-		
-		
+	public String stockdetail(@RequestParam("symbol") String symbol, Model model,
+			HttpSession session/* , @RequestParam("pageNumber") Integer pageNumber, int seq */) throws Exception{
+		System.out.println("StockController stocksdetail() " + new Date());	
+
 		String URL = "https://finance.naver.com/item/main.naver?code=";
 		
 		StocksDto dto = service.stocksdetail(symbol);
-		System.out.println(dto.toString());
+		List<StocksComment> comment = service.stockscommentlist(symbol);
+		UserDto user = (UserDto)session.getAttribute("login");
+		String user_id = user.getUser_id();
+		List<StockLike> list = service.getlike(user_id);
 		
+		/*
+		 * StockParam param = new StockParam(symbol, pageNumber);
+		 * 
+		 * 
+		 * int count = service.stockgetall(seq);
+		 * 
+		 * int pagecomment = count / 10; if((count % 10) > 0) { pagecomment =
+		 * pagecomment + 1; } System.out.println(pagecomment);
+		 * System.out.println(param);
+		 */
 		
 		//크롤링시작-----------------------------------------------------------------------
 		
@@ -164,54 +173,73 @@ public class StockController {
 		
 		// 2.목록가져오기
 		Elements elements = doc.select(".wrap_company");		
-		//회사이름0
+		//회사이름0x
 		List<String> stock = new ArrayList<>();
 			for(Element element : elements) {
 			element.select("onclick").remove();
 			element.select(".summary").remove();
+			
+			Element first = element.children().first();
+			Element ele = new Element("i");		// 폰트어썸아이콘추가
+			ele.html("&nbsp;&nbsp;&nbsp;<div id='icon'><i class=\"fa-solid fa-heart\"></i></div>");
+			first.appendChild(ele);
+			
 			stock.add(element.toString());
+			
 			}
 			
-		//오늘가격1
+		//오늘가격1x
 		elements = doc.select(".today");
 			for(Element element : elements) {
 				stock.add(element.toString());
+				
 			}
-		// 전일, 시가, 고가, 저가, 거래량, 거래대금2,3
+		// 전일, 시가, 고가, 저가, 거래량, 거래대금2,3x
 			elements = doc.select(".no_info tbody tr:nth-child(1)");
 			for(Element element : elements) {
 				stock.add(element.toString());
+				
 			}
 						
 			elements = doc.select(".no_info tbody tr:nth-child(2)");
 			for(Element element : elements) {
 				stock.add(element.toString());
+				
 			}
-		//차트4
+		//차트4 x
 			elements = doc.select(".chart");
 			for(Element element : elements) {			
 				element.select(".chart_control_area").remove();	
 				element.select("p").remove();	
 				element.select("h5").remove();	
 				stock.add(element.toString());
+				
 			}
-		// 매매동향5,6
+			// 투자정보 5o
+			elements = doc.select("#aside .aside_invest_info .tab_con1");
+			for(Element element : elements) {
+				stock.add(element.toString());
+
+			}
+			// 매매동향6o
 			elements = doc.select(".sub_section");
 			for(Element element : elements) {
 				element.select("caption").remove();
 				stock.add(element.toString());
-			}			
-		// 투자정보, 7,8
-			elements = doc.select("#aside .aside_invest_info .tab_con1");
-			for(Element element : elements) {
-				stock.add(element.toString());
-			}
-			
+
+			}						
 		
 		//크롤링끝------------------------------------------------------------------------------
 		model.addAttribute("symbol", dto);
 		model.addAttribute("stock", stock);
-				
+		model.addAttribute("comment", comment);	
+		model.addAttribute("list", list);
+		/*
+		 * model.addAttribute("pagecomment", pagecomment); model.addAttribute("param",
+		 * param);
+		 */
+		
+		
 		return "stocks/stocksdetail";
 	}
 	
@@ -224,6 +252,10 @@ public class StockController {
 		System.out.println("작성내용:"+stocksComment.getContent());
 		System.out.println("주식 코드:"+stocksComment.getSymbol());
 		
+		int symbolNum = Integer.parseInt(stocksComment.getSymbol());
+		String symbol = String.format("%06d", symbolNum);
+		
+		
 		boolean isS = false;
 		isS = service.stockscommentwrite(stocksComment);
 		if(isS) {
@@ -233,16 +265,50 @@ public class StockController {
 		}
 		
 		// redirect == sendRedirect  
-		return "redirect:/stocksdetail.do?symbol="+stocksComment.getSymbol();
+		return "redirect:/stocksdetail.do?symbol="+symbol;
 	}
 	
+	@GetMapping("like.do")
 	@ResponseBody
-	@GetMapping("commentList.do")
-	public List<StocksComment> commentList(String symbol){
-		System.out.println("StockController commentList() " + new Date());
+	public String like(Model model, HttpSession session, StockLike stocklike) {
 		
-		return service.stockscommentlist(symbol);
+		String user_id = (String)session.getAttribute("user_id");
+		
+		StockLike like = new StockLike();
+		like.setUser_id(user_id);
+		like.setSymbol(stocklike.getSymbol());
+		
+		model.addAttribute("like", like);
+		
+		boolean isExist = service.checklike(stocklike);
+		if (isExist) {
+			service.deletelike(stocklike);
+			return "deleted";
+		} else {
+			service.insertlike(stocklike);
+			return "inserted";
+		}
 	}
+	
+	/*
+	 * @GetMapping("commentDelete.do") public String commentDelete(String symbol,
+	 * int seq, Model model) {
+	 * System.out.println("StocksController commentDeleteAf() " + new Date());
+	 * StocksComment temp = new StocksComment(symbol, seq); StocksComment comDto =
+	 * service.stockcommentget(temp);
+	 * 
+	 * boolean isS = service.stockcommentdelete(comDto); String message =
+	 * "COMMENTDELETE_YES"; if(isS == false) { message = "COMMENTDELETE_NO"; }
+	 * model.addAttribute("commentDelete", message);
+	 * 
+	 * return "message";
+	 * 
+	 * }
+	 */
+	
+	
+	
+	
 	
 	
 	

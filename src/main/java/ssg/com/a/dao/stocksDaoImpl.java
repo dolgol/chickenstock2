@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.MypageStocksComment;
+import ssg.com.a.dto.StockLike;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -34,7 +35,6 @@ public class StocksDaoImpl implements StocksDao{
 		int symbolNum = Integer.parseInt(symbol);
 		symbol = String.valueOf(symbolNum); 
 		return session.selectOne(ns + "stocksdetail", symbol);
-		// return session.selectOne(ns + "stocksdetail", symbol);
 	}
 
 	
@@ -43,8 +43,53 @@ public class StocksDaoImpl implements StocksDao{
 	}
 	 
 	 @Override public List<StocksComment> stockscommentlist(String symbol) {
+		 int symbolNum = Integer.parseInt(symbol);
+			symbol = String.valueOf(symbolNum);
 		 return session.selectList(ns +"stockscommentlist", symbol); 
 	}
+	 
+	 // 찜기능
+
+	@Override
+	public void insertlike(StockLike stocklike) {
+		System.out.println(stocklike.toString());
+		int symbolNum = Integer.parseInt(stocklike.getSymbol());
+		stocklike.setSymbol(String.valueOf(symbolNum));
+		session.insert(ns + "insertlike", stocklike);
+	}
+
+	@Override
+	public void deletelike(StockLike stocklike) {
+		session.delete(ns + "deletelike", stocklike);		
+	}
+
+	@Override
+	public List<StockLike> getlike(String user_id) {
+		return session.selectList(ns + "getlike", user_id);
+	}
+
+	@Override
+	public int checklike(StockLike stocklike) {
+		return session.selectOne(ns + "checklike", stocklike);
+	}
+
+	@Override
+	public int stockcommentdelete(StocksComment comment) {
+		return session.delete(ns + "stockcommentdelete", comment);
+	}
+
+	@Override
+	public StocksComment stockcommentget(StocksComment comment) {
+		return session.selectOne(ns + "stockcommentget", comment);
+	}
+
+	@Override
+	public int stockgetall(int seq) {
+		return session.selectOne(ns + "stockgetall", seq);
+	}
+	
+	
+
 	
 	 
 	@Override

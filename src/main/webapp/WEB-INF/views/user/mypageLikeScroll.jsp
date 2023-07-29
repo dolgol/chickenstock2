@@ -79,10 +79,7 @@
 		<table border="1">
 			<thead>
 				<tr>
-					<th>번호</th> <th>종목명</th> <th>현재가</th> 
-					<th>전일비</th> <th>등락률</th> <th>거래량</th> 
-					<th>거래대금</th> <th>매수호가</th> <th>매도호가</th> 
-					<th>시가총액</th> <th>PER</th> <th>ROE</th>
+					<th>종목코드</th> <th>마켓</th> <th>종목명</th>
 				</tr>
 			</thead>
 			<tbody id="posts-container">
