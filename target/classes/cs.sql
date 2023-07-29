@@ -73,6 +73,7 @@ select * from news
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   user_id VARCHAR(100) NOT NULL,
+  post_num varchar(8) NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
   ref INT,
@@ -87,7 +88,9 @@ CREATE TABLE stocks_like (
   user_id VARCHAR(100) NOT NULL
 );
 
-alter table stocks_like 
+select * from stocks_like;
+
+alter table stocks_comment 
 add foreign key(Symbol) references stocks(Symbol);
 
 alter table stocks_like 

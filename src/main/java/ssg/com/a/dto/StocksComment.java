@@ -16,7 +16,10 @@ public class StocksComment implements Serializable{
 	public StocksComment() {
 	}
 	
-	
+	public StocksComment(String symbol, int seq) {
+        this.symbol = symbol;
+        this.seq = seq;
+    }
 
 	public StocksComment(String user_id, String content, String write_date, String symbol) {
 		super();
