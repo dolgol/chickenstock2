@@ -24,8 +24,8 @@
 	List<StockLike> like = (List<StockLike>)request.getAttribute("list");
 	String currentSymbol = dto.getSymbol();
 	
-	int pageBbs = (Integer)request.getAttribute("pagecomment");
-	StockParam param = (StockParam)request.getAttribute("param");
+/* 	int pageBbs = (Integer)request.getAttribute("pagecomment");
+	StockParam param = (StockParam)request.getAttribute("param"); */
 %>
 <!DOCTYPE html>
 <html>
@@ -242,7 +242,7 @@ $(document).ready(function() {
     });
 });
 
-$("#paginationComment").twbsPagination({
+<%-- $("#paginationComment").twbsPagination({
 	startPage:<%=param.getPageNumber()+1 %>,
 	totalPages:<%=pageBbs %>,
 	visiblePages:10,
@@ -256,7 +256,7 @@ $("#paginationComment").twbsPagination({
 
 		location.href = "stocksdetail.do?seq=" + <%=dto.getSymbol()%> + "&pageNumber=" + (page - 1);
 	}
-});
+}); --%>
 
 </script>
 </body>

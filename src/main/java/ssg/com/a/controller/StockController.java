@@ -136,7 +136,8 @@ public class StockController {
 	
 	
 	@GetMapping("stocksdetail.do")
-	public String stockdetail(@RequestParam ("symbol") String symbol, Model model, HttpSession session, @RequestParam("pageNumber") Integer pageNumber, int seq) throws Exception{
+	public String stockdetail(@RequestParam("symbol") String symbol, Model model,
+			HttpSession session/* , @RequestParam("pageNumber") Integer pageNumber, int seq */) throws Exception{
 		System.out.println("StockController stocksdetail() " + new Date());	
 
 		String URL = "https://finance.naver.com/item/main.naver?code=";
@@ -146,17 +147,17 @@ public class StockController {
 		UserDto user = (UserDto)session.getAttribute("login");
 		String user_id = user.getUser_id();
 		List<StockLike> list = service.getlike(user_id);
-		StockParam param = new StockParam(symbol, pageNumber);			
 		
-		
-		int count = service.stockgetall(seq);
-		
-		int pagecomment = count / 10;
-		if((count % 10) > 0) {
-			pagecomment = pagecomment + 1;
-		}
-		System.out.println(pagecomment);
-		System.out.println(param);
+		/*
+		 * StockParam param = new StockParam(symbol, pageNumber);
+		 * 
+		 * 
+		 * int count = service.stockgetall(seq);
+		 * 
+		 * int pagecomment = count / 10; if((count % 10) > 0) { pagecomment =
+		 * pagecomment + 1; } System.out.println(pagecomment);
+		 * System.out.println(param);
+		 */
 		
 		//크롤링시작-----------------------------------------------------------------------
 		
@@ -229,8 +230,10 @@ public class StockController {
 		model.addAttribute("stock", stock);
 		model.addAttribute("comment", comment);	
 		model.addAttribute("list", list);
-		model.addAttribute("pagecomment", pagecomment);
-		model.addAttribute("param", param);
+		/*
+		 * model.addAttribute("pagecomment", pagecomment); model.addAttribute("param",
+		 * param);
+		 */
 		
 		
 		return "stocks/stocksdetail";

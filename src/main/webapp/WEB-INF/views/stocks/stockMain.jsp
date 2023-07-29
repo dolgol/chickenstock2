@@ -101,7 +101,7 @@
 			        <tr>
 			            <td><%= i + 1 %></td>
 			            <td>
-			                <a href="stocksdetail.do?symbol=<%= symbol %>&pageNumber=<%= pageNumber%>">
+			                <a href="stocksdetail.do?symbol=<%=symbol%>">
 			                    <%= stock.getName() %>
 			                </a>
 			            </td>
