@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ssg.com.a.dao.stocksDao;
+import ssg.com.a.dao.StockDao;
 import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.MypageStocksComment;
 import ssg.com.a.dto.StockLike;
@@ -17,7 +17,7 @@ import ssg.com.a.dto.StocksDto;
 public class StockServiceImpl implements StockService{
 
 		@Autowired
-		stocksDao dao;
+		StockDao dao;
 
 		@Override
 		public List<StocksDto> stockslist(StockParam param) {

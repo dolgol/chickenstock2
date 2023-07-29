@@ -32,7 +32,7 @@ import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
 @Controller
-public class stockController {
+public class StockController {
 	@Autowired
 	StockService service;
 	
@@ -118,8 +118,9 @@ public class stockController {
 		model.addAttribute("slist",slist);
 		model.addAttribute("sslist",sslist);
 		
+		model.addAttribute("content","stocks/stockMain");
 		
-		return "stocks/stockMain";			
+		return "main";			
 	}
 	
 	/**
@@ -238,9 +239,10 @@ public class stockController {
 		 * model.addAttribute("pagecomment", pagecomment); model.addAttribute("param",
 		 * param);
 		 */
+		model.addAttribute("content","stocks/stocksdetail");
 		
 		
-		return "stocks/stocksdetail";
+		return "main";
 	}
 	
 	@PostMapping("commentWriteAf.do")
@@ -264,8 +266,10 @@ public class stockController {
 			System.out.println("댓글 작성에 실패했습니다");
 		}
 		
+		model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
+		
 		// redirect == sendRedirect  
-		return "redirect:/stocksdetail.do?symbol="+symbol;
+		return "main";
 	}
 	
 	@GetMapping("like.do")
