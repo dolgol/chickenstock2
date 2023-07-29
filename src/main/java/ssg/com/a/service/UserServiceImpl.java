@@ -1,5 +1,7 @@
 package ssg.com.a.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,27 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDto login(UserDto dto) {
 		return dao.login(dto);
+	}
+	
+	
+	@Override
+	public boolean mypageEdit(UserDto dto) {
+		return dao.mypageEdit(dto) > 0 ? true : false;
+	}
+
+	@Override
+	public UserDto userGet(String user_id) {
+		return dao.userGet(user_id);
+	}
+
+	@Override
+	public List<UserDto> userGetAll(int pageNumber) {
+		return dao.userGetAll(pageNumber);
+	}
+
+	@Override
+	public boolean userDelete(List<Integer> deleteList) {
+		return dao.userDelete(deleteList) == deleteList.size() ? true : false;
 	}
 
 }

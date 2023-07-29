@@ -1,10 +1,16 @@
+<%@page import="ssg.com.a.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	UserDto user = (UserDto)request.getAttribute("userDto");
+%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CHICKEN STOCK</title>
 
 <style>
 	
@@ -20,78 +26,82 @@
 
 </head>
 <body>
+
+	<div>
+		내 정보 수정
+	</div>
+	<div>
+		<!-- <form id="frm" action="mypageEditAf.do" method="post"> -->
+		<form id="frm" method="post">
+			<div>
+				<div>아이디</div>
+				<div>
+					<input type="text" id="user_id" name="user_id" value="<%=user.getUser_id() %>" disabled="disabled" />
+					<input type="hidden" name="user_id" value="<%=user.getUser_id() %>" />
+				</div>
+			</div>
+			<div>
+				<div>이름</div>
+				<div>
+					<input type="text" id="user_name" name="user_name" value="<%=user.getUser_name() %>" />
+				</div>
+				<p id="user_name_warning" class="nonView">이름을 입력해주세요</p>
+			</div>
+			<div>
+				<div>닉네임</div>
+				<div>
+					<input type="text" id="nick_name" name="nick_name" value="<%=user.getNick_name() %>" />
+				</div>
+				<p id="nick_name_warning" class="nonView">닉네임을 입력해주세요</p>
+			</div>
+			<div>
+				<div>생년월일</div>
+				<div>
+					<input type="date" id="birthday" name="birthday" value="<%=user.getBirthday() %>" />
+				</div>
+				<p id="birthday_warning" class="nonView">생년월일을 입력해주세요</p>
+			</div>
+			<div>
+				<div>성별</div>
+				<div>
+					<input type="radio" id="male" name="sex" value="male" /> 남자
+					<input type="radio" id="female" name="sex" value="female" /> 여자
+				</div>
+				<p id="sex_warning" class="nonView">성별을 선택해주세요</p>
+			</div>
+			<div>
+				<div>이메일</div>
+				<div>
+					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" />
+				</div>
+				<p id="email_warning" class="nonView">이메일을 입력해주세요</p>
+			</div>
+			<div>
+				<div>휴대폰 번호</div>
+				<div>
+					<input type="text" id="phone_number" name="phone_number" value="<%=user.getPhone_number() %>" />
+				</div>
+				<p id="phone_number_warning" class="nonView">휴대폰 번호를 입력해주세요</p>
+			</div>
 			
-	<div class="mypage-right">
-		<div class="mypage-right-name">
-			<span class="material-symbols-outlined">account_circle</span>
-			&nbsp;&nbsp;개미개미 님
-		</div>
-		<div>
-			내 정보 수정
-		</div>
-		<div>
-			<form>
-				<div>
-					<div>아이디</div>
-					<div>
-						<input type="text" id="user_id" name="user_id" value="user_id.get" disabled="disabled" />
-					</div>
-				</div>
-				<div>
-					<div>이름</div>
-					<div>
-						<input type="text" id="user_name" name="user_name" value="user_name.get" />
-					</div>
-					<p id="user_name_warning" class="nonView">이름을 입력해주세요</p>
-				</div>
-				<div>
-					<div>닉네임</div>
-					<div>
-						<input type="text" id="nick_name" name="nick_name" value="nick_name.get" />
-					</div>
-					<p id="nick_name_warning" class="nonView">닉네임을 입력해주세요</p>
-				</div>
-				<div>
-					<div>생년월일</div>
-					<div>
-						<input type="date" id="birthday" name="birthday" />
-					</div>
-					<p id="birthday_warning" class="nonView">생년월일을 입력해주세요</p>
-				</div>
-				<div>
-					<div>성별</div>
-					<div>
-						<input type="radio" name="sex" value="male" /> 남자
-						<input type="radio" name="sex" value="female" /> 여자
-						<input type="radio" name="sex" value="none" /> 선택안함
-					</div>
-					<p id="sex_warning" class="nonView">성별을 선택해주세요</p>
-				</div>
-				<div>
-					<div>이메일</div>
-					<div>
-						<input type="text" id="email" name="email" value="email.get" />
-					</div>
-					<p id="email_warning" class="nonView">이메일을 입력해주세요</p>
-				</div>
-				<div>
-					<div>휴대폰 번호</div>
-					<div>
-						<input type="text" id="phone_number" name="phone_number" value="phone_number.get" />
-					</div>
-					<p id="phone_number_warning" class="nonView">휴대폰 번호를 입력해주세요</p>
-				</div>
-				
-				<input type="button" value="수정 완료" onclick="mypageEdit()" />
-			</form>
-		</div>
+			<!-- <input type="submit" value="수정 완료" /> -->
+			<input type="button" value="수정 완료" onclick="mypageEdit()" />
+		</form>
 	</div>
 	
 	<script type="text/javascript">
 	
-		function mypageEdit() {
+		$(document).ready(function() {
 			
-			console.log("mypageEdit");
+			if("<%=user.getSex() %>" == "male") {
+				$("#male").prop("checked", true);
+			}
+			else {
+				$("#female").prop("checked", true);
+			}
+		});
+	
+		function mypageEdit() {
 			
 			let sexList = $('input[name="sex"]');
 			let sex = "";
@@ -158,7 +168,12 @@
 			}
 			
 			if(isAllPass) {
+				/* alert("pass"); */
 				console.log("pass");
+				
+				// confirm
+				
+				$("#frm").attr("action", "mypageEditAf.do").submit();
 			}
 		}
 	

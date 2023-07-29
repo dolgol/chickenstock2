@@ -13,6 +13,7 @@
 	int pageNumber = param.getPageNumber();
 	String choice = param.getChoice();
 	String search = param.getSearch();
+	
 %>    
     
 <!DOCTYPE html>
@@ -71,9 +72,11 @@ if(list == null || list.size() == 0){
 	</tr>
 	<%
 }else{
-	
+	NewsParam paramTemp = new NewsParam();
 	for(int i = 0;i < list.size(); i++){
 		NewsDto news = list.get(i);
+		paramTemp.setSeq(news.getSeq());
+		paramTemp.setPageNumber(pageNumber);
 		%>
 		<tr>
 			<td><%=i + 1 %></td>
@@ -82,7 +85,7 @@ if(list == null || list.size() == 0){
 			if(news.getDel() == 0){
 				%>				
 				<td style="text-align: left;">
-					<a href="newsdetail.do?seq=<%=news.getSeq() %>">
+					<a href="newsdetail.do?seq=<%=paramTemp.getSeq() %>&pageNumber=<%=paramTemp.getPageNumber()%>">
 						<%-- <%=BbsUtil.arrow(news.getDepth()) %> --%>
 						<%=BbsUtil.titleDot(news.getTitle()) %>
 					</a>
@@ -117,7 +120,8 @@ if(list == null || list.size() == 0){
 </div>
 
 <br><br>
-<a href="newswrite.do">글쓰기</a>
+<a href="newsnotice.do">글쓰기</a>
+<!-- <a href="newsScrap.do">뉴스 스크랩</a> -->
 </div>
 
 <br><br>

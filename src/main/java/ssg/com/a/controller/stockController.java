@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ssg.com.a.dto.StockLike;
+import ssg.com.a.dto.MypageNewsComment;
+import ssg.com.a.dto.MypageParam;
+import ssg.com.a.dto.MypageStocksComment;
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -43,6 +45,9 @@ public class StockController {
 		if(param == null || param.getSearch() == null || param.getChoice() == null) {
 			param = new StockParam("", "");
 		}
+	
+		
+		
 		
 		List<StocksDto> list = service.stockslist(param);
 		int count = service.getstocks(param);
@@ -169,61 +174,55 @@ public class StockController {
 		
 		// 2.목록가져오기
 		Elements elements = doc.select(".wrap_company");		
-		//회사이름0x
+		//회사이름0
 		List<String> stock = new ArrayList<>();
 			for(Element element : elements) {
 			element.select("onclick").remove();
 			element.select(".summary").remove();
-			
+
 			Element first = element.children().first();
 			Element ele = new Element("i");		// 폰트어썸아이콘추가
 			ele.html("&nbsp;&nbsp;&nbsp;<div id='icon'><i class=\"fa-solid fa-heart\"></i></div>");
 			first.appendChild(ele);
-			
+
 			stock.add(element.toString());
-			
 			}
 			
-		//오늘가격1x
+		//오늘가격1
 		elements = doc.select(".today");
 			for(Element element : elements) {
 				stock.add(element.toString());
-				
 			}
-		// 전일, 시가, 고가, 저가, 거래량, 거래대금2,3x
+		// 전일, 시가, 고가, 저가, 거래량, 거래대금2,3
 			elements = doc.select(".no_info tbody tr:nth-child(1)");
 			for(Element element : elements) {
 				stock.add(element.toString());
-				
 			}
 						
 			elements = doc.select(".no_info tbody tr:nth-child(2)");
 			for(Element element : elements) {
 				stock.add(element.toString());
-				
 			}
-		//차트4 x
+		//차트4
 			elements = doc.select(".chart");
 			for(Element element : elements) {			
 				element.select(".chart_control_area").remove();	
 				element.select("p").remove();	
 				element.select("h5").remove();	
 				stock.add(element.toString());
-				
 			}
-			// 투자정보 5o
-			elements = doc.select("#aside .aside_invest_info .tab_con1");
-			for(Element element : elements) {
-				stock.add(element.toString());
-
-			}
-			// 매매동향6o
+		// 매매동향5,6
 			elements = doc.select(".sub_section");
 			for(Element element : elements) {
 				element.select("caption").remove();
 				stock.add(element.toString());
-
-			}						
+			}			
+		// 투자정보, 7,8
+			elements = doc.select("#aside .aside_invest_info .tab_con1");
+			for(Element element : elements) {
+				stock.add(element.toString());
+			}
+			
 		
 		//크롤링끝------------------------------------------------------------------------------
 		model.addAttribute("symbol", dto);
@@ -234,8 +233,7 @@ public class StockController {
 		 * model.addAttribute("pagecomment", pagecomment); model.addAttribute("param",
 		 * param);
 		 */
-		
-		
+				
 		return "stocks/stocksdetail";
 	}
 	
@@ -247,10 +245,9 @@ public class StockController {
 		System.out.println("작성일:"+stocksComment.getWrite_date());
 		System.out.println("작성내용:"+stocksComment.getContent());
 		System.out.println("주식 코드:"+stocksComment.getSymbol());
-		
+
 		int symbolNum = Integer.parseInt(stocksComment.getSymbol());
 		String symbol = String.format("%06d", symbolNum);
-		
 		
 		boolean isS = false;
 		isS = service.stockscommentwrite(stocksComment);
@@ -261,9 +258,9 @@ public class StockController {
 		}
 		
 		// redirect == sendRedirect  
-		return "redirect:/stocksdetail.do?symbol="+symbol;
+		return "redirect:/stocksdetail.do?symbol="+stocksComment.getSymbol();
 	}
-	
+
 	@GetMapping("like.do")
 	@ResponseBody
 	public String like(Model model, HttpSession session, StockLike stocklike) {
@@ -304,9 +301,91 @@ public class StockController {
 	
 	
 	
+	@GetMapping("mypageLike.do")
+	public String mypageLike(Model model, HttpServletRequest request) {
+		
+		System.out.println("StockController mypageLike() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		List<StocksDto> list = service.mypageLikeList(login.getUser_id());
+		
+		model.addAttribute("content", "user/mypage");
+//		model.addAttribute("mypageContent", "mypageLike");
+		model.addAttribute("mypageContent", "mypageLikeScroll");
+		model.addAttribute("mypageLikeList", list);
+		
+		return "main";
+	}
 	
+	@ResponseBody
+	@GetMapping("mypageScroll.do")
+	public List<StocksDto> mypageScroll(MypageParam param) {
+		
+		System.out.println("StockController mypageScroll() " + new Date());
+		System.out.println(param.toString());
+		
+		List<StocksDto> list = service.mypageLikeScroll(param);
+		System.out.println(list.size());
+		System.out.println(list);
+		
+		return list;
+	}
 	
+	@GetMapping("mypageStocksComment.do")
+	public String mypageStocksComment(HttpServletRequest request, Model model, MypageParam param) {
+		
+		System.out.println("StockController mypageStocksComment() " + new Date());
+		
+		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		System.out.println(" 1 >> " + param.toString());
+		if(param == null) {
+			param = new MypageParam(login.getUser_id(), 0);
+		}
+
+		if(param.getUser_id() == null) {
+			param.setUser_id(login.getUser_id());
+		}
+		System.out.println(" 2 >> " + param.toString());
+		
+		List<MypageStocksComment> list = service.mypageStocksCommentList(param);
+		
+		// 글의 총수
+		int count = service.mypageStocksAllComment(login.getUser_id());
+		
+		// 페이지를 계산
+		int pageBbs = count / 10;	
+		if((count % 10) > 0) {
+			pageBbs = pageBbs + 1;	
+		}	
+		
+		model.addAttribute("mypageStocksCommentList", list);
+		model.addAttribute("pageBbs", pageBbs);
+		model.addAttribute("param", param);
+		model.addAttribute("content", "user/mypage");
+		model.addAttribute("mypageContent", "mypageCommentStocks");
+		
+		return "main";
+	}
 	
-	
-	
+	@ResponseBody
+	@GetMapping("mypageStocksCommentDel.do")
+	public String mypageStocksCommentDel(@RequestParam(value="deleteList[]") List<Integer> deleteList) {
+		
+		System.out.println("StockController mypageStocksCommentDel() " + new Date());
+		
+		for (int i = 0; i < deleteList.size(); i++) {
+			System.out.println("deleteList " + i + " / " + deleteList.get(i));
+		}
+		
+		boolean isS = service.mypageStocksCommentDel(deleteList);
+		String msg = "true";
+		
+		if(isS == false) {
+			msg = "false";
+		}
+		
+		return msg;
+	}
 }

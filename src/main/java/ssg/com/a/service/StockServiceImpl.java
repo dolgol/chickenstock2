@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ssg.com.a.dao.StocksDao;
+<<<<<<< HEAD
 import ssg.com.a.dto.StockLike;
+=======
+import ssg.com.a.dto.MypageParam;
+import ssg.com.a.dto.MypageStocksComment;
+>>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
@@ -86,4 +91,28 @@ public class StockServiceImpl implements StockService{
 		
 		
 		
+		@Override
+		public List<StocksDto> mypageLikeList(String user_id) {
+			return dao.mypageLikeList(user_id);
+		}
+
+		@Override
+		public List<StocksDto> mypageLikeScroll(MypageParam param) {
+			return dao.mypageLikeScroll(param);
+		}
+
+		@Override
+		public int mypageStocksAllComment(String user_id) {
+			return dao.mypageStocksAllComment(user_id);
+		}
+
+		@Override
+		public List<MypageStocksComment> mypageStocksCommentList(MypageParam param) {
+			return dao.mypageStocksCommentList(param);
+		}
+
+		@Override
+		public boolean mypageStocksCommentDel(List<Integer> deleteList) {
+			return dao.mypageStocksCommentDel(deleteList) == deleteList.size() ? true : false;
+		}
 }

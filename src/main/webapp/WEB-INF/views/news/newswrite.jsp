@@ -1,5 +1,5 @@
 <%@page import="ssg.com.a.dto.UserDto"%>
-%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -51,13 +51,6 @@
 	<td>
 		<div align="left">내용:</div><br>	
 		<textarea rows="17" cols="50" class="form-control" id="content" name="content" placeholder="내용을 기입"></textarea>
-	</td>
-</tr>
-
-<tr>	
-	<td>
-		<div align="left">출처:</div><br>	
-		<input type="text" id="title" name="source" class="form-control"placeholder="출처를 기입">
 	</td>
 </tr>
 

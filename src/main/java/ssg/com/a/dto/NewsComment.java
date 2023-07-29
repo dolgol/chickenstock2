@@ -6,7 +6,7 @@ public class NewsComment implements Serializable {
 
 	private int seq;
 	private int post_num; 
-	private String uesr_id;
+	private String user_id;
 	private String content;
 	private String write_date;
 	private int ref;
@@ -16,13 +16,38 @@ public class NewsComment implements Serializable {
 	
 	public NewsComment() {
 	}
+	
+	public NewsComment(int post_num, int seq) {
+		super();
+		this.post_num = post_num;
+		this.seq = seq;
+	}
+	
+	public NewsComment( int post_num, int seq, String content, String user_id) {
+		super();
+		this.post_num = post_num;
+		this.seq = seq;
+		this.content = content;
+		this.user_id = user_id;
+		this.ref = ref;
+		this.step = step;
+		this.depth = depth;
+	}
+	
+	
+	public NewsComment(int post_num, int seq, String content) {
+		super();
+		this.post_num = post_num;
+		this.seq = seq;
+		this.content =content;
+	}
 
 	public NewsComment(int seq, int post_num, String uesr_id, String content, String write_date, int ref, int step,
 			int depth, int del) {
 		super();
 		this.seq = seq;
 		this.post_num = post_num;
-		this.uesr_id = uesr_id;
+		this.user_id = uesr_id;
 		this.content = content;
 		this.write_date = write_date;
 		this.ref = ref;
@@ -47,12 +72,12 @@ public class NewsComment implements Serializable {
 		this.post_num = post_num;
 	}
 
-	public String getUesr_id() {
-		return uesr_id;
+	public String getUser_id() {
+		return user_id;
 	}
 
-	public void setUesr_id(String uesr_id) {
-		this.uesr_id = uesr_id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 
 	public String getContent() {
@@ -105,7 +130,7 @@ public class NewsComment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NewsComment [seq=" + seq + ", post_num=" + post_num + ", uesr_id=" + uesr_id + ", content=" + content
+		return "NewsComment [seq=" + seq + ", post_num=" + post_num + ", user_id=" + user_id + ", content=" + content
 				+ ", write_date=" + write_date + ", ref=" + ref + ", step=" + step + ", depth=" + depth + ", del=" + del
 				+ "]";
 	}

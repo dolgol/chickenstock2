@@ -1,3 +1,16 @@
+
+use csdb;
+use mydb;
+show TABLES;
+CREATE DATABASE mydb2;
+
+select * from users
+select * from news
+select * from news_comment
+select * from stocks
+select * from stocks_comment
+
+
 CREATE TABLE users (
   user_id VARCHAR(100) PRIMARY KEY,
   user_name VARCHAR(100) NOT NULL,
@@ -10,29 +23,27 @@ CREATE TABLE users (
   auth TINYINT NOT NULL
 );
 
-CREATE TABLE stocks (
-  stock_number int PRIMARY KEY,
-  stock_name LONGTEXT NOT NULL,
-  market_cap int NOT NULL,
-  price int NOT NULL,
-  tr_count int NOT NULL,
-  per decimal(5, 2),
-  pbr decimal(5, 2),
-  roe decimal(5, 2),
-  sales int,
-  alloper decimal(5, 2),
-  allo int,
-  ebit int,
-  ebitper decimal(5, 2)
+CREATE TABLE stocks(
+   Symbol         VARCHAR(8) NOT NULL PRIMARY KEY
+  ,Market         VARCHAR(6) NOT NULL
+  ,Name           VARCHAR(21) NOT NULL
+  ,Sector         VARCHAR(37)
+  ,Industry       VARCHAR(112)
+  ,ListingDate    DATE 
+  ,SettleMonth    VARCHAR(3)
+  ,Representative VARCHAR(58)
+  ,HomePage       VARCHAR(48)
+  ,Region         VARCHAR(7)
 );
-
-CREATE TABLE 
-
 
 
 CREATE TABLE stocks_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   symbol varchar(8) NOT NULL,
+<<<<<<< HEAD
+=======
+  post_num INT NOT NULL,
+>>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
   user_id VARCHAR(100) UNIQUE NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
@@ -42,24 +53,34 @@ CREATE TABLE stocks_comment (
   del INT
 );
 
-
-
 CREATE TABLE news (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   write_id VARCHAR(100) NOT NULL,
-  source VARCHAR(500) NOT NULL,
+  source VARCHAR(500),
   title VARCHAR(255) NOT NULL,
   views INT,
   content LONGTEXT NOT NULL,
   del INT,
-  publication_date DATE,
-  image LONGBLOB
+  publication_date VARCHAR(100),
+  image LONGBLOB,
+  user_id VARCHAR(100)
 );
+alter table news drop auth;
+alter table news add user_id VARCHAR(100);
+alter table news modify publication_date VARCHAR(100); 
+alter table news modify source VARCHAR(500); 
+delete from news
+where ="Reuters"
+select * from news
 
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
+<<<<<<< HEAD
   post_num varchar(8) NOT NULL,
   user_id VARCHAR(100) UNIQUE NOT NULL,
+=======
+  user_id VARCHAR(100) NOT NULL,
+>>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
   ref INT,
@@ -87,6 +108,9 @@ drop table if exists stocks;
 drop table if exists stocks_comment;
 drop table if exists news;
 drop table if exists news_comment;
+
+alter table news
+add foreign key(user_id) references users(user_id);
 
 alter table news_comment 
 add foreign key(user_id) references users(user_id);

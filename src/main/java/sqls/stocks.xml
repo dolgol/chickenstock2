@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="stocks">
@@ -31,13 +30,16 @@
 			</if>
  		</if>
 </select>
-<select id="stocksdetail" parameterType="String" resultType="ssg.com.a.dto.StocksDto">
+
+<select id="stocksdetail" parameterType="String" 
+				resultType="ssg.com.a.dto.StocksDto">
 	select Symbol, Market, Name , Sector, Industry, ListingDate, SettleMonth, Representative, HomePage
 	from stocks
 	where Symbol=#{symbol}
 </select>
 
 <!-- 댓글 -->
+
 <select id="stockscommentlist" parameterType="String" resultType="ssg.com.a.dto.StocksComment">
 	select seq, Symbol, user_id, content, write_date
 	from stocks_comment
@@ -51,6 +53,47 @@
 	insert into stocks_comment(seq, Symbol, user_id, content, write_date, ref, step, depth, del)
 	values(#{seq}, #{symbol}, #{user_id}, #{content}, now(), 0, 0, 0, 0)
 </insert>
+
+
+
+<select id="mypageLikeList" parameterType="String" resultType="ssg.com.a.dto.StocksDto">
+	select *
+	from stocks
+	where Symbol in 
+		(select Symbol
+		from stocks_like
+		where user_id=#{user_id})
+</select>
+
+<select id="mypageLikeScroll" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.StocksDto">
+	select *
+	from stocks
+	where Symbol in 
+		(select Symbol
+		from stocks_like
+		where user_id=#{user_id})
+	limit ${(pageNumber * 10)}, 10
+</select>
+
+<select id="mypageStocksAllComment" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select count(*) 
+	from stocks_comment
+	where user_id=#{user_id} and del=0
+</select>
+
+<select id="mypageStocksCommentList" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.MypageStocksComment">
+	select sc.seq as scseq, sc.user_id, sc.content, sc.write_date, sc.del, s.Symbol, s.Market, s.Name
+	from stocks_comment sc, stocks s
+	where sc.post_num = s.Symbol and sc.user_id=#{user_id} and sc.del=0
+	order by sc.write_date desc
+	limit ${(pageNumber * 10)}, 10
+</select>
+
+<update id="mypageStocksCommentDel" parameterType="java.lang.Integer">
+	update stocks_comment
+	set del=1
+	where seq=#{seq}
+</update>
 
 <!-- 
 
@@ -102,8 +145,5 @@
         FROM stocks_like
         WHERE Symbol = #{symbol} AND user_id = #{user_id}
     </select>
-    
-    
-
 
  </mapper>

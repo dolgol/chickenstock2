@@ -4,14 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CHICKEN STOCK</title>
 </head>
 
 <style>
 
 	footer {
 		text-align: center;
-		background-color: #acacac;
+		background-color: #efefef;
+		padding-top: 6px;
+		padding-bottom: 4px;
+	}
+	
+	.copy {
+		font-size: 12px;
 	}
 
 </style>
@@ -19,7 +25,7 @@
 <body>
 	
 	<footer>
-		<div>&copy; 2023 CHICKEN STOCK All rights reserved.</div>
+		<div class="copy">&copy; 2023 CHICKEN STOCK All rights reserved.</div>
 	</footer>
 
 </body>
