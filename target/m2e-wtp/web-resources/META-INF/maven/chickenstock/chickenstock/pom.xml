@@ -312,6 +312,12 @@
 	    <artifactId>commons-text</artifactId>
 	    <version>1.9</version> <!-- 현재 최신 버전인 2023년 7월 기준, 최신 버전은 https://mvnrepository.com/artifact/org.apache.commons/commons-text 를 확인해주세요 -->
 	</dependency>
+	
+	<dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20210307</version>
+    </dependency>
 
 </dependencies>
     

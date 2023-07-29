@@ -18,6 +18,19 @@ public class NewsDto implements Serializable{
 	
 	public NewsDto() {
 	}
+	
+	public NewsDto( String title, String write_id, String publication_date, String content, String source ) {
+		super();
+		this.title = title;
+		this.write_id = write_id;
+		this.publication_date = publication_date;
+		this.content = content;
+		this.source = source;
+		this.views = 0;
+		this.del = 0;
+		this.image = null;
+		
+	}
 
 	public NewsDto(int seq, String write_id, String source, String title, int views, String content, int del,
 			String publication_date, Long image) {

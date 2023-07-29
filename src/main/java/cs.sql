@@ -2,6 +2,7 @@
 use csdb;
 use mydb;
 show TABLES;
+CREATE DATABASE mydb2;
 
 select * from users
 select * from news
@@ -35,12 +36,10 @@ CREATE TABLE stocks(
   ,Region         VARCHAR(7)
 );
 
-CREATE TABLE 
-
-
 
 CREATE TABLE stocks_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
+  symbol varchar(8) NOT NULL,
   post_num INT NOT NULL,
   user_id VARCHAR(100) UNIQUE NOT NULL,
   content VARCHAR(1500) NOT NULL,
@@ -51,24 +50,29 @@ CREATE TABLE stocks_comment (
   del INT
 );
 
-
-
 CREATE TABLE news (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   write_id VARCHAR(100) NOT NULL,
-  source VARCHAR(500) NOT NULL,
+  source VARCHAR(500),
   title VARCHAR(255) NOT NULL,
   views INT,
   content LONGTEXT NOT NULL,
   del INT,
-  publication_date DATE,
-  image LONGBLOB
+  publication_date VARCHAR(100),
+  image LONGBLOB,
+  user_id VARCHAR(100)
 );
+alter table news drop auth;
+alter table news add user_id VARCHAR(100);
+alter table news modify publication_date VARCHAR(100); 
+alter table news modify source VARCHAR(500); 
+delete from news
+where ="Reuters"
+select * from news
 
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
-  symbol varchar(8) NOT NULL,
-  user_id VARCHAR(100) UNIQUE NOT NULL,
+  user_id VARCHAR(100) NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
   ref INT,
@@ -94,6 +98,9 @@ drop table if exists stocks;
 drop table if exists stocks_comment;
 drop table if exists news;
 drop table if exists news_comment;
+
+alter table news
+add foreign key(user_id) references users(user_id);
 
 alter table news_comment 
 add foreign key(user_id) references users(user_id);

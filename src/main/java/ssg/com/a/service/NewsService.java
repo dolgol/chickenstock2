@@ -11,21 +11,26 @@ public interface NewsService {
 	List<NewsDto> newslist(NewsParam param);
 	int getAllnews(NewsParam param);	
 	boolean newswrite(NewsDto dto);	
+	boolean newsnotice(NewsDto dto);
 	NewsDto newsdetail(int seq);
 	
 	NewsDto newsget(int seq);
+	boolean newsViewUpdate(NewsDto dto); 
 	
 	boolean newsupdate(NewsDto dto);
 	
 	boolean newsdelete(NewsDto dto);
 	
 	boolean commentWrite(NewsComment comment);
-	List<NewsComment> commentList(int seq);
+	List<NewsComment> commentList(NewsParam param);
+	int getAllComment(int seq);
 	NewsComment commentGet(NewsComment comment);
 	boolean commentDelete(NewsComment comment);
 	
 	boolean commentAnswer(NewsComment comment);
 	//List<NewsComment> commentAnswerUpdate(NewsComment comment);
+	
+	NewsDto newsFind(NewsDto dto);
 }
 
 
