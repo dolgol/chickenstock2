@@ -40,8 +40,7 @@ CREATE TABLE stocks(
 CREATE TABLE stocks_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   symbol varchar(8) NOT NULL,
-  post_num INT NOT NULL,
-  user_id VARCHAR(100) UNIQUE NOT NULL,
+  user_id VARCHAR(100) NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
   ref INT,
@@ -87,7 +86,6 @@ CREATE TABLE stocks_like (
   Symbol VARCHAR(8) NOT NULL,
   user_id VARCHAR(100) NOT NULL
 );
-
 select * from stocks_like;
 
 alter table stocks_comment 
@@ -119,6 +117,7 @@ add foreign key(post_num) references stocks(Symbol);
 
 select * from stocks_comment;
 
-ALTER TABLE stocks_comment MODIFY user_id varchar(100);
+alter table stocks_comment 
+add foreign key(Symbol) references stocks(Symbol);
 
-ALTER TABLE stocks_comment modify post_num varchar(8);
+

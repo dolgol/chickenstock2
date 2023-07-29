@@ -10,7 +10,7 @@ import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
 
-public interface StocksDao {
+public interface stocksDao {
 	
 	List<StocksDto> stockslist(StockParam param);
 	int getstocks(StockParam param);
