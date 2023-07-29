@@ -26,7 +26,7 @@ if(newswrite != null && !newswrite.equals("")){
 	if(newswrite.equals("NEWS_ADD_OK")){
 		%>
 		<script type="text/javascript">
-		alert("성공적으로 작성되었습니다");
+		console.log("글쓰기 성공");
 		location.href = "newslist.do";
 		</script>
 		<%
@@ -34,7 +34,7 @@ if(newswrite != null && !newswrite.equals("")){
 	else{
 		%>
 		<script type="text/javascript">
-		alert("다시 작성해 주십시오");
+		alert("글쓰기 실패");
 		location.href = "newswrite.do";
 		</script>
 		<%
@@ -45,18 +45,21 @@ String newsupdate = (String)request.getAttribute("newsupdate");
 if(newsupdate != null && !newsupdate.equals("")){
 	if(newsupdate.equals("NEWSUPDATE_YES")){
 		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
 		alert("수정되었습니다.");
-		location.href = "newsdetail.do?seq=" + <%= seq %>;
+		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}else if(newsupdate.equals("NEWSUPDATE_NO")){
 		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
 		alert("수정 실패했습니다.");
-		location.href = "newsdetail.do?seq=" +<%= seq %>";
+		
+		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
@@ -73,10 +76,11 @@ if(newsdelete != null && !newsdelete.equals("")){
 		<%
 	}else if(newsdelete.equals("NEWSDELETE_NO")){
 		int seq = Integer.parseInt(request.getParameter("seq"));
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
 	    alert('글 삭제 실패~');
-	    location.href = "newsdetail.do?seq=" + <%=seq %>;
+	    location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%		
 	}
@@ -84,11 +88,12 @@ if(newsdelete != null && !newsdelete.equals("")){
 String commentwrite = (String)request.getAttribute("commentwrite");
 if(commentwrite != null && !commentwrite.equals("")){
 	int seq = Integer.parseInt(request.getParameter("seq"));
+	int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	if(commentwrite.equals("COMMENT_ADD_OK")){
 		%>
 		<script type="text/javascript">
 		alert("성공적으로 작성되었습니다");
-		location.href = "newsdetail.do?seq=" + <%=seq %>;
+		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
@@ -96,7 +101,7 @@ if(commentwrite != null && !commentwrite.equals("")){
 		%>
 		<script type="text/javascript">
 		alert("다시 작성해 주십시오");
-		location.href = "newsdetail.do?seq=" + <%=seq %>;
+		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}

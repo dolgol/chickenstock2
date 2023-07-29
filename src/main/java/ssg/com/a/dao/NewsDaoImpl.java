@@ -34,6 +34,11 @@ public class NewsDaoImpl implements NewsDao{
 	public int newswrite(NewsDto dto) {		
 		return session.insert(ns + "newswrite", dto);
 	}
+	
+	@Override
+	public int newsnotice(NewsDto dto) {		
+		return session.insert(ns + "newsnotice", dto);
+	}
 
 	@Override
 	public NewsDto newsdetail(int seq) {		
@@ -43,6 +48,11 @@ public class NewsDaoImpl implements NewsDao{
 	@Override
 	public NewsDto newsget(int seq) {
 		return session.selectOne(ns + "newsget", seq);
+	}
+
+	@Override
+	public int newsViewUpdate(NewsDto dto) {
+		return session.update(ns + "newsViewUpdate", dto);
 	}
 
 	@Override
@@ -61,8 +71,13 @@ public class NewsDaoImpl implements NewsDao{
 	}
 
 	@Override
-	public List<NewsComment> commentList(int seq) {		
-		return session.selectList(ns + "commentList", seq);
+	public List<NewsComment> commentList(NewsParam param) {		
+		return session.selectList(ns + "commentList", param);
+	}
+
+	@Override
+	public int getAllComment(int seq) {
+		return session.selectOne(ns + "getAllComment", seq);
 	}
 
 	@Override
@@ -84,6 +99,14 @@ public class NewsDaoImpl implements NewsDao{
 	public void commentAnswerUpdate(NewsComment comment) {
 		session.selectList(ns + "commentAnswerUpdate", comment);
 	}
+
+	@Override
+	public NewsDto newsFind(NewsDto dto) {
+		return session.selectOne(ns + "newsFind", dto);
+	}
+
+	
+	
 
 	
 	@Override
