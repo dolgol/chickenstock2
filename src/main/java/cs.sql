@@ -40,10 +40,7 @@ CREATE TABLE stocks(
 CREATE TABLE stocks_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
   symbol varchar(8) NOT NULL,
-<<<<<<< HEAD
-=======
   post_num INT NOT NULL,
->>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
   user_id VARCHAR(100) UNIQUE NOT NULL,
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
@@ -75,12 +72,8 @@ select * from news
 
 CREATE TABLE news_comment (
   seq INT PRIMARY KEY AUTO_INCREMENT,
-<<<<<<< HEAD
   post_num varchar(8) NOT NULL,
-  user_id VARCHAR(100) UNIQUE NOT NULL,
-=======
   user_id VARCHAR(100) NOT NULL,
->>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
   content VARCHAR(1500) NOT NULL,
   write_date timestamp,
   ref INT,

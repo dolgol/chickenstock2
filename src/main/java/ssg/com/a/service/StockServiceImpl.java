@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ssg.com.a.dao.StocksDao;
-<<<<<<< HEAD
 import ssg.com.a.dto.StockLike;
-=======
 import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.MypageStocksComment;
->>>>>>> 466dfac7fecc27983dd6a11bef06efd9172e5c4e
 import ssg.com.a.dto.StockParam;
 import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
