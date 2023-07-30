@@ -165,12 +165,12 @@
 											</td>
 											<td class="text-left align-middle">
 												<div>
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
+													<a href="newsdetail.do?seq=<%=comment.getNseq() %>&pageNumber=0">
 														<%=BbsUtil.titleDot(comment.getContent()) %>
 													</a>
 												</div>
 												<div class="mypage-comment-title">
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
+													<a href="newsdetail.do?seq=<%=comment.getNseq() %>&pageNumber=0">
 														<%=BbsUtil.titleDot(comment.getTitle()) %>
 													</a>
 												</div>
