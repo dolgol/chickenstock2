@@ -121,3 +121,7 @@ alter table stocks_comment
 add foreign key(Symbol) references stocks(Symbol);
 
 
+
+
+
+
