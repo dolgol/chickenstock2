@@ -32,107 +32,31 @@
 	.nonView {
 		display: none;
 	}
-	
-	input[type="checkbox"] {
-		accent-color: rgb(239, 98, 16);
-	}
-	
-	.nav-link.active {
-		border-color: #EAE8E6 !important;
-		border-bottom: none;
-	}
-	
-	.nav-link:hover {
-		border-color: #EAE8E6 !important;
-	}
-	
-	.table {
-	   border-color: #EAE8E6;
-	}
-	.table > thead > tr > th {
-	    border-color: #EAE8E6;
-	}
-	.table > tbody > tr > td {
-	    border-color: #EAE8E6;
-	}
-	
-	.mypage-comment-title > a {
-		font-size: 14px;
-		opacity: 0.5;
-	}
-	
-	.mypage-no-comment {
-		padding: 60px 0 !important;
-	}
-	
-	.mypage-no-comment .material-symbols-rounded {
-		font-size: 500%;
-	}
-	
-	.mypage-no-comment a {
-		font-size: 14px;
-		opacity: 0.5;
-	}
-	
-	.mypage-no-comment a:hover {
-		opacity: 1;
-	}
-	
-	.mypage-comment-title > a:hover {
-		opacity: 1;
-	}
-	
-	.mypage-delete {
-		border: solid 1px #EAE8E6;
-		transition: 0.2s;
-	}
-	
-	.mypage-delete:hover {
-		color: #fff;
-		border-color: #ff9406;
-		background-color: #ff9406;
-	}
-	
-	.page-item.disabled .page-link {
-		border-color: #EAE8E6;
-	}
-	
-	.page-item.active .page-link {
-		background-color: #ff9406;
-	    border-color: #ff9406;
-	}
-	
-	.page-link  {
-		color: #4E4E4E;
-	}
-	
-	.page-link:hover  {
-		color: #4E4E4E;
-		background-color: #EAE8E6;
-	}
- 	
+
 </style>
 
 </head>
 <body>
+
+	<div>
+		내가 쓴 댓글
+	</div>
 	<div>
 		<form>
-			<div class="nav nav-tabs">
-				<a href="mypageComment.do" class="nav-link active w-50 text-center">뉴스게시판</a>
-				<a href="mypageStocksComment.do" class="nav-link w-50 text-center">종목게시판</a>
-			</div>
-			<br/>
+			<!-- <input type="button" value="뉴스게시판" /> <input type="button" value="종목게시판" /> -->
+			<a href="mypageComment.do">뉴스게시판</a>
+			<a href="mypageStocksComment.do">종목게시판</a>
 			
 			<!-- 뉴스게시판 -->
-			<table id="newsTable" class="w-100 text-center table">
+			<table border="1" id="newsTable">
 				<thead>
 					<tr>
-						<th style="border-top: none;">
+						<th>
 							<input type="checkbox" id="commentAll" name="comment" onclick='commentAllChecked(event)' />
 						</th>
-						<th style="border-top: none;">번호</th> 
-						<th style="border-top: none;">내용</th> 
-						<th style="border-top: none;">댓글 작성일</th> 
+						<th>번호</th> 
+						<th>내용</th> 
+						<th>댓글 작성일</th> 
 					</tr>
 				</thead>
 				<tbody>
@@ -141,8 +65,7 @@
 							if(mypageNewsCommentList == null || mypageNewsCommentList.size() == 0) {
 								%>
 								<tr>
-									<td colspan="4" class="mypage-no-comment">
-										<br/>
+									<td colspan="4">
 										<span class="material-symbols-rounded">rate_review</span><br/>
 										아직 작성한 댓글이 없습니다<br/>
 										<a href="newslist.do">뉴스게시판 바로가기 >></a>
@@ -157,25 +80,25 @@
 									if(comment.getNcdel() == 0) {
 										%>
 										<tr>
-											<td class="align-middle">
+											<td>
 												<input type="checkbox" name="comment" class="commentOne" value="<%=comment.getNcseq() %>">
 											</td>
-											<td class="align-middle">
+											<td>
 												<%=(i + 1) %>
 											</td>
-											<td class="text-left align-middle">
+											<td>
 												<div>
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>&pageNumber=0">
+													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
 														<%=BbsUtil.titleDot(comment.getContent()) %>
 													</a>
 												</div>
-												<div class="mypage-comment-title">
-													<a href="newsdetail.do?seq=<%=comment.getNseq() %>&pageNumber=0">
+												<div>
+													<a href="newsdetail.do?seq=<%=comment.getNseq() %>">
 														<%=BbsUtil.titleDot(comment.getTitle()) %>
 													</a>
 												</div>
 											</td>
-											<td class="align-middle">
+											<td>
 												<%=comment.getWrite_date().substring(0, 10) %>
 											</td>
 										</tr>
@@ -190,7 +113,7 @@
 			<%
 				if(mypageNewsCommentList.size() != 0) {
 					%>
-					<input type="button" value="삭제" onclick="commentSelectDelete()" class="btn mypage-delete" /><br/><br/>
+					<input type="button" value="삭제" onclick="commentSelectDelete()" />
 					<%
 				}
 			%>
@@ -229,6 +152,7 @@
 				}
 				
 			});
+			
 		});
 
 		function commentAllChecked(event) {
@@ -266,17 +190,17 @@
 					type: "get",
 					data: { "deleteList": deleteList },
 					success: function(response) {
-						console.log("success");
+						alert("success");
 						if(response == "true") {
-							console.log("정상 삭제 성공");
+							alert("정상 삭제 성공");
 							location.href = "mypageComment.do";
 						}
 						else {
-							console.log("정상 삭제 실패");
+							alert("정상 삭제 실패");
 						}
 					},
 					error: function() {
-						console.log("error");
+						alert("error");
 					}
 				});
 			}

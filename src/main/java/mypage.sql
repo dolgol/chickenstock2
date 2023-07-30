@@ -38,10 +38,6 @@ update news_comment
 set del=0
 where del=1
 
-update stocks_comment
-set del=0
-where del=1
-
 --
 
 select sc.seq as scseq, sc.user_id, sc.content, sc.write_date, sc.del, s.Symbol, s.Market, s.Name
@@ -87,16 +83,11 @@ where Symbol in
 <select id="mypageStocksCommentList" parameterType="ssg.com.a.dto.MypageParam" resultType="ssg.com.a.dto.MypageStocksComment">
 	select sc.seq as scseq, sc.user_id, sc.content, sc.write_date, sc.del, s.Symbol, s.Market, s.Name
 	from stocks_comment sc, stocks s
-	where sc.post_num = s.Symbol and sc.user_id=#{user_id}
+	where sc.post_num = s.Symbol
+	and sc.user_id=#{user_id}
 	order by sc.write_date desc
 	limit ${(pageNumber * 10)}, 10
 </select>
-
-select sc.seq as scseq, sc.user_id, sc.content, sc.write_date, sc.del, s.Symbol, s.Market, s.Name
-from stocks_comment sc, stocks s
-where sc.symbol = s.Symbol and sc.user_id=#{user_id} and sc.del=0
-order by sc.write_date desc
-limit ${(pageNumber * 10)}, 10
 
 <update id="mypageStocksCommentDel" parameterType="java.lang.Integer">
 	update stocks_comment

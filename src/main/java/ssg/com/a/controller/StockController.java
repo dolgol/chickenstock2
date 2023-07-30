@@ -74,8 +74,7 @@ public class StockController {
 		for (Element element : elements) {
 			/* element.select("tr"). */
 			Elements aTags = element.select("a");
-			element.select(".blank_06").remove();
-	        element.select(".blank_08").remove();
+			
 			for(Element aTag : aTags) {
 				String hrefValue = aTag.attr("href");
 				if (hrefValue != null && hrefValue.startsWith("/item/main.naver")) {
@@ -97,12 +96,9 @@ public class StockController {
 			Elements elements1 = doc1.select(".type_2 tbody");
 			// 3. 배열에서 정보를 가져온다.
 			
-			for (Element element : elements1) {	
+			for (Element element : elements1) {		
 				element.select("thead tr th:last-child").remove();
 		        element.select("td:last-child a").remove();
-		        element.select("td.center").remove();
-		        element.select(".blank_06").remove();
-		        element.select(".blank_08").remove();
 		        Elements aTags = element.select("a");
 				for(Element aTag : aTags) {
 					String hrefValue = aTag.attr("href");
@@ -122,9 +118,8 @@ public class StockController {
 		model.addAttribute("slist",slist);
 		model.addAttribute("sslist",sslist);
 		
-		model.addAttribute("content","stocks/stockMain");
 		
-		return "main";			
+		return "stocks/stockMain";			
 	}
 	
 	/**
@@ -243,10 +238,9 @@ public class StockController {
 		 * model.addAttribute("pagecomment", pagecomment); model.addAttribute("param",
 		 * param);
 		 */
-		model.addAttribute("content","stocks/stocksdetail");
 		
 		
-		return "main";
+		return "stocks/stocksdetail";
 	}
 	
 	@PostMapping("commentWriteAf.do")
@@ -270,10 +264,8 @@ public class StockController {
 			System.out.println("댓글 작성에 실패했습니다");
 		}
 		
-		model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
-		
 		// redirect == sendRedirect  
-		return "main";
+		return "redirect:/stocksdetail.do?symbol="+symbol;
 	}
 	
 	@GetMapping("like.do")
