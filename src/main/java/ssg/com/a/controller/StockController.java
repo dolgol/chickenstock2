@@ -32,7 +32,7 @@ import ssg.com.a.dto.UserDto;
 import ssg.com.a.service.StockService;
 
 @Controller
-public class stockController {
+public class StockController {
 	@Autowired
 	StockService service;
 	

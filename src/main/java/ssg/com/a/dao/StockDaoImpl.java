@@ -14,7 +14,7 @@ import ssg.com.a.dto.StocksComment;
 import ssg.com.a.dto.StocksDto;
 
 @Repository
-public class stocksDaoImpl implements stocksDao{
+public class StockDaoImpl implements StockDao{
 	
 	@Autowired
 	SqlSessionTemplate session;	
