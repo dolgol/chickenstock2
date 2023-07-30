@@ -205,21 +205,20 @@ $(document).ready(function() {
 	var likedSymbolsArray = <%= new Gson().toJson(like) %>;
 	  var currentSymbol = '<%= currentSymbol %>';
 
+
 	  function checkLikedSymbols(symbol) {
 	    return likedSymbolsArray.some(function(item) {
 	      return item.symbol === symbol;
 	    });
 	  }
-
-	  function updateIconColor() {
-	    if (checkLikedSymbols(currentSymbol)) {
-	    	$("#icon").children().css('color', 'red');
-	    }
-	  }
+	  if (checkLikedSymbols(currentSymbol)) {
+        $("#icon").children().css('color', 'red');
+    }
 });
 
 $(document).ready(function() {
-	
+
+    
     $("#icon").on("click", function() {
         $.ajax({
             url: "like.do",
