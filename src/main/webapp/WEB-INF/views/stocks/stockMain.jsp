@@ -32,7 +32,6 @@
 
 <style type="text/css">
 .thead{
-	background-color: #FF9406;
 	font-weight: bold;
 	height: 55px;
 }
@@ -42,31 +41,49 @@ body{
 a{
 	font-weight: bold;
 	text-decoration: none;
+	color: #4E4E4E;
 }
-
-.navbar{
-	border-radius: 30px;
-	background-color: #FFDE66;
+a:hover{
+	color: #FF9406;
+	text-decoration: none;
 }
-
-.stocknavbar{
-	border-radius: 30px;
-	
-}
-
-
 .my-navbar{
-	background-color: #FF8868;
+	background-color: #FF9406;
+	border-radius: 30px;
 }
+
+.table > thead > tr:hover {
+      background-color: #EAE8E6;
+    }
+
+
+.table > thead > tr{
+	transition: 0.2s;
+}
+.table > thead > tr > th {
+    border-color: #EAE8E6;
+}
+.table > tbody > tr > td {
+    border-color: #EAE8E6;
+}
+
+.table tbody+tbody {
+border-color: #EAE8E6 !important;
+}
+
+.table td, .table th {
+border-color: #EAE8E6 !important;
+}	
+	
 
 </style>
 </head>
 <body>
 
 
-
-<nav class="navbar navbar-expand-md navbar-dark container mb-3 mt-3 my-navbar" id="mynavbar">
-    <a class="navbar-brand" href="home.do">CHICKEN STOCK</a>
+<div class="container w-75 m-auto">
+<nav class="navbar navbar-expand-md navbar-dark container mb-4 mt-5 my-navbar" id="mynavbar">
+    <a class="navbar-brand" href="#">CHICKEN STOCK</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -108,7 +125,7 @@ a{
 
 
 
-<div id="capsc" style="display: none;" class="table" align="center">
+<div id="capsc" style="display: none;" class="table text-center" align="center">
 	<table>
 		<tr class="thead">
 			<th>N</th><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>액면가</th><th>시가총액</th><th>상장주식수</th><th>외인비율</th><th>거래량</th><th>PER</th><th>ROE</th>		
@@ -120,17 +137,13 @@ a{
 	</table>
 </div>
 
-<table class="table" id="countsc" style="display: none;">
-	
-	<tbody  >
-					
+<table class="table text-center" id="countsc" style="display: none;">				
 			<tr>
 				<%=slist.get(0)%>
 			</tr>
-	</tbody>
 </table>
 
-<div align="center" id="searchsc" style="display: none;">
+<div align="center" id="searchsc" style="display: none;" class="table text-center">
 	<table class="table" style="text-align: center;">
 		<col width="5"><col width="180"><col width="80"><col width="120"><col width="250"><col width="120"><col width="120">
 		<th>N</th><th>종목명</th><th>종목코드</th><th>종목시장</th><th>부문</th><th>창립일</th><th>대표자</th>
@@ -156,7 +169,7 @@ a{
 			        	symbol = stock.getSymbol();
 			        }
 					%>			
-			        <tr>
+			        <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
 			            <td><%= i + 1 %></td>
 			            <td>
 			                <a href="stocksdetail.do?symbol=<%=symbol%>">
@@ -167,14 +180,20 @@ a{
 			            <td><%= stock.getSymbol() %></td>
 			            <td><%= stock.getMarket() %></td>
 			            <%
-			            if (stock.getSector() != null || stock.getListingDate() != null || stock.getRepresentative() != null) {
-			                String str = "";							
+			            if (stock.getSector() == null || stock.getListingDate() == null || stock.getRepresentative() == null) {
+			                String str = "N";							
 			            %>
-			                <td><%= stock.getSector() %></td>
+			                <td>N</td>
+			                <td>N</td>
+			                <td>N</td>
+			            <% 
+			            }else{
+			            	%>
+			            	<td><%= stock.getSector() %></td>
 			                <td><%= stock.getListingDate() %></td>
 			                <td><%= stock.getRepresentative() %></td>
-			            <% 
-			            } 
+			            	<%
+			            }
 			            %>
 			        </tr>
 			<%
@@ -183,6 +202,7 @@ a{
 			%>
 		</tbody>
 	</table>
+</div>
 </div>
 <!-- 거래량 시가총액 하나씩 보게 하기 위함 -->
 <script type="text/javascript">

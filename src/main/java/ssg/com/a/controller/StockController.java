@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.tribes.ChannelMessage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -76,6 +77,11 @@ public class StockController {
 			Elements aTags = element.select("a");
 			element.select(".blank_06").remove();
 	        element.select(".blank_08").remove();
+	        
+	        element.select("tr").attr("onmouseover", "mouseOver(this)");
+	        element.select("tr").attr("onmouseout", "mouseOut(this)");
+	        element.select("tr:first-child").removeAttr("onmouseover");
+	        element.select("tr:first-child").removeAttr("onmouseout");
 			for(Element aTag : aTags) {
 				String hrefValue = aTag.attr("href");
 				if (hrefValue != null && hrefValue.startsWith("/item/main.naver")) {
@@ -184,10 +190,11 @@ public class StockController {
 			element.select("onclick").remove();
 			element.select(".summary").remove();
 			
-			Element first = element.children().first();
-			Element ele = new Element("i");		// 폰트어썸아이콘추가
-			ele.html("&nbsp;&nbsp;&nbsp;<div id='icon'><i class=\"fa-solid fa-heart\"></i></div>");
-			first.appendChild(ele);
+			
+			Element first = element.select(".wrap_company h2").first(); 
+			Element ele = new Element("i"); // 폰트어썸아이콘추가 
+			ele.html("<div id='icon'><i class=\"fa-solid fa-heart\"></i></div>"); 
+			first.appendChild(ele);			
 			
 			stock.add(element.toString());
 			
@@ -223,6 +230,11 @@ public class StockController {
 			// 투자정보 5o
 			elements = doc.select("#aside .aside_invest_info .tab_con1");
 			for(Element element : elements) {
+				element.select(".gray table tbody tr:nth-child(3) th a").remove();
+				element.select(".per_table tbody tr th a").remove();
+				element.select(".tab_con1").attr("class", "table text-center");
+				element.select("table tr td").removeAttr("style");
+				element.select("caption").remove();
 				stock.add(element.toString());
 
 			}
@@ -230,6 +242,8 @@ public class StockController {
 			elements = doc.select(".sub_section");
 			for(Element element : elements) {
 				element.select("caption").remove();
+				element.select("tb_type1").attr("class", "table");
+				
 				stock.add(element.toString());
 
 			}						
@@ -312,13 +326,7 @@ public class StockController {
 	 * return "message";
 	 * 
 	 * }
-	 */
-	
-	
-	
-	
-	
-	
+	 */	
 	
 	@GetMapping("mypageLike.do")
 	public String mypageLike(Model model, HttpServletRequest request) {
