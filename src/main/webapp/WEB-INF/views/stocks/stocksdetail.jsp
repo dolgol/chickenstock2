@@ -45,9 +45,6 @@
   <script src="https://kit.fontawesome.com/23e6d6a2a2.js" crossorigin="anonymous"></script>
 
 <style type="text/css">
-body{
-	margin: 40px;
-}
 .blind{
 	display: none;
 }
@@ -62,16 +59,32 @@ body{
 	overflow: hidden;
 	color: #d8c0c0;
 }
-.wrap_company:first-child{
-	display:inline-block;
-  	margin-right: 5px;
+.wrap_company h2 a{
+	font-size: 48px;
 }
+
+#tab_con1, #tab_con1 * {
+    font-size: 13px !important;
+  }
+.gray table {
+    width: 100%;
+  }
+.gray th, .gray td {
+    width: 50%; /* 셀 넓이를 50%로 설정 */
+  }
+table a{
+	color: #4E4E4E;
+	cursor: default;
+	pointer-events: none;
+	text-decoration: none;
+}
+
+
 </style>
 </head>
 <body>
 <div align="center" >
 	<table border="1" >
-		<col width="600"><col width="220">
 		<tr>
 			<td>
 				<%=stock.get(0) %> 
@@ -98,14 +111,8 @@ body{
 			</td>
 			<td>
 				<table>
-					<tr>
-						<td>
-							
-						</td>
-						
-					</tr>
 					<tr>					
-						<td style="font-size: 12px;">
+						<td>
 							<%=stock.get(5) %>
 						</td>
 					</tr>
@@ -145,7 +152,7 @@ $(document).ready(function(){
 <div id="app" class="container">
   <form action="commentWriteAf.do" method="post">
   <input type="hidden" name="symbol" value="<%=dto.getSymbol() %>">
-  <input type="hidden" name="user_id" value=<%=login.getUser_id() %>>
+  <input type="hidden" name="user_id" value="<%=login.getUser_id() %>">
     <table>
       <col width="1500px">
       <col width="150px">
@@ -193,22 +200,25 @@ $(document).ready(function(){
   </table>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript">	
 $(document).ready(function() {
-	
 	var likedSymbolsArray = <%= new Gson().toJson(like) %>;
-    var currentSymbol = '<%= currentSymbol %>';
-	
-    function checkLikedSymbols(symbol) {
-        return likedSymbolsArray.some(function(item) {
-            return item.symbol === symbol;
-        });
-    }
+	  var currentSymbol = '<%= currentSymbol %>';
 
-    if (checkLikedSymbols(currentSymbol)) {
+
+	  function checkLikedSymbols(symbol) {
+	    return likedSymbolsArray.some(function(item) {
+	      return item.symbol === symbol;
+	    });
+	  }
+	  if (checkLikedSymbols(currentSymbol)) {
         $("#icon").children().css('color', 'red');
     }
-	
+});
+
+$(document).ready(function() {
+
+    
     $("#icon").on("click", function() {
         $.ajax({
             url: "like.do",
