@@ -206,7 +206,7 @@ $(document).ready(function() {
     }
 
     if (checkLikedSymbols(currentSymbol)) {
-        $("#icon").css('color', 'red');
+        $("#icon").children().css('color', 'red');
     }
 	
     $("#icon").on("click", function() {

@@ -156,6 +156,9 @@
 								for(int i = 0; i < mypageStocksCommentList.size(); i++) {
 									MypageStocksComment comment = mypageStocksCommentList.get(i);
 									
+									int symbolNum = Integer.parseInt(comment.getSymbol());
+									String symbol = String.format("%06d", symbolNum);
+									
 									if(comment.getDel() == 0) {
 										%>
 										<tr>
@@ -167,12 +170,12 @@
 											</td>
 											<td class="text-left align-middle">
 												<div>
-													<a href="stocksdetail.do?symbol=<%=comment.getSymbol() %>">
+													<a href="stocksdetail.do?symbol=<%=symbol %>">
 														<%=BbsUtil.titleDot(comment.getContent()) %>
 													</a>
 												</div>
 												<div class="mypage-comment-title">
-													<a href="stocksdetail.do?symbol=<%=comment.getSymbol() %>">
+													<a href="stocksdetail.do?symbol=<%=symbol %>">
 														<%=BbsUtil.titleDot(comment.getSymbol()) %>&nbsp;&nbsp;
 														<%=BbsUtil.titleDot(comment.getMarket()) %>&nbsp;&nbsp;
 														<%=BbsUtil.titleDot(comment.getName()) %>
