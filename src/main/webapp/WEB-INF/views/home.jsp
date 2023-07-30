@@ -31,6 +31,16 @@
 		/* background-image: url("images/banner.jpg");
 		background-repeat: no-repeat;
 		background-size: cover; */
+		position: relative;
+	}
+	
+	.home-banner-text {
+		font-weight: 900;
+		font-size: 400%;
+		color: #fff;
+		position: absolute;
+		top: 25%;
+		left: 10%;
 	}
 	
 	.home-content-container {
@@ -80,7 +90,10 @@
 	<div>
 	
 		<div class="home-banner">
-			메인 배너
+			<div class="home-banner-text">
+				사진을<br/>
+				넣어볼까요
+			</div>
 		</div>
 		
 		<div class="home-content-container w-75 m-auto">

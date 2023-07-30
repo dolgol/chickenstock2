@@ -37,7 +37,7 @@
 <style>
 
 	* {
-		color: #4c4843;
+		color: #4E4E4E;
 		font-size: 16px;
 		font-family: 'Noto Sans KR', sans-serif;
 		/* font-weight: 300; */
@@ -81,7 +81,7 @@
 </style>
 
 </head>
-<body>
+<body id="cs-wrapper">
 
 	<div>
 		<table class="main-table">

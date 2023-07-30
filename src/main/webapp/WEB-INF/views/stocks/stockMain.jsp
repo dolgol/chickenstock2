@@ -29,32 +29,88 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<style type="text/css">
+.thead{
+	background-color: #FF9406;
+	font-weight: bold;
+	height: 55px;
+}
+body{
+	color: #4E4E4E;
+}
+a{
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.navbar{
+	border-radius: 30px;
+	background-color: #FFDE66;
+}
+
+.stocknavbar{
+	border-radius: 30px;
+	
+}
+
+
+.my-navbar{
+	background-color: #FF8868;
+}
+
+</style>
 </head>
 <body>
-<div align="center">
 
-<select id="choice" name="param.choice">
-	<option value="name">종목명</option>
-	<option value="symbol">종목번호</option>
-</select>
-<input type="text" value="<%=search %>" id="search" name="param.search">
-<button type="button"  onclick="searchBtn()" id="btn">검색</button>
 
-<table border="1"   >
-	<thead>
-		<tr>
-			<td colspan="5">
-				<input type="button" id="count" value="거래량 100위">
-			</td>
-			<td colspan="7">
-				<input type="button" id="cap" value="시가총액 100위">
-			</td>
-		</tr>
-	</thead>
-</table>
-<div id="capsc" style="display: none;">
-	<table border="1">
-		<tr>
+
+<nav class="navbar navbar-expand-md navbar-dark container mb-3 mt-3 my-navbar" id="mynavbar">
+    <a class="navbar-brand" href="home.do">CHICKEN STOCK</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <input type="button" id="count" value="거래량 100위" class="nav-link btn-light"><span class="sr-only">(current)</span>
+        </li>
+        <li class="nav-item">
+          <input type="button" id="cap" value="시가총액 100위" class="nav-link btn-light">
+        </li>
+        <!-- dropdown 메뉴 삭제 -->
+        <li class="nav-item">
+          <form class="form-inline">
+            <!-- Bootstrap 그리드 시스템 활용 -->
+            <div class="form-row custom-select-container">
+              <div class="col-sm-auto pr-1">
+                <select id="choice" name="param.choice" class="my-select selectpicker h-100 form-control">
+                  <option value="name">종목명</option>
+                  <option value="symbol">종목번호</option>
+                </select>
+              </div>
+              <div class="col-sm-auto pl-0 custom-search-input">
+                <input id="search" name="param.search" class="form-control" type="search" placeholder="Search" aria-label="Search" />
+              </div>
+              <div class="col-sm-auto">
+                <button class="btn btn-light my-2 my-sm-0" onclick="searchBtn()" id="btn" type="submit">Search</button>
+              </div>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+			
+
+
+
+<div id="capsc" style="display: none;" class="table" align="center">
+	<table>
+		<tr class="thead">
 			<th>N</th><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>액면가</th><th>시가총액</th><th>상장주식수</th><th>외인비율</th><th>거래량</th><th>PER</th><th>ROE</th>		
 		</tr>				
 		<tr>
@@ -64,18 +120,20 @@
 	</table>
 </div>
 
-<table border="1" id="countsc" style="display: none;">
-	<tbody  >			
+<table class="table" id="countsc" style="display: none;">
+	
+	<tbody  >
+					
 			<tr>
 				<%=slist.get(0)%>
 			</tr>
 	</tbody>
 </table>
-</div>
+
 <div align="center" id="searchsc" style="display: none;">
-	<table border="1" style="text-align: center;">
+	<table class="table" style="text-align: center;">
 		<col width="5"><col width="180"><col width="80"><col width="120"><col width="250"><col width="120"><col width="120">
-		<th>NO</th><th>종목명</th><th>종목코드</th><th>종목시장</th><th>부문</th><th>창립일</th><th>대표자</th>
+		<th>N</th><th>종목명</th><th>종목코드</th><th>종목시장</th><th>부문</th><th>창립일</th><th>대표자</th>
 		<tbody>
 		<%
 			if(list == null || list.size() == 0){					
@@ -136,6 +194,7 @@ $(document).ready(function(){
 	}else{
 		$("#searchsc").show();
 	}
+
 	
 });
 	
@@ -157,10 +216,11 @@ $(document).ready(function(){
 		$("#countsc").hide();
 	});
 	
-			 
+	
+	 
 
 	function mouseOver(element) {
-		element.style.backgroundColor = "#FFFACD";
+		element.style.backgroundColor = "#EAE8E6";
 		
 	}
 	
