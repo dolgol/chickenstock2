@@ -5,7 +5,8 @@
     
 <%
 	
-	List<UserDto> userList = (List<UserDto>)request.getAttribute("userList");
+	/* List<UserDto> userList = (List<UserDto>)request.getAttribute("userList"); */
+	List<UserDto> userList = (List<UserDto>)request.getAttribute("");
 	
 	int pageBbs = (Integer)request.getAttribute("pageBbs");
 	int pageNumber = (Integer)request.getAttribute("pageNumber");
@@ -22,102 +23,165 @@
 
 <script type="text/javascript" src="jquery/jquery.twbsPagination.min.js"></script>
 
+<style type="text/css">
+
+	.mypage-container {
+		margin: auto;
+		padding: 60px;
+	}
+	
+	.mypage-container-top {
+		font-size: 32px;
+		font-weight: 500;
+		color: #ff9406;
+		margin-bottom: 20px;
+		letter-spacing: -2px !important;
+	}
+	
+	.table {
+	   border-color: #EAE8E6;
+	}
+	.table > thead > tr > th {
+	    border-color: #EAE8E6;
+	}
+	.table > tbody > tr > td {
+	    border-color: #EAE8E6;
+	}
+	
+	.admin-no-user > td {
+		padding: 120px 0;
+	}
+	
+	.admin-no-user > td > span {
+		font-size: 500%;
+	}
+	
+	.page-item.disabled .page-link {
+		border-color: #EAE8E6;
+	}
+	
+	.page-item.active .page-link {
+		background-color: #ff9406;
+	    border-color: #ff9406;
+	}
+	
+	.page-link  {
+		color: #4E4E4E;
+	}
+	
+	.page-link:hover  {
+		color: #4E4E4E;
+		background-color: #EAE8E6;
+	}
+
+</style>
+
 </head>
 <body>
 	
-	<div>회원 관리</div>
+	<div class="mypage-container w-75">
 	
-	<div>
-		<form>
-			<table border="1" id="newsTable">
-				<thead>
-					<tr>
-						<!-- <th>
-							<input type="checkbox" id="userAll" name="user" onclick='userAllChecked(event)' />
-						</th> -->
-						<th>번호</th> 
-						<th>아이디</th> 
-						<th>이름</th> 
-						<th>닉네임</th>
-						<th>성별</th>
-						<th>생년월일</th>
-						<th>휴대폰 번호</th>
-						<th>이메일</th>
-					</tr>
-				</thead>
-				<tbody>
-						<%
-							if(userList == null || userList.size() == 0) {
-								%>
-								<tr>
-									<td colspan="4">
-										유저 없음
-									</td>
-								</tr>
-								<%
-							}
-							else {
-								for(int i = 0; i < userList.size(); i++) {
-									
-									UserDto user = userList.get(i);
+		<div class="mypage-container-top">회원 목록</div>
+		<br/>
+		
+		<div>
+			<form>
+				<table class="table w-100 m-auto text-center">
+					<thead>
+						<tr>
+							<!-- <th>
+								<input type="checkbox" id="userAll" name="user" onclick='userAllChecked(event)' />
+							</th> -->
+							<th>번호</th> 
+							<th>아이디</th> 
+							<th>이름</th> 
+							<th>닉네임</th>
+							<th>성별</th>
+							<th>생년월일</th>
+							<th>휴대폰 번호</th>
+							<th>이메일</th>
+						</tr>
+					</thead>
+					<tbody>
+							<%
+								if(userList == null || userList.size() == 0) {
 									%>
-									<tr>
-										<%-- <td>
-											<input type="checkbox" name="user" class="userOne" value="<%=user.getUser_id() %>">
-										</td> --%>
-										<td>
-											<%=(i + 1) %>
-										</td>
-										<td>
-											<%=user.getUser_id() %>
-										</td>
-										<td>
-											<%=user.getUser_name() %>
-										</td>
-										<td>
-											<%=user.getNick_name() %>
-										</td>
-										<% 
-										if(user.getSex().equals("female")) {
-											%>
-											<td>여</td>
-											<%
-										}
-										else {
-											%>
-											<td>남</td>
-											<%
-										}
-										%>
-										<td>
-											<%=user.getBirthday() %>
-										</td>
-										<td>
-											<%=user.getPhone_number() %>
-										</td>
-										<td>
-											<%=user.getAddress() %>
+									<tr class="admin-no-user">
+										<td colspan="8">
+											<span class="material-symbols-rounded">groups</span><br/>
+											회원이 없습니다
 										</td>
 									</tr>
 									<%
 								}
-							}
-						%>
-				</tbody>
-			</table>
+								else {
+									for(int i = 0; i < userList.size(); i++) {
+										
+										UserDto user = userList.get(i);
+										%>
+										<tr>
+											<%-- <td>
+												<input type="checkbox" name="user" class="userOne" value="<%=user.getUser_id() %>">
+											</td> --%>
+											<td>
+												<%=(i + 1) %>
+											</td>
+											<td>
+												<%=user.getUser_id() %>
+											</td>
+											<td>
+												<%=user.getUser_name() %>
+											</td>
+											<td>
+												<%=user.getNick_name() %>
+											</td>
+											<% 
+											if(user.getSex().equals("female")) {
+												%>
+												<td>여</td>
+												<%
+											}
+											else {
+												%>
+												<td>남</td>
+												<%
+											}
+											%>
+											<td>
+												<%=user.getBirthday() %>
+											</td>
+											<td>
+												<%=user.getPhone_number() %>
+											</td>
+											<td>
+												<%=user.getAddress() %>
+											</td>
+										</tr>
+										<%
+									}
+								}
+							%>
+					</tbody>
+				</table>
+				
+				<!-- <input type="button" value="삭제" onclick="userSelectDelete()" /> -->
+			</form>
 			
-			<!-- <input type="button" value="삭제" onclick="userSelectDelete()" /> -->
-		</form>
-		
-		<div class="container">
-			<nav aria-label="Page navigation">
-				<ul class="pagination" id="pagination" style="justify-content: center;"></ul>
-			</nav>
+			<%
+				if(userList != null && userList.size() != 0) {
+					%>
+					<div class="container">
+						<br/>
+						<nav aria-label="Page navigation">
+							<ul class="pagination" id="pagination" style="justify-content: center;"></ul>
+						</nav>
+					</div>
+					<%
+				}
+			%>
 		</div>
-		
 	</div>
-	
-	
+		
 	<script type="text/javascript">
 	
 		<!-- pagination -->

@@ -13,6 +13,10 @@
 <title>CHICKEN STOCK</title>
 
 <style>
+
+	nav {
+		border-bottom: solid 1px #EAE8E6;
+	}
 	
 	.navbar-brand {
 		margin-left: 80px;
@@ -28,7 +32,7 @@
 	}
 	
 	.nav-link {
-		color: #4c4843 !important;
+		color: #4E4E4E !important;
 		transition: 0.2s;
 	}
 	
@@ -38,20 +42,20 @@
 	
 	.menu-icon {
 	  display: inline-block;
-	  /* transition: 0.2s; */
-	}
-	
-	.menu-icon {
-		color: red !important;
 	}
 
 	.menu-icon span {
 	  display: inline-block;
 	  vertical-align: middle;
+	  transition: 0.2s;
+	}
+	
+	.menu-icon:hover span {
+	  color: #ff9406;
 	}
 	
 	.menu-logout {
-		margin-left: 20px
+		margin-left: 20px;
 	}
 
 </style>
@@ -99,28 +103,42 @@
 						<%
 					}
 					else {
-						%>
-						<div>
-							<div class="menu-icon">
-								<a href="mypageLike.do">
-									<span class="material-symbols-rounded">face</span>
-									<span>&nbsp;&nbsp;마이페이지</span>
-								</a>
+						if(login.getAuth() == 0) {
+							%>
+							<div>
+								<div class="menu-icon">
+									<a href="adminuser.do">
+										<span class="material-symbols-rounded">face</span>
+										<span>&nbsp;&nbsp;회원목록</span>
+									</a>
+								</div>
+								<div class="menu-icon menu-logout">
+									<a href="logout.do">
+										<span class="material-symbols-rounded">logout</span>
+										<span>&nbsp;&nbsp;로그아웃</span>
+									</a>
+								</div>
 							</div>
-							<div class="menu-icon">
-								<a href="adminuser.do">
-									<span class="material-symbols-rounded">face</span>
-									<span>&nbsp;&nbsp;회원 목록</span>
-								</a>
+							<%
+						}
+						else {
+							%>
+							<div>
+								<div class="menu-icon">
+									<a href="mypageLike.do">
+										<span class="material-symbols-rounded">face</span>
+										<span>&nbsp;&nbsp;마이페이지</span>
+									</a>
+								</div>
+								<div class="menu-icon menu-logout">
+									<a href="logout.do">
+										<span class="material-symbols-rounded">logout</span>
+										<span>&nbsp;&nbsp;로그아웃</span>
+									</a>
+								</div>
 							</div>
-							<div class="menu-icon menu-logout">
-								<a href="logout.do">
-									<span class="material-symbols-rounded">logout</span>
-									<span>&nbsp;&nbsp;로그아웃</span>
-								</a>
-							</div>
-						</div>
-						<%
+							<%
+						}
 					}
 				%>
 	        </div>
