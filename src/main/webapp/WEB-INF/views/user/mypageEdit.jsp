@@ -20,42 +20,6 @@
 	
 	.mypage-warning {
 		color: red;
-		font-size: 14px;
-	}
-	
-	input {
-		border-color: #EAE8E6 !important;
-	}
-	
-	input[type="text"]:disabled {
-	  	background-color: #EAE8E6;
-	}
-	
-	input::placeholder {
-	    opacity: 0.5 !important;
-	    font-size: 14px;
-	}
-	
-	.mypage-gender input {
-		accent-color: rgb(239, 98, 16);
-	}
-	
-	.mypage-gender > div {
-		margin-left: 40px;
-		margin-right: 20px;
-	}
-	
-	.mypage-edit-btn {
-		color: #fff;
-		border-color: #ff9406 !important;
-		background-color: #ff9406;
-		transition: 0.2s;
-	}
-	
-	.mypage-edit-btn:hover {
-		color: #fff;
-		border-color: #FF8205 !important;
-		background-color: #FF8205;
 	}
 
 </style>
@@ -64,66 +28,64 @@
 <body>
 
 	<div>
-		<form id="frm" method="post" class="w-50 m-auto">
-			<div class="mb-4">
-				<div class="mb-2">아이디</div>
+		내 정보 수정
+	</div>
+	<div>
+		<!-- <form id="frm" action="mypageEditAf.do" method="post"> -->
+		<form id="frm" method="post">
+			<div>
+				<div>아이디</div>
 				<div>
-					<input type="text" id="user_id" name="user_id" value="<%=user.getUser_id() %>" disabled="disabled" class="form-control" />
+					<input type="text" id="user_id" name="user_id" value="<%=user.getUser_id() %>" disabled="disabled" />
 					<input type="hidden" name="user_id" value="<%=user.getUser_id() %>" />
 				</div>
 			</div>
-			<div class="mb-4">
-				<div class="mb-2">닉네임</div>
+			<div>
+				<div>이름</div>
 				<div>
-					<input type="text" id="nick_name" name="nick_name" value="<%=user.getNick_name() %>" class="form-control" />
-				</div>
-				<p id="nick_name_warning" class="nonView">닉네임을 입력해주세요</p>
-			</div>
-			<div class="mb-4">
-				<div class="mb-2">이름</div>
-				<div>
-					<input type="text" id="user_name" name="user_name" value="<%=user.getUser_name() %>" class="form-control" />
+					<input type="text" id="user_name" name="user_name" value="<%=user.getUser_name() %>" />
 				</div>
 				<p id="user_name_warning" class="nonView">이름을 입력해주세요</p>
 			</div>
-			<div class="mb-4">
-				<div class="mb-2">생년월일</div>
+			<div>
+				<div>닉네임</div>
 				<div>
-					<input type="date" id="birthday" name="birthday" value="<%=user.getBirthday() %>" class="form-control" />
+					<input type="text" id="nick_name" name="nick_name" value="<%=user.getNick_name() %>" />
+				</div>
+				<p id="nick_name_warning" class="nonView">닉네임을 입력해주세요</p>
+			</div>
+			<div>
+				<div>생년월일</div>
+				<div>
+					<input type="date" id="birthday" name="birthday" value="<%=user.getBirthday() %>" />
 				</div>
 				<p id="birthday_warning" class="nonView">생년월일을 입력해주세요</p>
 			</div>
-			<div class="mb-4">
-				<div class="mb-2">성별</div>
-				<div class="m-auto d-flex mypage-gender">
-					<div>
-						<input type="radio" id="male" name="sex" value="male" /> 남자
-					</div>
-					<div>
-						<input type="radio" id="female" name="sex" value="female" /> 여자
-					</div>
+			<div>
+				<div>성별</div>
+				<div>
+					<input type="radio" id="male" name="sex" value="male" /> 남자
+					<input type="radio" id="female" name="sex" value="female" /> 여자
 				</div>
 				<p id="sex_warning" class="nonView">성별을 선택해주세요</p>
 			</div>
-			<div class="mb-4">
-				<div class="mb-2">이메일</div>
+			<div>
+				<div>이메일</div>
 				<div>
-					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" class="form-control" placeholder="chickenstock@kdt.com" />
+					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" />
 				</div>
 				<p id="email_warning" class="nonView">이메일을 입력해주세요</p>
 			</div>
-			<div class="mb-4">
-				<div class="mb-2">휴대폰 번호</div>
+			<div>
+				<div>휴대폰 번호</div>
 				<div>
-					<input type="text" id="phone_number" name="phone_number" value="<%=user.getPhone_number() %>" class="form-control" placeholder="010-2023-0801" />
+					<input type="text" id="phone_number" name="phone_number" value="<%=user.getPhone_number() %>" />
 				</div>
 				<p id="phone_number_warning" class="nonView">휴대폰 번호를 입력해주세요</p>
 			</div>
 			
-			<div class="text-center">
-				<br/>
-				<input type="button" value="수정 완료" onclick="mypageEdit()" class="btn mypage-edit-btn" />
-			</div>
+			<!-- <input type="submit" value="수정 완료" /> -->
+			<input type="button" value="수정 완료" onclick="mypageEdit()" />
 		</form>
 	</div>
 	
