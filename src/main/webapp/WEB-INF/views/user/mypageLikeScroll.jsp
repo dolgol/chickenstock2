@@ -184,7 +184,6 @@
 			},
 			success: function(response) {
 				console.log("success + " + response);
-				console.log(JSON.stringify(response));
 				
 				if(response.length == 0) {
 					hasMorePosts = false;
@@ -193,6 +192,7 @@
 				}
 				
 				$.each(response, function(i, item) {
+					
 					let str = "";
 					str += "<tr onclick=mypageLikeMove(" + item.symbol + ")>";
 					str += "	<td>" + item.symbol + "</td>";
@@ -238,7 +238,9 @@
 		
 		function mypageLikeMove(symbol) {
 			console.log("mypageLikeMove >> " + symbol);
-			location.href = "stocksdetail.do?symbol=" + symbol;
+			let symbolP = String(symbol).padStart(6, "0");
+			console.log("mypageLikeMove >> " + symbolP);
+			location.href = "stocksdetail.do?symbol=" + symbolP;
 		}
 	
 	</script>
