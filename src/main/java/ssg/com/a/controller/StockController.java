@@ -284,10 +284,10 @@ public class StockController {
 			System.out.println("댓글 작성에 실패했습니다");
 		}
 		
-		model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
+		// model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
 		
 		// redirect == sendRedirect  
-		return "main";
+		return "redirect:/stocksdetail.do?symbol="+symbol;
 	}
 	
 	@GetMapping("like.do")

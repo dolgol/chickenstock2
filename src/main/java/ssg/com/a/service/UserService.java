@@ -13,6 +13,13 @@ public interface UserService {
 	
 	// 아이디 찾기
 	 UserDto findUserByAddressAndPhoneNumber(String address, String phone_number);
+	 
+	// 비밀번호 찾기
+		UserDto findUserByAddressAndUserId(String address, String user_id);
+
+		// 비밀번호 업데이트
+		void updatePassword(UserDto dto);
+
 
 	 
 	 UserDto userGet(String user_id);

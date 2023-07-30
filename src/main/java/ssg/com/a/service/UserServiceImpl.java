@@ -43,6 +43,23 @@ public class UserServiceImpl implements UserService{
 		return dao.login(dto);
 	}
 	
+	// 비밀번호 업데이트
+	@Override
+	public void updatePassword(UserDto dto) {
+	    // newPassword 필드의 값이 null이 아닌 경우에만 password 필드로 복사
+	    if (dto.getNewPassword() != null) {
+	        dto.setPassword(dto.getNewPassword());
+	    }
+	    dao.updatePassword(dto);
+	}
+	
+	// 비밀번호 찾기
+	@Override
+	public UserDto findUserByAddressAndUserId(String address, String user_id) {
+	    return dao.findUserByAddressAndUserId(address, user_id);
+	}
+
+	
 	
 	@Override
 	public boolean mypageEdit(UserDto dto) {

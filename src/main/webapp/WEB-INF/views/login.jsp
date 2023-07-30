@@ -128,7 +128,7 @@
 							<a href="regi.do" class="regi">회원가입</a> 
 							<a href="#" id="findId"
 								class="findIdPw" data-toggle="modal" data-target="#findIdModal">아이디찾기</a>
-							<a href="#" id="findPw" class="findIdPw">비밀번호 찾기</a> 
+							<a href="#" id="findPw" class="findIdPw" data-toggle="modal" data-target="#findPwModal">비밀번호 찾기</a>  
 								
 							</td>
 						</tr>
@@ -192,7 +192,8 @@
 						},
 						success : function() {
 							// 로그인 성공 후 메인 페이지로 이동
-							window.location.href = "main.do";
+							window.location.href = "home.do";
+							alert("카카오 로그인되었습니다.");
 						},
 						error : function() {
 							alert("카카오 로그인에 실패했습니다.");
@@ -235,7 +236,51 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	<!-- 비밀번호 찾기 모달 -->
+	<div class="modal fade" id="findPwModal" tabindex="-1" role="dialog"
+	    aria-labelledby="findPwModalLabel" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="findPwModalLabel">비밀번호 찾기</h5>
+	                <button type="button" class="close" data-dismiss="modal"
+	                    aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <div class="modal-body">
+	                <form id="findPwForm">
+	                    <label for="name">이름:</label><br>
+	                    <input type="text" id="user_name" name="name"><br>
+	                    <label for="user_id">아이디:</label><br>
+	                    <input type="text" id="user_id" name="user_id"><br>
+	                    <label for="email">이메일:</label><br>
+	                    <input type="text" id="address2" name="email">
+	                    <!-- 인증번호 받기 버튼 추가 -->
+	                    <button type="button" id="getCertificationNumber">인증번호 받기</button><br>
+	                    <label for="certification_number">인증번호:</label><br>
+	                    <input type="text" id="certification_number" name="certification_number">
+	                    <button type="button" id="certificationComplete">인증완료</button><br> 
+	                    <label for="new_password">새 비밀번호:</label><br>
+	                    <input type="password" id="new_password" name="new_password"><br>
+	                    <label for="new_password_confirm">새 비밀번호 확인:</label><br>
+	                    <input type="password" id="new_password_confirm" name="new_password_confirm"><br> 
+	                </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" id="findPwSubmit" class="btn btn-primary">비밀번호 찾기</button>
+	                <button type="button" class="btn btn-secondary"
+	                    data-dismiss="modal">취소</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
 
+	<!-- 아이디 찾기  -->
 	<script>
 	$(document).ready(function() {
 	    $("#findIdSubmit").click(function(e) {
@@ -277,6 +322,106 @@
 	});
 
 	</script>
+	
+	<!--  비밀번호 찾기 -->
+	<script>
+	$(document).ready(function() {
+    var isCertified = false; // 인증이 완료되었는지 확인하는 변수
+
+    $("#getCertificationNumber").click(function(e) {
+        e.preventDefault();
+
+        const user_name = $("#user_name").val();
+        const user_id = $("#user_id").val();
+        const address = $("#address2").val();
+
+        $.ajax({
+            type: "POST",
+            url: "findPw.do",
+            contentType: "application/json",
+            data: JSON.stringify({
+                user_name: user_name,
+                user_id: user_id,
+                address: address
+            }),
+            success: function(data) {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('Error while sending verification code.');
+            }
+        });
+    });
+
+    $("#certificationComplete").click(function(e) {
+        e.preventDefault();
+
+        const certification_number = $("#certification_number").val();
+
+        $.ajax({
+            type: "POST",
+            url: "verifyCode.do",
+            contentType: "application/json",
+            data: JSON.stringify({
+                verificationCode: certification_number
+            }),
+            success: function(data) {
+                if (data.success) {
+                    alert(data.message);
+                    isCertified = true;
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('Error during verification.');
+            }
+        });
+    });
+
+    $("#findPwSubmit").click(function(e) {
+        e.preventDefault();
+
+        if (!isCertified) {
+            alert('이메일 인증을 해주세요.');
+            return;
+        }
+
+        const new_password = $("#new_password").val();
+        const new_password_confirm = $("#new_password_confirm").val();
+
+        if (new_password !== new_password_confirm) {
+            alert('비밀번호가 다릅니다.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "resetPassword.do",
+            contentType: "application/json",
+            data: JSON.stringify({
+                newPassword: new_password
+            }),
+            success: function(data) {
+                if (data.success) {
+                    alert(data.message);
+                    $("#findPwModal").modal("hide");
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('Error while resetting password.');
+            }
+        });
+    });
+});
+	</script>
+	
 
 </body>
 </html>

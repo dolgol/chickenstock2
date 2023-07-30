@@ -34,5 +34,8 @@
 	
 	<!-- spring에서 처리할 수 없는 요청은 tomcat이 처리 -->
 	<mvc:default-servlet-handler/>
+	
+	<!-- JavaMailSender 빈 등록 -->
+   <bean id="javaMailSender" class="ssg.com.a.config.MailConfig" />
             
 </beans>
