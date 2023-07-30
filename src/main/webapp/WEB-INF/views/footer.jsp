@@ -11,7 +11,7 @@
 
 	footer {
 		text-align: center;
-		background-color: #efefef;
+		background-color: #EAE8E6;
 		padding-top: 6px;
 		padding-bottom: 4px;
 	}

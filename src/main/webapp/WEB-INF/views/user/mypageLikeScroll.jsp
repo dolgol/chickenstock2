@@ -19,7 +19,7 @@
 <style type="text/css">
 
 	body {
-	  min-height: 104vh;
+	  	min-height: 104vh;
 	}
 	
 	.loader-container {
@@ -66,6 +66,64 @@
 	    transform: translateY(-10px);
 	  }
 	}
+	
+	.table {
+	    border-color: #EAE8E6;
+	}
+	.table > thead > tr > th {
+	    border-color: #EAE8E6;
+	}
+	.table > tbody > tr > td {
+	    border-color: #EAE8E6;
+	}
+	
+	.table > thead {
+		border-color: blue !important;
+	}
+	
+	.table > thead > tr > th {
+	    border-top: none;
+	}
+	
+	.table > tbody > tr {
+		transition: 0.2s;
+	}
+	
+	.table > tbody > tr:hover {
+		background-color: #EAE8E6;
+		cursor: pointer;
+	}
+	
+	.table > tbody > tr:hover > td {
+		color: #FF9406 !important;
+	}
+	
+	#posts-container > .mypage-no-like:hover {
+		background-color: #fff;
+		cursor: default;
+	}
+	
+	#posts-container > .mypage-no-like:hover > td {
+		color: #4E4E4E !important;
+	}
+	
+	#posts-container .material-symbols-rounded {
+		font-size: 500%;
+		margin-top: 80px;
+	}
+	
+	.mypage-no-comment a {
+		font-size: 14px;
+		opacity: 0.5;
+	}
+	
+	.mypage-no-comment a:hover {
+		opacity: 1;
+	}
+	
+	.mypage-blank {
+		height: 80px;
+	}
 
 </style>
 
@@ -73,10 +131,7 @@
 <body>
 
 	<div>
-		관심종목 scroll
-	</div>
-	<div>
-		<table border="1">
+		<table class="w-100 text-center table">
 			<thead>
 				<tr>
 					<th>종목코드</th> <th>마켓</th> <th>종목명</th>
@@ -86,11 +141,12 @@
 				<%
 				if(mypageLikeList.size() == 0) {
 					%>
-					<tr>
-						<td colspan="12">
+					<tr class="mypage-no-like">
+						<td colspan="3" class="mypage-no-comment">
 							<span class="material-symbols-rounded">favorite</span><br/>
 							아직 관심종목이 없습니다<br/>
-							종목 게시판 바로가기 >>
+							<a href="stockMain.do">종목게시판 바로가기 >></a>
+							<div class="mypage-blank"></div>
 						</td>
 					</tr>
 					<%
@@ -132,12 +188,13 @@
 				
 				if(response.length == 0) {
 					hasMorePosts = false;
+					$("#posts-container").append('<tr> <td> </td> <td> </td> <td> </td> </tr>');
 					return;
 				}
 				
 				$.each(response, function(i, item) {
 					let str = "";
-					str += "<tr>";
+					str += "<tr onclick=mypageLikeMove(" + item.symbol + ")>";
 					str += "	<td>" + item.symbol + "</td>";
 					str += "	<td>" + item.market + "</td>";
 					str += "	<td>" + item.name + "</td>";
@@ -178,6 +235,11 @@
 		    showLoading();
 		  }
 		});
+		
+		function mypageLikeMove(symbol) {
+			console.log("mypageLikeMove >> " + symbol);
+			location.href = "stocksdetail.do?symbol=" + symbol;
+		}
 	
 	</script>
 		
