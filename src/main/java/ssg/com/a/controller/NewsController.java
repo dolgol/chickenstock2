@@ -42,6 +42,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import org.apache.commons.text.StringEscapeUtils;
+
+import org.jsoup.nodes.TextNode;
 import com.google.gson.Gson;
 
 import ssg.com.a.dto.MypageNewsComment;
@@ -75,8 +77,6 @@ public class NewsController {
 	
 	@Autowired
 	NewsService service;
-	
-	private static String url = "https://www.investing.com/news/stock-market-news";
 	
 	@GetMapping("newslist.do")
 	public String newslist(NewsParam param, Model model) {
@@ -122,8 +122,18 @@ public class NewsController {
 	//@PostConstruct
     @Scheduled(fixedRate = 0*(60*60*1000)/*시*/ + 10*(60*1000)/*분*/ + 0*(1000)/*초*/)  // m/s단위 ((시간) + (분) + (초) ex)(1*60)*(60)*(1000) + (0*60)*(1000) + (0*1000) << 1시간마다 실행)
     public void scheduleNewsSaving() throws Exception {
-        List<NewsDto> newsList = newsScrap();  // 뉴스를 가져오고 번역하는 메소드
-        for (NewsDto news : newsList) {
+    	int investing = 0;
+    	int naver = 1;
+    	int scrapCount = 3;
+        List<NewsDto> investingNewsList = newsScrap(investing, scrapCount);  // 뉴스를 가져오고 번역하는 메소드
+        
+        for (NewsDto news : investingNewsList) {
+        	System.out.println("NewsController scheduleNewsSaving() " + new Date());
+        	newsFind(news);
+        }
+        
+        List<NewsDto> naverNewsList = newsScrap(naver, scrapCount);  // 뉴스를 가져오고 번역하는 메소드
+        for (NewsDto news : naverNewsList) {
         	System.out.println("NewsController scheduleNewsSaving() " + new Date());
         	newsFind(news);
         }
@@ -177,6 +187,7 @@ public class NewsController {
 		model.addAttribute("newsdto", dto);
 		model.addAttribute("comdto", comDto);
 		model.addAttribute("param", param);
+		model.addAttribute("commentCount", count);
 		model.addAttribute("content", "news/newsdetail");
 		//model.addAttribute("content", "news/newsdetail?seq=" + param.getSeq());
 		return "main";
@@ -258,7 +269,7 @@ public class NewsController {
 		NewsParam param = new NewsParam(seq, pageNumber);
 		//param.setSeq(seq);
 		List<NewsComment> temp = service.commentList(param);
-		/* System.out.println(temp.toString()); */
+		//System.out.println(temp.toString());
 				
 		return temp;
 	}
@@ -286,7 +297,7 @@ public class NewsController {
 	@PostMapping("commentAnswer.do")
 	public String commentAnswer(int post_num, int seq, String content, String user_id, Model model) {
 		System.out.println("NewsController commentAnswer() " + new Date());
-		System.out.println(content);
+		//System.out.println(content);
 		NewsComment temp = new NewsComment(post_num, seq, content, user_id);
 		NewsComment comDto = service.commentGet(temp);	
 		comDto.setContent(content);
@@ -302,86 +313,159 @@ public class NewsController {
 	}
 	
 	@GetMapping("newsScrap.do")
-    public List<NewsDto> newsScrap() throws Exception {
+    public List<NewsDto> newsScrap(int num, int scrapCount) throws Exception {
 		System.out.println("NewsController newsScrap() " + new Date());
-        
+		
+		String articleAuthor = null;
+		String articleDate = null;
+		String content = null;
+		
+		int CrawlLimit = scrapCount;
+		int count = 0;
+		
 		List<NewsDto> newsOrigins = new ArrayList<NewsDto>();
 		
-		Document doc = Jsoup.connect(url).get();
-        Elements newsHeadlines = doc.select(".largeTitle > article");
-        
-        
-        int count = 0;
-        for (Element headline : newsHeadlines) {
-        	// 한번에 기사를 크롤링 하는 개수
-        	if (count >= 3) {
-        		break;
-        	}
-        	
-        	String title = headline.select("div > a").text();
-        	
-        	Element linkElement = headline.selectFirst("a");
-        	String link = linkElement.absUrl("href");
-        	
-        	//Element articleAuthorTemp = headline.select(".textDiv > .articleDetails > span").first(); // 기사 작성자
-        	//String articleAuthor = articleAuthorTemp.text();
-        	
-        	try {
-        		Document articleDoc = Jsoup.connect(link).get();
-        		
-        		Element articleDateTemp = articleDoc.select("div.contentSectionDetails > span").first(); // 기사 작성일
-                if (articleDateTemp == null) {
-        			continue;
-        		}
-                String articleDate = articleDateTemp.text();
-        		
-        		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
-        		// 작성자 저장
-        		String articleAuthor = paragraphs.get(0).text();
-        		if(articleAuthor.length() > 20 || articleAuthor.length() > 20 ) {
-        			articleAuthor = "investing.com";
-        			if(articleAuthor.isBlank() || articleAuthor.isEmpty()) {
-        				articleAuthor = "investing.com";
-        			}else if(articleAuthor.contains("(Reuters)")) {
-        				articleAuthor = "Reuters";
-        			}else {
-        				articleAuthor = "Reuters";
-        			}
-        		}
-        		
-        		
-        		// 기사 내용 저장
-        		StringBuilder articleContent = new StringBuilder();
-        		for (int i = 1; i < paragraphs.size(); i++) {
-        			articleContent.append(paragraphs.get(i).text()); // 각 <p> 태그의 텍스트 추출
-                    articleContent.append("\n\n"); // 줄바꿈 추가
-        		}
-        		String content = articleContent.toString();
-        		//System.out.println("test: " + content);
+		if (num == 0) {
+			System.out.println("NewsController newsScrap() Investing " + new Date());
+			String url = "https://www.investing.com/news/stock-market-news";
+			Document doc = Jsoup.connect(url).get();
+	        Elements newsHeadlines = doc.select(".largeTitle > article");
+ 
+	        for (Element headline : newsHeadlines) {
+	        	// 한번에 기사를 크롤링 하는 개수
+	        	if (count >= CrawlLimit) {
+	        		break;
+	        	}
+	        	
+	        	String title = headline.select("div > a").text();
+	        	System.out.println("title = " + title);
+	        	Element linkElement = headline.selectFirst("a");
+	        	String link = linkElement.absUrl("href");
+	        	
+	        	//Element articleAuthorTemp = headline.select(".textDiv > .articleDetails > span").first(); // 기사 작성자
+	        	//String articleAuthor = articleAuthorTemp.text();
+	        	
+	        	
+	        		Document articleDoc = Jsoup.connect(link).get();
+	        		
+	        		Elements articleDateTempList = articleDoc.select("div.contentSectionDetails"); // 기사 작성일
+	        		System.out.println("articleDateTemp = " + articleDateTempList.get(0).select("span").text());
+	        		String articleDateTemp = "";
+	        		for (Element articleDateTempOne: articleDateTempList) {
+	        			articleDateTemp = articleDateTempOne.select("span").text();
+	        			if (articleDateTemp.trim().isEmpty()) {
+		                	articleDateTemp = "";
+		        		}else {
+		        			break;
+		        		}
+	        		}
+	        		
+	        		String specificString = "Published ";
+	                int findPublished = articleDateTemp.indexOf("Published ");
+	                if(findPublished != -1) {
+	                	findPublished = findPublished + specificString.length() - 1;
+	                }else {
+	                	findPublished = 0;
+	                }
+	                System.out.println("Published= " + findPublished);
+	                int findET = articleDateTemp.indexOf("ET");
+	                
+	                articleDate = articleDateTemp.substring(findPublished, findET);
+	                System.out.println("articleDate= " + articleDate);
+	        		
+	        		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
+	        		//System.out.println("paragraphs: " + paragraphs.toString());
+	        		// 작성자 저장
+	        		articleAuthor = paragraphs.get(0).text();
+	        		if(articleAuthor.length() > 20 || articleAuthor.length() > 20 ) {
+	        			articleAuthor = "investing.com";
+	        			if(articleAuthor.isBlank() || articleAuthor.isEmpty()) {
+	        				articleAuthor = "investing.com";
+	        			}else if(articleAuthor.contains("(Reuters)")) {
+	        				articleAuthor = "Reuters";
+	        			}else {
+	        				articleAuthor = "Reuters";
+	        			}
+	        		}
+	        		
+	        		
+	        		// 기사 내용 저장
+	        		StringBuilder articleContent = new StringBuilder();
+	        		for (int i = 1; i < paragraphs.size(); i++) {
+	        			articleContent.append(paragraphs.get(i).text()); // 각 <p> 태그의 텍스트 추출
+	                    articleContent.append("\n\n"); // 줄바꿈 추가
+	        		}
+	        		
+	        		content = articleContent.toString();
+	        		String contentTemp = articleContent.toString();
+	        		//System.out.println(contentTemp);
+	        		if (contentTemp.trim().isEmpty()) {
+	        			content = title;
+	        		}
+	        		//System.out.println("test: " + content);
+	        	
         		NewsDto newsOrigin = new NewsDto(title, articleAuthor, articleDate, content, link);
-        		System.out.println("\n new news = " + newsOrigin);
+        		//System.out.println("\n new news = " + newsOrigin);
         		// 동일한 제목이 있으면 해당 제목 return
         		if(service.newsFind(newsOrigin) != null) {
         			System.out.println("\n news skip check \n");
         			break;
         		}
         		newsOrigins.add(newsOrigin); // 각각 Author, title, content 정보가 들어있는 NewsParam 객체 리스트 
-       
         		//System.out.println("title: " + title + "\n link: " + link + "\n Author: " + articleAuthor 
-        			//	+ "\nContent: " + content + "\nDate: " + articleDate);
-        	} catch(IOException e) {
-        		e.printStackTrace();
-        	}
-        	
+        		//		+ "\nContent: " + content + "\nDate: " + articleDate);
         	count ++;
-        }  
-        
+	        }
+        	
+        }else if(num == 1) {
+        	System.out.println("NewsController newsScrap() Naver " + new Date());
+        	String url = "https://finance.naver.com/news/news_list.naver?mode=LSS2D&section_id=101&section_id2=258";
+        	Document doc = Jsoup.connect(url).get();
+        	Elements newsElementsAuthor = doc.select("#contentarea_left > .realtimeNewsList > li > dl > .articleSummary");
+        	Elements newsElementsLink = doc.select("#contentarea_left > .realtimeNewsList > li > dl > .articleSubject");
+        	//System.out.println("뉴스 수량: " + newsElementsLink.size());
+        	for (int i = 0; i < newsElementsLink.size(); i++) {
+        		if (count >= CrawlLimit) {
+	        		break;
+	        	}
+        		Element elementAuthor = newsElementsAuthor.get(i);
+        		Element elementLink = newsElementsLink.get(i);
+        		articleAuthor = elementAuthor.select("span.press").text();
+        		articleDate = elementAuthor.select("span.wdate").text();
+        		String link = "https://finance.naver.com" + elementLink.select("a").attr("href");
+        		//System.out.println("in for 2 " + articleAuthor + articleDate + link);
+        		Document articleDoc = Jsoup.connect(link).get();
+
+        		String title = articleDoc.selectFirst("div.article_info > h3").text();
+        		Elements paragraphs = articleDoc.select("div.articleCont");
+        		paragraphs.select("span").remove();
+        		paragraphs.select("ul").remove();
+        		paragraphs.select("h3").remove();
+        		paragraphs.select("b").remove();
+        		for (Element br : paragraphs.select("br")) {
+        			br.replaceWith(new TextNode("\n"));
+        		}
+        		content = paragraphs.text();
+
+	    	    NewsDto newsOrigin = new NewsDto(title, articleAuthor, articleDate, content, link);
+	    		//System.out.println("\n new news = " + newsOrigin);
+	        	if(service.newsFind(newsOrigin) != null) {
+	    			System.out.println("\n news skip check \n");
+	    			break;
+	    		}
+        	newsOrigins.add(newsOrigin); // 각각 Author, title, content 정보가 들어있는 NewsParam 객체 리스트
+        	//System.out.println("title: " + title + "\n link: " + link + "\n Author: " + articleAuthor 
+			//	+ "\nContent: " + content + "\nDate: " + articleDate);
+        	count++;
+        	}	
+        }
+		
         return newsSummary(newsOrigins);//(newsOrigins); // 요약 기사 NewsParam 객체 리스트 
     }
 	
 	private List<NewsDto> newsSummary(List<NewsDto> newsList) throws Exception {
 		Gson gson = new Gson();
-        String apiKey = ""; // OpenAI API Key
+        String apiKey = "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"; // OpenAI API Key
         //String engine = "gpt-3.5-turbo"; // Engine id
         int maxTokens = 10;//300; // Maximum number of tokens in the response
         // Prepare the API URL
@@ -477,7 +561,7 @@ public class NewsController {
 									.get("message").getAsJsonObject()
 									.get("content").getAsString();
 		
-		System.out.print("\n after extractSummary\n: " + responseJsonTemp);
+		//System.out.print("\n after extractSummary\n: " + responseJsonTemp);
 		String responseJsonResult = translateToKorean(responseJsonTemp);
 		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
 	    return responseJsonResult; 
@@ -556,7 +640,7 @@ public class NewsController {
 			try {
 		        // Papago API에 필요한 정보를 설정
 		        String clientId = "EmpNiTFgTYBn4eJ30Af1";
-		        String clientSecret = "";
+		        String clientSecret = "pbLWB1ldWq";
 		        String apiUrl = "https://openapi.naver.com/v1/papago/n2mt";
 	
 		        // HTTP 클라이언트를 생성
@@ -572,7 +656,7 @@ public class NewsController {
 		        params.add(new BasicNameValuePair("source", "en"));
 		        params.add(new BasicNameValuePair("target", "ko"));
 		        params.add(new BasicNameValuePair("text", text));
-		        System.out.println("\n body= " + params + "\n");
+		        //System.out.println("\n body= " + params + "\n");
 		        httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 	
 		        // 요청을 실행하고 응답을 받아옴
@@ -580,10 +664,10 @@ public class NewsController {
 		        String responseJson = EntityUtils.toString(response.getEntity(), "UTF-8");
 		        
 		        JSONObject jsonResponse = new JSONObject(responseJson);
-		        System.out.println("\n jsonResponse= " + jsonResponse.toString() + "\n");
+		        //System.out.println("\n jsonResponse= " + jsonResponse.toString() + "\n");
 		        // 응답 JSON에서 번역된 텍스트를 가져옴
 		        String translatedText = jsonResponse.getJSONObject("message").getJSONObject("result").getString("translatedText");
-		        System.out.println(translatedText);
+		        //System.out.println(translatedText);
 		        
 		    	// Store the translation in the cache for future use
 				translationCache.put(text, translatedText);
