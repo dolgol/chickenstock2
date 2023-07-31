@@ -61,10 +61,12 @@ public class UserController {
 		return "main";
 	}
 	
+	
 	@RequestMapping(value = "login.do")
-	public String login() {
+	public String login(Model model) {
 		System.out.println("UserController login() " + new Date());
-		return "login";
+		model.addAttribute("content", "login");
+	    return "main";
 	}
 	
 	@PostMapping("loginAf.do")
@@ -117,9 +119,10 @@ public class UserController {
 
 
 	@GetMapping("regi.do")
-	public String regi() {
+	public String regi(Model model) {
 		System.out.println("UserController regi() " + new Date());
-		return "regi";
+		model.addAttribute("content", "regi");
+	    return "main";
 	}
 	
 	@PostMapping("regiAf.do")
@@ -150,10 +153,10 @@ public class UserController {
 	
 	private boolean isValidUserInfo(UserDto user) {
 		
-		// 아이디, 비밀번호, 이름, 이메일이 비어있을경우 false
+		// 아이디, 비밀번호, 닉네임, 이메일이 비어있을경우 false
 	    if (user.getUser_id().trim().isEmpty()
 	        || user.getPassword().trim().isEmpty()
-	        || user.getUser_name().trim().isEmpty()
+	        || user.getNick_name().trim().isEmpty()
 	        || user.getAddress().trim().isEmpty()) {
 	        return false;
 	    }
