@@ -74,7 +74,7 @@
 		<div class="collapse navbar-collapse" id="navbarsExample04">
 			<div class="navbar-nav mr-auto d-flex justify-content-around">
 				<div class="nav-item">
-					<a class="nav-link" href="#">
+					<a class="nav-link" href="introduce.do">
 						사이트소개
 					</a>
 				</div>
