@@ -73,7 +73,18 @@ border-color: #EAE8E6 !important;
 
 .table td, .table th {
 border-color: #EAE8E6 !important;
-}	
+}
+
+.nav-link{
+	border-radius: 10px;
+	border: none;
+	height: 100%;
+}
+.nav-link:focus,
+.nav-link:active {
+	outline: none;
+      box-shadow: none; 
+}
 	
 
 </style>
@@ -90,10 +101,10 @@ border-color: #EAE8E6 !important;
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <input type="button" id="count" value="거래량 100위" class="nav-link btn-light"><span class="sr-only">(current)</span>
+          <input type="button" id="count" value="거래량 100위" class="nav-link btn-light h-100"><span class="sr-only">(current)</span>
         </li>
         <li class="nav-item">
-          <input type="button" id="cap" value="시가총액 100위" class="nav-link btn-light">
+          <input type="button" id="cap" value="시가총액 100위" class="nav-link btn-light h-100">
         </li>
         <!-- dropdown 메뉴 삭제 -->
         <li class="nav-item">
@@ -101,13 +112,13 @@ border-color: #EAE8E6 !important;
             <!-- Bootstrap 그리드 시스템 활용 -->
             <div class="form-row custom-select-container">
               <div class="col-sm-auto pr-1">
-                <select id="choice" name="param.choice" class="my-select selectpicker h-100 form-control">
+                <select id="choice" name="choice" class="my-select selectpicker h-100 form-control">
                   <option value="name">종목명</option>
                   <option value="symbol">종목번호</option>
                 </select>
               </div>
               <div class="col-sm-auto pl-0 custom-search-input">
-                <input id="search" name="param.search" class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                <input id="search" name="search" class="form-control" type="search" placeholder="Search" aria-label="Search" />
               </div>
               <div class="col-sm-auto">
                 <button class="btn btn-light my-2 my-sm-0" onclick="searchBtn()" id="btn" type="submit">Search</button>
@@ -118,6 +129,7 @@ border-color: #EAE8E6 !important;
       </ul>
     </div>
   </nav>
+
 
 
 
@@ -153,7 +165,9 @@ border-color: #EAE8E6 !important;
 		%>
 			<tr>
 				<td colspan="8">
-					검색결과가 없습니다.
+				<script type="text/javascript">
+					alert("검색결과가 없습니다.");
+				</script>
 				</td>
 			</tr>
 			<%
