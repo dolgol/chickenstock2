@@ -291,9 +291,9 @@ $(document).ready(function(){
   <form action="commentWriteAf.do" method="post">
   <input type="hidden" name="symbol" value="<%=dto.getSymbol() %>">
   <input type="hidden" name="user_id" value="<%=login.getUser_id()%>">
-    <table class="w-100 m-auto text-center">
-      <col width="1000px">
-      <col width="200px">
+    <table class="w-75 m-auto">
+      <!-- <col width="1000px">
+      <col width="200px"> -->
       <tr>
         <td>
         	<div class="comment-container">

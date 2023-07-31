@@ -14,7 +14,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
-body {
+/* body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,10 +22,10 @@ body {
     background-color: white;
     margin: 0;
     padding: 10px;
-}
+} */
 
 .centerDiv {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -33,7 +33,9 @@ body {
     height: auto;
     border: 0;
     background-color: white;
-    margin : 0 auto;
+    margin : 0 auto; */
+   	width: 25%;
+   	padding: 40px 0;
 }
 
 .form-group {
@@ -126,10 +128,10 @@ input[type="radio"] {
     font-size: 14px;
 }
 
-header, footer {
+/* header, footer {
     width: 100%;
     box-sizing: border-box;
-}
+} */
 
 /* .input-box {
     margin-left: 40px;
@@ -144,13 +146,24 @@ header, footer {
 	background-color :#EAE8E6;
 }
 
+.mypage-container-top {
+	font-size: 32px;
+	font-weight: 500;
+	color: #ff9406;
+	margin-bottom: 20px;
+	letter-spacing: -2px !important;
+}
+
 </style>
 
 
 </head>
 <body>
-	<div class="centerDiv">
-	 <form action="regiAf.do" method="post">
+
+	<div class="centerDiv m-auto">
+	
+	<div class="mypage-container-top">회원가입</div>
+	<form action="regiAf.do" method="post">
     <div class="form-group">
         <label for="user_id" class="label-spacing">아이디*</label>
          <div style="display: flex;">
@@ -213,7 +226,7 @@ header, footer {
         <p id="addresscheck" style="font-size: 10px"></p>
     </div>
     <div class="form-group regi_wrapper">
-        <input type="submit" value="가입하기" class="regi">
+        <input type="submit" value="가입하기" class="regi btn">
     </div>
       </form>
 </div>

@@ -55,7 +55,7 @@
 	margin-top: 23px;
 	background-color: #d9d9d9;
 	font-family: "Inter", Helvetica;
-	font-size: 20px;
+	/* font-size: 20px; */
 	border: none;
 	padding: 10px; /* 패딩 추가 */
 	border-radius: 0.25rem;
@@ -66,7 +66,7 @@
 	height: 53px;
 	margin-top: 5px;
 	background-color: #FF9406;
-	font-size: 20px;
+	/* font-size: 20px; */
 	border: none;
 	color: white; /* 글씨 색상 */
 	border-radius: 0.25rem; /* 모서리를 둥글게 만듭니다 */
@@ -84,11 +84,12 @@
 	margin-top: 30px;
 	margin-right: 8px;
 	background-color: #d9d9d9;
+	font-size: 16px !important;
 }
 
 .table tr td .regi, .table tr td .findIdPw {
 	font-family: "Inter", Helvetica;
-	font-size: 20px;
+	/* font-size: 20px; */
 	color: #000000;
 	margin-right: 5px;
 	margin-left: 30px;
@@ -100,7 +101,7 @@
 	margin-top: 38px;
 	background-color: #FEE500;
 	font-family: "Inter", Helvetica;
-	font-size: 20px;
+	/* font-size: 20px; */
 	color: black;
 	border: none;
 	border-radius: 0.25rem;
@@ -108,7 +109,7 @@
 
 .table tr td .regi, .table tr td .findIdPw {
 	font-family: "Inter", Helvetica;
-	font-size: 20px;
+	/* font-size: 20px; */
 	color: #000000;
 	margin-right: 5px;
 	margin-left: 30px;
@@ -322,6 +323,19 @@
 	#findPwModal #new_password_confirm {
 	background-color: #eae8e6;
 }
+
+.mypage-container-top {
+	font-size: 32px;
+	font-weight: 500;
+	color: #ff9406;
+	margin-bottom: 20px;
+	letter-spacing: -2px !important;
+}
+
+.index.screen > .table {
+	margin: 40px 0;
+}
+	
 </style>
 
 </head>
@@ -330,9 +344,13 @@
 		<form action="loginAf.do" method="post">
 			<input type="hidden" id="anPageName" name="page" value="index" />
 			<div class="container-center-horizontal">
-				<div class="index screen">
-					<h1 class="title">LogIn</h1>
+				<div class="index screen w-50 m-auto">
 					<table class="table">
+						<tr>
+							<td>
+								<div class="mypage-container-top">로그인</div>
+							</td>
+						</tr>
 						<tr class="centerTr">
 							<td><input type="text" id="id" name="user_id"
 								placeholder="아이디를 입력하세요." class="idpw"></td>
@@ -342,7 +360,7 @@
 								placeholder="비밀번호를 입력하세요." class="idpw"></td>
 						</tr>
 						<tr>
-							<td><input type="checkbox" id="chk_save_id">아이디 저장</td>
+							<td><input type="checkbox" id="chk_save_id">&nbsp;아이디 저장</td>
 						</tr>
 						<tr class="centerTr">
 							<td><input type="submit" value="로그인" class="login"></td>

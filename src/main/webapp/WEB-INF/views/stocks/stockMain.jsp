@@ -39,9 +39,13 @@ body{
 	color: #4E4E4E;
 }
 a{
-	font-weight: bold;
+	/* font-weight: bold; */
 	text-decoration: none;
 	color: #4E4E4E;
+	transition: 0.2s;
+}
+.container a {
+	font-weight: bold;
 }
 a:hover{
 	color: #FF9406;
@@ -53,8 +57,8 @@ a:hover{
 }
 
 .table > thead > tr:hover {
-      background-color: #EAE8E6;
-    }
+  background-color: #EAE8E6;
+}
 
 
 .table > thead > tr{
@@ -86,6 +90,13 @@ border-color: #EAE8E6 !important;
       box-shadow: none; 
 }
 	
+.table tbody tr {
+	transition: 0.2s;
+}
+
+.table tbody tr:hover td {
+	background-color: #EAE8E6;
+}
 
 </style>
 </head>
