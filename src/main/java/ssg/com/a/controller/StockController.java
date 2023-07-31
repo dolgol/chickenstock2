@@ -362,6 +362,10 @@ public class StockController {
 		
 		UserDto login = (UserDto)request.getSession().getAttribute("login");
 		
+		if(login == null || login.getUser_id().equals("")){
+			return "redirect:/login.do";
+		}
+		
 		List<StocksDto> list = service.mypageLikeList(login.getUser_id());
 		
 		model.addAttribute("content", "user/mypage");
@@ -392,6 +396,10 @@ public class StockController {
 		System.out.println("StockController mypageStocksComment() " + new Date());
 		
 		UserDto login = (UserDto)request.getSession().getAttribute("login");
+		
+		if(login == null || login.getUser_id().equals("")){
+			return "redirect:/login.do";
+		}
 		
 		System.out.println(" 1 >> " + param.toString());
 		if(param == null) {

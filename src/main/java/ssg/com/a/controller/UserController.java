@@ -410,6 +410,11 @@ public class UserController {
 			System.out.println("UserController mypageEdit() " + new Date());
 			
 			UserDto login = (UserDto)request.getSession().getAttribute("login");
+			
+			if(login == null || login.getUser_id().equals("")){
+				return "redirect:/login.do";
+			}
+			
 			UserDto userDto = service.userGet(login.getUser_id());
 			
 			model.addAttribute("content", "user/mypage");
