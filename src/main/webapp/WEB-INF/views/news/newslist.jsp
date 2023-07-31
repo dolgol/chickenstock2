@@ -1,3 +1,4 @@
+<%@page import="ssg.com.a.dto.UserDto"%>
 <%@page import="ssg.com.a.dto.NewsParam"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@page import="util.BbsUtil"%>
@@ -13,6 +14,7 @@
 	int pageNumber = param.getPageNumber();
 	String choice = param.getChoice();
 	String search = param.getSearch();
+	
 	
 %>    
     
@@ -54,9 +56,16 @@
 }
 
 .input-group {
-    border: 1px solid #ced4da;
+    border: 0px solid #ced4da;
     border-radius: .25rem;
     box-shadow: none;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-align: center;
+    align-content: center;
 }
 
 
@@ -121,8 +130,9 @@
 
 
 main > .navbar{
-	border-radius: 10px;
+	border-radius: 30px;
 	padding: 0em;
+	width: 80%;
 }
 
 .stocknavbar{
@@ -134,6 +144,33 @@ main > .navbar{
 	background-color: #FF9406;
 }
 
+.news-nav-container {
+border: none;
+}
+
+.news-search-left {
+border: solid 1px #EAE8E6;
+border-radius: 20px 0 0 20px;
+}
+
+.news-search-right {
+border: solid 1px #EAE8E6;
+border-radius: 20px;
+}
+
+.news-search-div {
+border: solid 1px #EAE8E6;
+border-radius: 0 20px 20px 0;
+}
+
+.btn.news-search-right {
+background-color: #FF9406;
+border: none;
+}
+
+.btn.news-search-right > i{
+color: #fff;
+}
 </style>
 
 <!-- <script type="text/javascript" src="jquery/jquery.twbsPagination.min.js"></script> -->
@@ -145,33 +182,35 @@ main > .navbar{
 <br><br><br>
 <!-- 주황: FF8205 대표 색상: FF9406 글자색: 4E4E4E 마우스오버: EAE8E6 배경:FFFFFF-->
 <main class="container my-4 w-75 m-auto">
-<div class="mypage-container-top">마이페이지</div>
+<div class="mypage-container-top" style="margin-bottom: 20px">뉴스 게시판</div>
 <!-- <div class="center"> -->
 <!-- Search Bar -->
-<nav class="navbar navbar-expand-md navbar-dark container mb-0 mt-0 my-navbar justify-content-center" >
-<div class="card-body">
-    <div class="input-group mb-0">
-        <!-- <div class="input-group-prepend">
-            <label class="input-group-text" for="choice">검색</label>
-        </div> -->
-        <select id="choice" class="form-control mx-auto" style="flex:1;">
-            <option value="title">제목</option>
-            <option value="content">내용</option>
-            <option value="writer">작성자</option>
-        </select>
-        <input type="text" id="search" class="form-control" value="<%=search %>" style="flex:4;">
-        <div class="input-group-append" style="background-color: #FFFFFF">
-            <button type="button" onclick="searchBtn()" class="btn btn-outline-secondary;">
-                <i class="fas fa-search" ></i>
-            </button>
-        </div>
-    </div>
+<nav class="navbar navbar-expand-md navbar-dark container news-nav-container">
+<div class="input-group w-75 m-auto">
+<select id="choice" class="form-control mx-auto news-search-left" style="flex:1;">
+<option value="title">제목</option>
+<option value="content">내용</option>
+<option value="writer">작성자</option>
+</select>
+<input type="text" id="search" class="form-control news-search-right" value="<%=search %>" style="flex:4;" placeholder="검색어를 입력해주세요">
+<div class="input-group-append news-search-div" style="background-color: #FFFFFF">
+<button type="button" onclick="searchBtn()" class="btn btn-outline-secondary news-search-right">
+<i class="fas fa-search" ></i>
+</button>
+</div>
 </div>
 </nav>
 
 
  <!-- News List -->
-
+ <!-- 
+<div style="margin-top: 20px;">
+		<form>
+			<div class="nav nav-tabs">
+				<a href="newslist.do" class="nav-link active w-50 text-center">국내 뉴스</a>
+				<a href="newsListOverseas.do" class="nav-link w-50 text-center">해외 뉴스</a>
+			</div>
+-->
 <div class="card-body">
 <table class="table table-hover text-center">
 
@@ -203,7 +242,8 @@ if(list == null || list.size() == 0){
 			if(news.getDel() == 0){
 				%>				
 				<td style="text-align: left;">
-					<a href="newsdetail.do?seq=<%=paramTemp.getSeq() %>&pageNumber=<%=paramTemp.getPageNumber()%>">
+					<%-- <a href="newsdetail.do?seq=<%=paramTemp.getSeq() %>&pageNumber=<%=paramTemp.getPageNumber()%>"> --%>
+					<a href="javascript:goToNewsDetail(<%=paramTemp.getSeq() %>, <%=paramTemp.getPageNumber()%>)">
 						<%-- <%=BbsUtil.arrow(news.getDepth()) %> --%>
 						<%=BbsUtil.titleDot(news.getTitle()) %>
 					</a>
@@ -213,7 +253,7 @@ if(list == null || list.size() == 0){
 			%>
 				<td style="text-align: left;">
 					<%-- <%=BbsUtil.arrow(news.getDepth()) %> --%>
-					<font color="#ff0000"> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>
+					<font color="#ff0000" style="opacity: 0.5;"> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>
 				</td>			
 			<%
 			}
@@ -249,6 +289,15 @@ if(list == null || list.size() == 0){
 <br>
 <!-- Additional JS -->
 <script type="text/javascript">	
+function goToNewsDetail(seq, pageNumber) {
+    <% UserDto login = (UserDto) session.getAttribute("login"); %>
+    <% if(login == null) { %>
+    	alert("로그인 해주세요");
+        location.href = "login.do";
+    <% } else { %>
+        location.href = "newsdetail.do?seq=" + seq + "&pageNumber=" + pageNumber;
+    <% } %>
+}
 // Java -> JavaScript
 let search = "<%=search %>"; 	// 문자열일 경우
 	
