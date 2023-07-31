@@ -130,6 +130,15 @@ public class HomeController {
 	public static String getParameter(String KEY_WORD, int PAGE) {
 		return KEY_WORD + "?&page=" + PAGE;
 	}
+	
+	@GetMapping("introduce.do")
+	public String introduce(Model model) {
+		
+		System.out.println("HomeController home() " + new Date());
+		model.addAttribute("content", "introduce");
+		
+		return "main";
+	}
 }
 
 
