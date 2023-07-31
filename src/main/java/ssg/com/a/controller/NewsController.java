@@ -258,7 +258,7 @@ public class NewsController {
 		NewsParam param = new NewsParam(seq, pageNumber);
 		//param.setSeq(seq);
 		List<NewsComment> temp = service.commentList(param);
-		System.out.println(temp.toString());
+		/* System.out.println(temp.toString()); */
 				
 		return temp;
 	}
