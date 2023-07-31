@@ -208,7 +208,9 @@ h2 a{
   }
   #back{
    background-color: #ff9406;
+   color: #ffffff;
   }
+  
 
 </style>
 </head>
@@ -295,7 +297,7 @@ $(document).ready(function(){
       <tr>
         <td>
         	<div class="comment-container">
-        	  <label for="commentInput">댓글</label>
+        	  <label for="commentInput" style="color:#ffffff;">댓글</label>
 	          <textarea rows="4" cols="15"  class="form-control"  name="content"> </textarea>       
 	          <button type="submit" class="btn btn-light">작성</button>
 	        </div>
@@ -345,7 +347,7 @@ $(document).ready(function() {
 	      return item.symbol === symbol;
 	    });
 	  }
-<<<<<<< HEAD
+
     if (checkLikedSymbols(currentSymbol)) {
     	$("#icon").children().css('color', '#FF9406');
     }else{
@@ -371,9 +373,7 @@ $(document).ready(function() {
       }else{
     	  $('.no_today .no_down').children().css('color', '#4E4E4E');
       }
-    
-	
-=======
+
 	  if (checkLikedSymbols(currentSymbol)) {
         $("#icon").children().css('color', 'red');
     }
@@ -381,8 +381,6 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
-    
->>>>>>> 77b17afc379623198240b3d4e6e6e7323714d385
     $("#icon").on("click", function() {
         $.ajax({
             url: "like.do",
