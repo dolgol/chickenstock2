@@ -75,56 +75,49 @@
 			<div class="mb-4">
 				<div class="mb-2">닉네임</div>
 				<div>
-					<input type="text" id="nick_name" name="nick_name" 
-							value="<%=user.getNick_name() == null ? "" : user.getNick_name() %>" 
-							class="form-control" disabled="disabled" />
+					<input type="text" id="nick_name" name="nick_name" value="<%=user.getNick_name() %>" class="form-control" />
 				</div>
-				<p id="nick_name_warning" class="nonView">&nbsp;&nbsp;닉네임을 입력해주세요</p>
+				<p id="nick_name_warning" class="nonView">닉네임을 입력해주세요</p>
 			</div>
 			<div class="mb-4">
 				<div class="mb-2">이름</div>
 				<div>
-					<input type="text" id="user_name" name="user_name" 
-							value="<%=user.getUser_name() == null ? "" : user.getUser_name() %>" 
-							class="form-control" />
+					<input type="text" id="user_name" name="user_name" value="<%=user.getUser_name() %>" class="form-control" />
 				</div>
-				<p id="user_name_warning" class="nonView">&nbsp;&nbsp;이름을 입력해주세요</p>
+				<p id="user_name_warning" class="nonView">이름을 입력해주세요</p>
 			</div>
 			<div class="mb-4">
 				<div class="mb-2">생년월일</div>
 				<div>
 					<input type="date" id="birthday" name="birthday" value="<%=user.getBirthday() %>" class="form-control" />
 				</div>
-				<p id="birthday_warning" class="nonView">&nbsp;&nbsp;생년월일을 입력해주세요</p>
+				<p id="birthday_warning" class="nonView">생년월일을 입력해주세요</p>
 			</div>
 			<div class="mb-4">
 				<div class="mb-2">성별</div>
 				<div class="m-auto d-flex mypage-gender">
 					<div>
-						<input type="radio" id="male" name="sex" value="male" /> 남성
+						<input type="radio" id="male" name="sex" value="male" /> 남자
 					</div>
 					<div>
-						<input type="radio" id="female" name="sex" value="female" /> 여성
+						<input type="radio" id="female" name="sex" value="female" /> 여자
 					</div>
 				</div>
-				<p id="sex_warning" class="nonView">&nbsp;&nbsp;성별을 선택해주세요</p>
+				<p id="sex_warning" class="nonView">성별을 선택해주세요</p>
 			</div>
 			<div class="mb-4">
 				<div class="mb-2">이메일</div>
 				<div>
-					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" class="form-control" placeholder="예) chickenstock@kdt.com" />
+					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" class="form-control" placeholder="chickenstock@kdt.com" />
 				</div>
-				<p id="email_warning" class="nonView">&nbsp;&nbsp;이메일을 입력해주세요</p>
+				<p id="email_warning" class="nonView">이메일을 입력해주세요</p>
 			</div>
 			<div class="mb-4">
 				<div class="mb-2">휴대폰 번호</div>
 				<div>
-					<%-- <input type="text" id="phone_number" name="phone_number" value="<%=user.getPhone_number() %>" class="form-control" placeholder="010-2023-0801" /> --%>
-					<input type="text" id="phone_number" name="phone_number" 
-							value="<%=(user.getPhone_number() == null || user.getPhone_number().equals("")) ? "" : user.getPhone_number() %>" class="form-control" 
-							placeholder="예) 010-2023-0801" />
+					<input type="text" id="phone_number" name="phone_number" value="<%=user.getPhone_number() %>" class="form-control" placeholder="010-2023-0801" />
 				</div>
-				<p id="phone_number_warning" class="nonView">&nbsp;&nbsp;휴대폰 번호를 입력해주세요</p>
+				<p id="phone_number_warning" class="nonView">휴대폰 번호를 입력해주세요</p>
 			</div>
 			
 			<div class="text-center">
@@ -141,7 +134,7 @@
 			if("<%=user.getSex() %>" == "male") {
 				$("#male").prop("checked", true);
 			}
-			else if("<%=user.getSex() %>" == "female") {
+			else {
 				$("#female").prop("checked", true);
 			}
 		});

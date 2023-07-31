@@ -32,6 +32,7 @@
 
 <style type="text/css">
 .thead{
+	background-color: #FF9406;
 	font-weight: bold;
 	height: 55px;
 }
@@ -41,70 +42,41 @@ body{
 a{
 	font-weight: bold;
 	text-decoration: none;
-	color: #4E4E4E;
 }
-a:hover{
-	color: #FF9406;
-	text-decoration: none;
-}
-.my-navbar{
-	background-color: #FF9406;
+
+.navbar{
 	border-radius: 30px;
+	background-color: #FFDE66;
 }
 
-.table > thead > tr:hover {
-      background-color: #EAE8E6;
-    }
-
-
-.table > thead > tr{
-	transition: 0.2s;
-}
-.table > thead > tr > th {
-    border-color: #EAE8E6;
-}
-.table > tbody > tr > td {
-    border-color: #EAE8E6;
-}
-
-.table tbody+tbody {
-border-color: #EAE8E6 !important;
-}
-
-.table td, .table th {
-border-color: #EAE8E6 !important;
-}
-
-.nav-link{
-	border-radius: 10px;
-	border: none;
-	height: 100%;
-}
-.nav-link:focus,
-.nav-link:active {
-	outline: none;
-      box-shadow: none; 
-}
+.stocknavbar{
+	border-radius: 30px;
 	
+}
+
+
+.my-navbar{
+	background-color: #FF8868;
+}
 
 </style>
 </head>
 <body>
 
 
-<div class="container w-75 m-auto">
-<nav class="navbar navbar-expand-md navbar-dark container mb-4 mt-5 my-navbar" id="mynavbar">
-    <a class="navbar-brand" href="#">CHICKEN STOCK</a>
+
+<nav class="navbar navbar-expand-md navbar-dark container mb-3 mt-3 my-navbar" id="mynavbar">
+    <a class="navbar-brand" href="home.do">CHICKEN STOCK</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <input type="button" id="count" value="거래량 100위" class="nav-link btn-light h-100"><span class="sr-only">(current)</span>
+          <input type="button" id="count" value="거래량 100위" class="nav-link btn-light"><span class="sr-only">(current)</span>
         </li>
         <li class="nav-item">
-          <input type="button" id="cap" value="시가총액 100위" class="nav-link btn-light h-100">
+          <input type="button" id="cap" value="시가총액 100위" class="nav-link btn-light">
         </li>
         <!-- dropdown 메뉴 삭제 -->
         <li class="nav-item">
@@ -112,13 +84,13 @@ border-color: #EAE8E6 !important;
             <!-- Bootstrap 그리드 시스템 활용 -->
             <div class="form-row custom-select-container">
               <div class="col-sm-auto pr-1">
-                <select id="choice" name="choice" class="my-select selectpicker h-100 form-control">
+                <select id="choice" name="param.choice" class="my-select selectpicker h-100 form-control">
                   <option value="name">종목명</option>
                   <option value="symbol">종목번호</option>
                 </select>
               </div>
               <div class="col-sm-auto pl-0 custom-search-input">
-                <input id="search" name="search" class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                <input id="search" name="param.search" class="form-control" type="search" placeholder="Search" aria-label="Search" />
               </div>
               <div class="col-sm-auto">
                 <button class="btn btn-light my-2 my-sm-0" onclick="searchBtn()" id="btn" type="submit">Search</button>
@@ -132,12 +104,11 @@ border-color: #EAE8E6 !important;
 
 
 
-
 			
 
 
 
-<div id="capsc" style="display: none;" class="table text-center" align="center">
+<div id="capsc" style="display: none;" class="table" align="center">
 	<table>
 		<tr class="thead">
 			<th>N</th><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>액면가</th><th>시가총액</th><th>상장주식수</th><th>외인비율</th><th>거래량</th><th>PER</th><th>ROE</th>		
@@ -149,13 +120,17 @@ border-color: #EAE8E6 !important;
 	</table>
 </div>
 
-<table class="table text-center" id="countsc" style="display: none;">				
+<table class="table" id="countsc" style="display: none;">
+	
+	<tbody  >
+					
 			<tr>
 				<%=slist.get(0)%>
 			</tr>
+	</tbody>
 </table>
 
-<div align="center" id="searchsc" style="display: none;" class="table text-center">
+<div align="center" id="searchsc" style="display: none;">
 	<table class="table" style="text-align: center;">
 		<col width="5"><col width="180"><col width="80"><col width="120"><col width="250"><col width="120"><col width="120">
 		<th>N</th><th>종목명</th><th>종목코드</th><th>종목시장</th><th>부문</th><th>창립일</th><th>대표자</th>
@@ -165,9 +140,7 @@ border-color: #EAE8E6 !important;
 		%>
 			<tr>
 				<td colspan="8">
-				<script type="text/javascript">
-					alert("검색결과가 없습니다.");
-				</script>
+					검색결과가 없습니다.
 				</td>
 			</tr>
 			<%
@@ -183,7 +156,7 @@ border-color: #EAE8E6 !important;
 			        	symbol = stock.getSymbol();
 			        }
 					%>			
-			        <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
+			        <tr>
 			            <td><%= i + 1 %></td>
 			            <td>
 			                <a href="stocksdetail.do?symbol=<%=symbol%>">
@@ -194,20 +167,14 @@ border-color: #EAE8E6 !important;
 			            <td><%= stock.getSymbol() %></td>
 			            <td><%= stock.getMarket() %></td>
 			            <%
-			            if (stock.getSector() == null || stock.getListingDate() == null || stock.getRepresentative() == null) {
-			                String str = "N";							
+			            if (stock.getSector() != null || stock.getListingDate() != null || stock.getRepresentative() != null) {
+			                String str = "";							
 			            %>
-			                <td>N</td>
-			                <td>N</td>
-			                <td>N</td>
-			            <% 
-			            }else{
-			            	%>
-			            	<td><%= stock.getSector() %></td>
+			                <td><%= stock.getSector() %></td>
 			                <td><%= stock.getListingDate() %></td>
 			                <td><%= stock.getRepresentative() %></td>
-			            	<%
-			            }
+			            <% 
+			            } 
 			            %>
 			        </tr>
 			<%
@@ -216,7 +183,6 @@ border-color: #EAE8E6 !important;
 			%>
 		</tbody>
 	</table>
-</div>
 </div>
 <!-- 거래량 시가총액 하나씩 보게 하기 위함 -->
 <script type="text/javascript">

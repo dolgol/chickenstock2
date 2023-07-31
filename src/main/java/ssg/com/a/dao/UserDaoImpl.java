@@ -43,24 +43,11 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	
+
 	@Override
 	public int nicknamecheck(String nick_name) {
 		int count = session.selectOne(ns+ "nicknamecheck", nick_name);
 		return count;
-	}
-	
-	@Override
-	public void updatePassword(UserDto dto) {
-		 session.update(ns + "updatePassword", dto);
-	}
-	
-	// 비민번호 찾기
-	@Override
-	public UserDto findUserByAddressAndUserId(String address, String user_id) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("address", address);
-	    params.put("user_id", user_id);
-	    return session.selectOne(ns + "findUserByAddressAndUserId", params);
 	}
 	
 	

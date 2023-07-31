@@ -15,12 +15,6 @@ public interface UserDao {
 	// 아이디 찾기
 	
 	UserDto findUserByAddressAndPhoneNumber(String address,String phone_number);
-	
-	// 패스워드 업데이트
-		void updatePassword(UserDto dto);
-		
-		// 비밀번호 찾기
-		UserDto findUserByAddressAndUserId(String address, String user_id);
 
 	UserDto userGet(String user_id);
 	int mypageEdit(UserDto dto);

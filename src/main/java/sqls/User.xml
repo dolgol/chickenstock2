@@ -37,26 +37,6 @@
     </select>
     
     
-    <!-- 비밀번호 업데이트 -->
-	<update id="updatePassword" parameterType="ssg.com.a.dto.UserDto">
-		UPDATE users
-		SET password = #{password}
-		WHERE user_id = #{user_id}
-	</update>
-	
-	<!-- 아이디 이메일로 사용자 찾기 / 비번 찾기용 -->
-	<select id="findUserByAddressAndUserId" parameterType="java.util.Map" resultType="ssg.com.a.dto.UserDto">
-		    SELECT *
-		    FROM users
-		    WHERE address = #{address} AND user_id = #{user_id}
-	</select>
-    
-    
-    
-    
-    
-   
-    
     <delete id="userDelete" parameterType="String">
     	delete
 		from users

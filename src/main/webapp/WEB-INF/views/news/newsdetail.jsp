@@ -8,11 +8,11 @@
 
 <%
 	UserDto login = (UserDto)session.getAttribute("login");
-	if(login == null || login.getUser_id().equals("")){
+	if(login == null){
 		%>  
-		<script>
+		<script type="text/javascript">
 		alert("로그인 해 주십시오");
-		location.href = "login.do";
+		location.href("login.do");
 		</script>
 		<%
 	}
@@ -22,6 +22,7 @@
 
 	NewsDto dto = (NewsDto)request.getAttribute("newsdto");
 	List<NewsComment> comDtoList = (List)request.getAttribute("comdto");
+	int commentCount = (Integer)request.getAttribute("commentCount");
 	int j = 0;
 	int pageBbs = (Integer)request.getAttribute("pagenews");
 	NewsParam param = (NewsParam)request.getAttribute("param");
@@ -51,7 +52,7 @@ td{
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 2px;
 }
 #replyUsername {
     padding: 5px;
@@ -134,10 +135,30 @@ textarea {
 	height: auto; /* This allows the height of the button to adapt based on its content */
     white-space: nowrap;
 	}
+	
 	.mypage-delete:hover {
 		color: #fff;
 		border-color: #ff9406;
 		background-color: #ff9406;
+	}
+	.mypage-btn {
+	border: solid 1px #EAE8E6;
+	line-height: 25px;
+	transition: 0.2s;
+	height: 25px; /* This allows the height of the button to adapt based on its content */
+    white-space: nowrap;
+    font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-left: 8px;
+	padding-right: 8px;
+   
+	}
+	.mypage-btn:hover {
+	color: #fff;
+	border-color: #ff9406;
+	background-color: #ff9406;
 	}
 </style>
 <script type="text/javascript" src="jquery/jquery.twbsPagination.min.js"></script>
@@ -145,14 +166,16 @@ textarea {
 <body onload="newsViewUpdate(<%=dto.getSeq() %>)">
 <br><br>
 <main class="container my-4 w-75 m-auto">
-    <div class="mypage-container-top">뉴스 상세 페이지</div>
+    <div class="mypage-container-top">뉴스 게시판</div>
 <br>
 
 <% if(login != null){ %>
 
 <table class="table table-hover">
 <col width="150px"><col width="500px">
-
+<tr>	
+	<td colspan="2" style="font-size: 22px;font-weight: bold;line-height: 28px;"><%=dto.getTitle() %></td>
+</tr>
 <tr>
 	<th>작성자</th>
 	<td><%=dto.getWrite_id()%></td><!-- dto.getWrite_id() --> 
@@ -165,18 +188,18 @@ textarea {
 	<th>조회수</th>
 	<td><%=dto.getViews() %></td>	
 </tr>
-<%if (dto.getSource() != null){ %>
+<%if (dto.getSource() == null || dto.getSource().equals("")){ %>
+<%} else { %>
 <tr>
 	<th>원본 기사</th>
 	<td><a href='<%=dto.getSource()%>' target='_blank' rel='noreferrer noopener'><%=dto.getSource()%></a></td>	
 </tr>
 <%} %>
+
 <tr>	
-	<td colspan="2" style="font-size: 22px;font-weight: bold;line-height: 28px;"><%=dto.getTitle() %></td>
-</tr>
-<tr>	
-	<td colspan="2" style="background-color: white;">
-		<input rows="3" cols="30" id="content" class="form-control" readonly style="border: none; font-size: 20px;font-family: 고딕, arial;background-color: white"><%=dto.getContent() %></input>
+	<td colspan="2" style="background-color: white;padding:30px;font-family: 고딕, arial;" >
+		<!-- <input rows="3" cols="30" id="content" class="form-control" readonly style="border: none; font-size: 20px;font-family: 고딕, arial;background-color: white; padding: 0px"></input> -->
+		<%=dto.getContent() %>
 	</td>
 </tr>
 </table>
@@ -187,9 +210,11 @@ textarea {
 <%
 if(login != null && login.getAuth() == 1){
 	%>
-	<button type="button" class="btn mypage-delete" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">글수정</button>
+	<button type="button" class="btn mypage-delete" onclick="cancel()">목록</button>
+
+	<button type="button" class="btn mypage-delete" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">수정</button>
 	
-	<button type="button" class="btn mypage-delete" onclick="deletenews(<%=dto.getSeq() %>)">글삭제</button>
+	<button type="button" class="btn mypage-delete" onclick="deletenews(<%=dto.getSeq() %>)">삭제</button>
 	<%	
 }
 %>
@@ -225,7 +250,11 @@ function deletenews( seq ) {
 <div id="app" class="container">
 <form action="commentWrite.do" method="post">
 <input type="hidden" name="seq" id="seq" value="<%=dto.getSeq() %>">
+<% if (login != null) { %>
 <input type="hidden" name="user_id" id="user_id" value="<%=login.getUser_id() %>">
+<% } else { %>
+<input type="hidden" name="user_id" id="user_id" value="">
+<% } %>
 <input type="hidden" name="pageNumber" id="pageNumber" value="<%=param.getPageNumber() %>">
 
 <table>
@@ -273,8 +302,8 @@ if (comDtoList.size() == 0){
     <div class="replyInput">
         <textarea rows="3" class="form-control" name="replyContent" id="replyContent"></textarea>
         <div class="buttonContainer">
-            <button type="button" class="btn mypage-delete" onclick="sendReply()">완료</button> 
-            <button type="button" class="btn mypage-delete" onclick="cancelReply()">취소</button>
+            <button type="button" class="btn mypage-btn" onclick="sendReply()">완료</button> 
+            <button type="button" class="btn mypage-btn" onclick="cancelReply()">취소</button>
         </div>
     </div>
 </td>
@@ -338,16 +367,16 @@ $(document).ready(function(){
 				let str = "";
 				let padding_range = (item.depth*25);
 				if (del == 0){
-					count ++;
+					
 					console.log("Condition met: del == 0");
 					str = "<tr class='tr-hover' >"
 						+		"<td><div ' style='padding-left:" + padding_range + "px;'>" + item.user_id + "</div></td>"
 						+		"<td class='text'>" + item.write_date + "</td>"
-						+		"<td>"
-						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-delete' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
+						+		"<td style='padding: 2px;'>"
+						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-btn' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
 						+		"</td>"
-						+		"<td>"
-						+			"<button type='button' class='commentDelete btn mypage-delete' onclick='commentDelete(" + post_num + "," + item.seq + "," + item.pageNumber +")'>X</button>"
+						+		"<td style='padding: 2px;'>"
+						+			"<button type='button' class='commentDelete btn mypage-btn' onclick='commentDelete(" + post_num + "," + item.seq + "," + item.pageNumber +")'>삭제</button>"
 						+		"</td>"
 						+	"</tr>"
 						+	"<tr id='commentRow-" + item.seq + "'>"
@@ -360,7 +389,7 @@ $(document).ready(function(){
 						+		"<td>" + item.write_date + "</td>"
 						+	"<tr>"
 						+		"<td colspan='2'><div ' style='padding-left:" + padding_range + "px;'>"
-						+			"<font color='#ff0000'> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>"
+						+			"<font color='#ff0000' style='opacity: 0.5;'> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>"
 						+	  	"</div></td>"
 						+	"</tr>"
 						+	"</tr>"
@@ -370,7 +399,7 @@ $(document).ready(function(){
 						
 				$("#tbody").append(str);
 			});
-			$("#comment-count").text(count);
+			$("#comment-count").text(<%=commentCount%>);
 
 		},
 		error:function(){
@@ -380,7 +409,9 @@ $(document).ready(function(){
 	});
 	
 })
-
+function cancel( ) {
+	location.href = "newslist.do";
+}
 function reply(post_num, comment_user_id, seq) {
     const replyInputBox = $("#replyInput");
     const commentRow = $("#commentRow-" + seq);

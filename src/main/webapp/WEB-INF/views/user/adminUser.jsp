@@ -5,7 +5,8 @@
     
 <%
 	
-	List<UserDto> userList = (List<UserDto>)request.getAttribute("userList");
+	/* List<UserDto> userList = (List<UserDto>)request.getAttribute("userList"); */
+	List<UserDto> userList = (List<UserDto>)request.getAttribute("");
 	
 	int pageBbs = (Integer)request.getAttribute("pageBbs");
 	int pageNumber = (Integer)request.getAttribute("pageNumber");
@@ -72,10 +73,6 @@
 		color: #4E4E4E;
 		background-color: #EAE8E6;
 	}
-	
-	.mypage-container .table-hover tbody tr {
-		transition: 0.2s;
-	}
 
 </style>
 
@@ -89,7 +86,7 @@
 		
 		<div>
 			<form>
-				<table class="table table-hover w-100 m-auto text-center">
+				<table class="table w-100 m-auto text-center">
 					<thead>
 						<tr>
 							<!-- <th>
@@ -133,38 +130,31 @@
 												<%=user.getUser_id() %>
 											</td>
 											<td>
-												<%=user.getUser_name() == null ? "-" : user.getUser_name() %>
+												<%=user.getUser_name() %>
 											</td>
 											<td>
-												<%=user.getNick_name() == null ? "-" : user.getNick_name() %>
+												<%=user.getNick_name() %>
 											</td>
 											<% 
-											if(user.getSex() == null || user.getSex().equals("")) {
+											if(user.getSex().equals("female")) {
 												%>
-												<td>-</td>
+												<td>여</td>
 												<%
 											}
 											else {
-												if(user.getSex().equals("female")) {
-													%>
-													<td>여</td>
-													<%
-												}
-												else if(user.getSex().equals("male")) {
-													%>
-													<td>남</td>
-													<%
-												}
+												%>
+												<td>남</td>
+												<%
 											}
 											%>
 											<td>
-												<%=user.getBirthday() == null ? "-" : user.getBirthday() %>
+												<%=user.getBirthday() %>
 											</td>
 											<td>
-												<%=(user.getPhone_number() == null || user.getPhone_number().equals("")) ? "-" : user.getPhone_number() %>
+												<%=user.getPhone_number() %>
 											</td>
 											<td>
-												<%=user.getAddress() == null ? "-" : user.getAddress() %>
+												<%=user.getAddress() %>
 											</td>
 										</tr>
 										<%

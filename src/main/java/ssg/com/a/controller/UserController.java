@@ -30,11 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.List;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -42,7 +38,6 @@ import org.springframework.http.HttpStatus;
 import ssg.com.a.dto.MypageParam;
 import ssg.com.a.dto.UserDto;
 import ssg.com.a.dao.UserDao; // 카카오 로그인 DB 저장을 위함
-import ssg.com.a.service.EmailService;
 import ssg.com.a.service.UserService;
 
 @Controller
@@ -54,19 +49,10 @@ public class UserController {
 	@Autowired
 	private UserDao userDao; // 카카오 로그인 db 저장
 	
-	
-	@GetMapping("main.do")
-	public String main() {
-		System.out.println("UserController main() " + new Date());
-		return "main";
-	}
-	
-	
 	@RequestMapping(value = "login.do")
-	public String login(Model model) {
+	public String login() {
 		System.out.println("UserController login() " + new Date());
-		model.addAttribute("content", "login");
-	    return "main";
+		return "login";
 	}
 	
 	@PostMapping("loginAf.do")
@@ -76,23 +62,22 @@ public class UserController {
 	      UserDto dto = service.login(user);
 	      String loginmsg = "LOGIN_NO";
 
-	      if (dto != null) {
-	          // 사용자가 입력한 비밀번호를 해시화하여 저장된 해시된 비밀번호와 비교
-	          String hashedPassword = sha256(user.getPassword()); // 해시 함수를 적용한 비밀번호
+	      // 사용자가 입력한 비밀번호를 해시화하여 저장된 해시된 비밀번호와 비교
+	      String hashedPassword = sha256(user.getPassword()); // 해시 함수를 적용한 비밀번호
 
-	         // System.out.println("해시 전 비밀번호 : " + user.getPassword());
-	         // System.out.println("해시 후 비밀번호 : " + hashedPassword);
-	         // System.out.println("실제 db 저장되는 비밀번호 : " + dto.getPassword());
+	       System.out.println("해시화 전 원래 비밀번호 : " + user.getPassword());
+	       System.out.println("해시화된 비밀번호 : " + hashedPassword);
+	       System.out.println("db에 저장된 비밀번호 : " + dto.getPassword());
 
-	          if (dto.getPassword().equals(hashedPassword)) {
-	              request.getSession().setAttribute("login", dto); // session에 저장
-	              request.getSession().setAttribute("loginType", "local"); // 로컬 로그인 유형 세션 저장
-	              loginmsg = "LOGIN_YES";
-	          }
+	      if (dto != null && dto.getPassword().equals(hashedPassword)) {
+	         request.getSession().setAttribute("login", dto); // session에 저장
+	         request.getSession().setAttribute("loginType", "local"); // 로컬 로그인 유형 세션 저장
+	         loginmsg = "LOGIN_YES";
 	      }
-	      model.addAttribute("loginmsg", loginmsg);
-	      return "message";
 
+	      model.addAttribute("loginmsg", loginmsg);
+
+	      return "message";
 	   }
 	
 	@RequestMapping(value = "logout.do")
@@ -104,25 +89,23 @@ public class UserController {
 
 	    //로그아웃 처리 (로컬 or 카카오)
 	    request.getSession().removeAttribute("login");
-	    
-	    response.sendRedirect("home.do");
-	}
-	/*    // 로그인 유형에 따른 리다이렉트
+
+
+	    // 로그인 유형에 따른 리다이렉트
 	    if ("kakao".equals(loginType)) {
 	        // 카카오 로그아웃 페이지로 리다이렉트
 	        response.sendRedirect("https://accounts.kakao.com/logout?continue=http://localhost:9600/chickenstock/login.do");
 	    } else {
 	        response.sendRedirect("home.do");
 	    }
-	}*/
+	}
 
 
 
 	@GetMapping("regi.do")
-	public String regi(Model model) {
+	public String regi() {
 		System.out.println("UserController regi() " + new Date());
-		model.addAttribute("content", "regi");
-	    return "main";
+		return "regi";
 	}
 	
 	@PostMapping("regiAf.do")
@@ -153,10 +136,10 @@ public class UserController {
 	
 	private boolean isValidUserInfo(UserDto user) {
 		
-		// 아이디, 비밀번호, 닉네임, 이메일이 비어있을경우 false
+		// 아이디, 비밀번호, 이름, 이메일이 비어있을경우 false
 	    if (user.getUser_id().trim().isEmpty()
 	        || user.getPassword().trim().isEmpty()
-	        || user.getNick_name().trim().isEmpty()
+	        || user.getUser_name().trim().isEmpty()
 	        || user.getAddress().trim().isEmpty()) {
 	        return false;
 	    }
@@ -220,6 +203,7 @@ public class UserController {
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 	    }
 	}
+
 	
 	// 카카오톡 로그인
 	
@@ -268,13 +252,13 @@ public class UserController {
 	            if (idCount == 0) {
 	                int result = userDao.adduser(userDto);  // userDao.addUser 메소드를 호출합니다.
 	                if(result > 0){
-	                    System.out.println("등록에 성공했습니다.");
+	                    System.out.println("User added successfully");
 	                }
 	                else{
-	                    System.out.println("등록에 실패하였습니다.");
+	                    System.out.println("Failed to add user");
 	                }
 	            } else {
-	                System.out.println("해당 정보의 유저가 이미 존재합니다.");
+	                System.out.println("User already exists");
 	            }
 
 	            // 세션에 사용자 정보 저장
@@ -284,7 +268,7 @@ public class UserController {
 	            System.out.println("kakaoLogin Success (5)");
 
 	            // 로그인 성공 후 메인 페이지로
-	            return "redirect:/home.do";
+	            return "redirect:/main.do";
 	        } else {
 	            // 요청에 실패한 경우, 실패 메시지를 RedirectAttributes에 담아서 리다이렉트
 	            redirectAttributes.addFlashAttribute("errorMsg", "카카오 로그인에 실패했습니다.");
@@ -299,89 +283,12 @@ public class UserController {
 	}
 	
 	
-	private final EmailService emailService;
-
-	   @Autowired
-	   public UserController(EmailService emailService) {
-	      this.emailService = emailService;
-	   }
-
-	@PostMapping("findPw.do")
-	public ResponseEntity<Map<String, Object>> sendVerificationCode(@RequestBody UserDto userDto, HttpSession session) {
-	   Map<String, Object> response = new HashMap<>();
-
-	   // 아이디와 이메일로 사용자 확인
-	   UserDto foundUser = service.findUserByAddressAndUserId(userDto.getAddress(), userDto.getUser_id());
-
-	   if (foundUser == null) {
-	      response.put("success", false);
-	      response.put("message", "이메일 주소가 일치하지 않습니다.");
-	      return ResponseEntity.ok(response);
-	   }
-
-	   // 이메일(주소) 확인
-	   if (!foundUser.getAddress().equals(userDto.getAddress())) {
-	      response.put("success", false);
-	      response.put("message", "이메일 주소가 일치하지 않습니다.");
-	      return ResponseEntity.ok(response);
-	   }
-
-	   // 인증번호 생성
-	   Random random = new Random();
-	   String verificationCode = String.format("%06d", random.nextInt(1000000));
-	   // 인증번호 세션에 저장
-	   session.setAttribute("verificationCode", verificationCode);
-	   session.setAttribute("foundUser", foundUser);
-	   // 이메일로 인증번호 발송
-	   emailService.sendVerificationEmail(userDto.getAddress(), verificationCode);
-
-	   response.put("success", true);
-	   response.put("message", "이메일로 인증번호가 전송되었습니다. 해당 이메일을 확인해주세요.");
-	   return ResponseEntity.ok(response);
+	@GetMapping("main.do")
+	public String main() {
+		System.out.println("UserController main() " + new Date());
+		return "main";
 	}
-
-	@PostMapping("verifyCode.do")
-	public ResponseEntity<Map<String, Object>> verifyCode(@RequestBody Map<String, String> payload, HttpSession session) {
-	   Map<String, Object> response = new HashMap<>();
-
-	   String receivedCode = payload.get("verificationCode");
-
-	   String verificationCode = (String) session.getAttribute("verificationCode");
-	   
-	   if (!verificationCode.equals(receivedCode)) {
-	      response.put("success", false);
-	      response.put("message", "인증번호가 일치하지 않습니다.");
-	      return ResponseEntity.ok(response);
-	   }
-
-	   response.put("success", true);
-	   response.put("message", "인증되었습니다.");
-	   return ResponseEntity.ok(response);
-	}
-
-	@PostMapping("resetPassword.do")
-	public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody UserDto userDto, HttpSession session) {
-	   Map<String, Object> response = new HashMap<>();
-
-	   UserDto foundUser = (UserDto) session.getAttribute("foundUser");
-	   
-	   // 비밀번호 변경
-	   String hashedPassword = sha256(userDto.getNewPassword());
-	   foundUser.setPassword(hashedPassword);
-
-	   try {
-	      service.updatePassword(foundUser); // Update the user with hashed password
-	      response.put("success", true);
-	      response.put("message", "비밀번호가 새로 설정되었습니다. 바뀐 비밀번호로 로그인해주세요.");
-	   } catch (Exception e) {
-	      response.put("success", false);
-	      response.put("message", "비밀번호 재설정에 실패하였습니다.");
-	   }
-
-	   return ResponseEntity.ok(response);
-	}
-
-
+	
 	// 비밀번호 해시화 (SHA-256 사용)
 	   public static String sha256(String pw) {
 	      try {

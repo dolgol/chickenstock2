@@ -98,10 +98,6 @@
 		color: #FF9406 !important;
 	}
 	
-	.like-empty > td {
-		pointer-events: none;
-	}
-	
 	#posts-container > .mypage-no-like:hover {
 		background-color: #fff;
 		cursor: default;
@@ -191,7 +187,7 @@
 				
 				if(response.length == 0) {
 					hasMorePosts = false;
-					$("#posts-container").append('<tr class="like-empty"> <td> </td> <td> </td> <td> </td> </tr>');
+					$("#posts-container").append('<tr> <td> </td> <td> </td> <td> </td> </tr>');
 					return;
 				}
 				

@@ -1,17 +1,12 @@
 package ssg.com.a.controller;
 
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.tribes.ChannelMessage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -81,11 +76,6 @@ public class StockController {
 			Elements aTags = element.select("a");
 			element.select(".blank_06").remove();
 	        element.select(".blank_08").remove();
-	        
-	        element.select("tr").attr("onmouseover", "mouseOver(this)");
-	        element.select("tr").attr("onmouseout", "mouseOut(this)");
-	        element.select("tr:first-child").removeAttr("onmouseover");
-	        element.select("tr:first-child").removeAttr("onmouseout");
 			for(Element aTag : aTags) {
 				String hrefValue = aTag.attr("href");
 				if (hrefValue != null && hrefValue.startsWith("/item/main.naver")) {
@@ -156,7 +146,7 @@ public class StockController {
 	
 	@GetMapping("stocksdetail.do")
 	public String stockdetail(@RequestParam("symbol") String symbol, Model model,
-			HttpSession session/* , @RequestParam("pageNumber") Integer pageNumber, int seq */, HttpServletResponse response) throws Exception{
+			HttpSession session/* , @RequestParam("pageNumber") Integer pageNumber, int seq */) throws Exception{
 		System.out.println("StockController stocksdetail() " + new Date());	
 
 		String URL = "https://finance.naver.com/item/main.naver?code=";
@@ -164,17 +154,6 @@ public class StockController {
 		StocksDto dto = service.stocksdetail(symbol);
 		List<StocksComment> comment = service.stockscommentlist(symbol);
 		UserDto user = (UserDto)session.getAttribute("login");
-		if(user == null ) {
-			
-			String msg = "로그인 해 주십시오";			
-			response.setContentType("text/html; charset=utf-8");
-			PrintWriter w = response.getWriter();
-			w.write("<script>alert('"+msg+"'); window.location.href='login.do';</script>");
-			w.flush();
-			w.close();
-	        
-		};
-		
 		String user_id = user.getUser_id();
 		List<StockLike> list = service.getlike(user_id);
 		
@@ -205,16 +184,14 @@ public class StockController {
 			element.select("onclick").remove();
 			element.select(".summary").remove();
 			
-			
-			Element first = element.select(".wrap_company h2").first(); 
-			Element ele = new Element("i"); // 폰트어썸아이콘추가 
-			ele.html("<span id='icon'><i class=\"fas fa-solid fa-heart\"></i></span>"); 
-			first.appendChild(ele);			
+			Element first = element.children().first();
+			Element ele = new Element("i");		// 폰트어썸아이콘추가
+			ele.html("&nbsp;&nbsp;&nbsp;<div id='icon'><i class=\"fa-solid fa-heart\"></i></div>");
+			first.appendChild(ele);
 			
 			stock.add(element.toString());
 			
 			}
-			System.out.println(stock);
 			
 		//오늘가격1x
 		elements = doc.select(".today");
@@ -224,19 +201,13 @@ public class StockController {
 			}
 		// 전일, 시가, 고가, 저가, 거래량, 거래대금2,3x
 			elements = doc.select(".no_info tbody tr:nth-child(1)");
-			for(Element element : elements) {	
-				element.select(".sptxt.sp_txt6").remove();
-				element.select(".sptxt.sp_txt8").remove();
-				element.select(".no_cha").remove();
+			for(Element element : elements) {
 				stock.add(element.toString());
 				
 			}
 						
 			elements = doc.select(".no_info tbody tr:nth-child(2)");
 			for(Element element : elements) {
-				element.select(".sptxt.sp_txt7").remove();
-				element.select(".sptxt.sp_txt8").remove();
-				element.select(".no_cha").remove();
 				stock.add(element.toString());
 				
 			}
@@ -252,12 +223,6 @@ public class StockController {
 			// 투자정보 5o
 			elements = doc.select("#aside .aside_invest_info .tab_con1");
 			for(Element element : elements) {
-				
-				element.select(".gray table tbody tr:nth-child(3) th a").remove();
-				element.select(".per_table tbody tr th a").remove();
-				element.select(".tab_con1").attr("class", "table text-center");
-				element.select("table tr td").removeAttr("style");
-				element.select("caption").remove();
 				stock.add(element.toString());
 
 			}
@@ -265,12 +230,6 @@ public class StockController {
 			elements = doc.select(".sub_section");
 			for(Element element : elements) {
 				element.select("caption").remove();
-				Elements spanElements = doc.select(".h_th.th_deal_amount span");
-					for(Element span : spanElements) {
-						span.text("거래량");		//거개량으로 나오는 오류 수정				
-					}				
-				element.select("tb_type1").attr("class", "table");
-				
 				stock.add(element.toString());
 
 			}						
@@ -311,10 +270,10 @@ public class StockController {
 			System.out.println("댓글 작성에 실패했습니다");
 		}
 		
-		// model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
+		model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
 		
 		// redirect == sendRedirect  
-		return "redirect:/stocksdetail.do?symbol="+symbol;
+		return "main";
 	}
 	
 	@GetMapping("like.do")
@@ -353,7 +312,13 @@ public class StockController {
 	 * return "message";
 	 * 
 	 * }
-	 */	
+	 */
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("mypageLike.do")
 	public String mypageLike(Model model, HttpServletRequest request) {

@@ -17,8 +17,6 @@
 <meta charset="UTF-8">
 <title>CHICKEN STOCK</title>
 
-<link rel="icon" href="./images/favicon.png" type="image/x-icon" sizes="16x16">
-
 <!-- bootstrap -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -58,6 +56,27 @@
 	.main-table {
 		width: 100%;
 	}
+	
+	/* .btn-primary {
+		background-color: #ff9406;
+		border-color: #ff9406;
+	}
+	
+	.btn-primary:hover {
+		background-color: #ef7d00;
+		border-color: #ef7d00;
+	}
+	
+	.btn-outline-primary {
+		color: #ff9406;
+		border-color: #ff9406;
+	}
+	
+	.btn-outline-primary:hover {
+		color: #fff;
+		background-color: #ff9406;
+		border-color: #ff9406;
+	} */
 
 </style>
 
