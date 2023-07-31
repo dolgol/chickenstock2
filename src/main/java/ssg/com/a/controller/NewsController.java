@@ -81,7 +81,6 @@ public class NewsController {
 	@GetMapping("newslist.do")
 	public String newslist(NewsParam param, Model model) {
 		System.out.println("NewsController newslist() " + new Date());
-		System.out.println(param.toString());
 		
 		if(param == null || param.getSearch() == null || param.getChoice() == null) {
 			param = new NewsParam("", "", 0);
@@ -338,7 +337,7 @@ public class NewsController {
 	        	}
 	        	
 	        	String title = headline.select("div > a").text();
-	        	System.out.println("title = " + title);
+				/* System.out.println("title = " + title); */
 	        	Element linkElement = headline.selectFirst("a");
 	        	String link = linkElement.absUrl("href");
 	        	
@@ -367,11 +366,11 @@ public class NewsController {
 	                }else {
 	                	findPublished = 0;
 	                }
-	                System.out.println("Published= " + findPublished);
+					/* System.out.println("Published= " + findPublished); */
 	                int findET = articleDateTemp.indexOf("ET");
 	                
 	                articleDate = articleDateTemp.substring(findPublished, findET);
-	                System.out.println("articleDate= " + articleDate);
+					/* System.out.println("articleDate= " + articleDate); */
 	        		
 	        		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
 	        		//System.out.println("paragraphs: " + paragraphs.toString());
@@ -563,7 +562,9 @@ public class NewsController {
 		
 		//System.out.print("\n after extractSummary\n: " + responseJsonTemp);
 		String responseJsonResult = translateToKorean(responseJsonTemp);
-		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
+		/*
+		 * System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
+		 */
 	    return responseJsonResult; 
 	    
 	}
@@ -577,7 +578,7 @@ public class NewsController {
 		
 		UserDto login = (UserDto)request.getSession().getAttribute("login");
 		
-		System.out.println(" 1 >> " + param.toString());
+		/* System.out.println(" 1 >> " + param.toString()); */
 		if(param == null) {
 			param = new MypageParam(login.getUser_id(), 0);
 		}
@@ -585,7 +586,7 @@ public class NewsController {
 		if(param.getUser_id() == null) {
 			param.setUser_id(login.getUser_id());
 		}
-		System.out.println(" 2 >> " + param.toString());
+		/* System.out.println(" 2 >> " + param.toString()); */
 		
 		List<MypageNewsComment> list = service.mypageNewsCommentList(param);
 		

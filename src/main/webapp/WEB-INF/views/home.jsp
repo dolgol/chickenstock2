@@ -222,7 +222,7 @@
 				<table id="capsc" class="table table-hover">
 					<thead>
 						<tr class="home-table-top">
-							<th>번호</th> <th>종목명</th> <th>현재가</th> <th>전일비</th> 
+							<th>N</th> <th>종목명</th> <th>현재가</th> <th>전일비</th> 
 							<th>등락률</th> <th>액면가</th> <th>시가총액</th> <th>상장주식수</th> 
 							<!-- <th>외인비율</th> <th>거래량</th> <th>PER</th> <th>ROE</th> -->	
 						</tr>	 

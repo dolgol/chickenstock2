@@ -24,16 +24,15 @@ CREATE TABLE users (
 );
 
 CREATE TABLE stocks(
-   Symbol         VARCHAR(8) NOT NULL PRIMARY KEY
-  ,Market         VARCHAR(6) NOT NULL
-  ,Name           VARCHAR(21) NOT NULL
+   Symbol         VARCHAR(50) NOT NULL PRIMARY KEY
+  ,Market         VARCHAR(60) NOT NULL
+  ,Name           VARCHAR(50) NOT NULL
   ,Sector         VARCHAR(37)
   ,Industry       VARCHAR(112)
   ,ListingDate    DATE 
-  ,SettleMonth    VARCHAR(3)
+  ,SettleMonth    VARCHAR(30)
   ,Representative VARCHAR(58)
-  ,HomePage       VARCHAR(48)
-  ,Region         VARCHAR(7)
+  ,HomePage       VARCHAR(48) 
 );
 
 
@@ -94,6 +93,9 @@ add foreign key(Symbol) references stocks(Symbol);
 alter table stocks_like 
 add foreign key(user_id) references users(user_id);
 
+ALTER TABLE stocks_comment 
+ADD FOREIGN KEY(user_id) REFERENCES users(user_id);
+
 drop table if exists users;
 drop table if exists stocks;
 drop table if exists stocks_comment;
@@ -106,19 +108,14 @@ add foreign key(user_id) references users(user_id);
 alter table news_comment 
 add foreign key(user_id) references users(user_id);
 
-ALTER TABLE stocks_comment 
-ADD FOREIGN KEY(user_id) REFERENCES users(user_id);
+
 
 alter table news_comment 
 add foreign key(post_num) references news(seq);
 
-alter table stocks_comment
-add foreign key(post_num) references stocks(Symbol);
 
-select * from stocks_comment;
 
-alter table stocks_comment 
-add foreign key(Symbol) references stocks(Symbol);
+
 
 
 

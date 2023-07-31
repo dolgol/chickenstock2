@@ -428,7 +428,7 @@ public class UserController {
 		public String mypageEditAf(UserDto dto, Model model) {
 			
 			System.out.println("UserController mypageEditAf() " + new Date());
-			System.out.println(dto.toString());
+			/* System.out.println(dto.toString()); */
 			
 			boolean isS = service.mypageEdit(dto);
 			String mypageEditAf_message = "true";

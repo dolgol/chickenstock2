@@ -687,6 +687,9 @@
 						if (data.success) {
 							alert(data.message);
 							$("#findPwModal").modal("hide");
+							setTimeout(function() {
+								window.location.href = "login.do";
+								}, 200);
 						} else {
 							alert(data.message);
 						}

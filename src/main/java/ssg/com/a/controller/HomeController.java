@@ -48,8 +48,7 @@ public class HomeController {
 		/* stocksList */
 		
 		String URL = "https://finance.naver.com/sise/sise_";
-		
-		System.out.println(param.toString());
+
 		System.out.println("StockController stockMain()" + new Date());
 		
 		if(param == null || param.getSearch() == null || param.getChoice() == null) {
@@ -61,8 +60,6 @@ public class HomeController {
 		// 거래량
 		
 		String KEY_WORD = "quant.naver";
-
-		System.out.println("URL :: " + URL + getcount(KEY_WORD, 1));
 
 		// 1. document가져오기
 		Document doc = Jsoup.connect(URL + getcount(KEY_WORD, 1)).get();
