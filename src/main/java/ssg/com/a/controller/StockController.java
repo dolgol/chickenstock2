@@ -64,8 +64,6 @@ public class StockController {
 		
 		String KEY_WORD = "quant.naver";
 
-		System.out.println("URL :: " + URL + getcount(KEY_WORD, 1));
-
 		// 1. document가져오기
 		Document doc = Jsoup.connect(URL + getcount(KEY_WORD, 1)).get();
 
@@ -191,9 +189,6 @@ public class StockController {
 		
 		//크롤링시작-----------------------------------------------------------------------
 		
-
-		System.out.println("URL :: " + URL + symbol);
-		
 		// 1. document가져오기
 		Document doc = Jsoup.connect(URL + symbol).get();
 		
@@ -258,6 +253,11 @@ public class StockController {
 				element.select(".tab_con1").attr("class", "table text-center");
 				element.select("table tr td").removeAttr("style");
 				element.select("caption").remove();
+				element.select(".tbl_type1 tbody tr th a img").remove();
+				element.select(".lwidth tbody tr th a img").remove();
+				element.select(".lwidth tbody tr th a").remove();
+				element.select("#tab_con1 div:nth-child(6)").attr("class", "tdb");
+
 				stock.add(element.toString());
 
 			}
@@ -291,13 +291,8 @@ public class StockController {
 	}
 	
 	@PostMapping("commentWriteAf.do")
-	public String commentWriteAf(StocksComment stocksComment, Model model) {
+	public String commentWriteAf(StocksComment stocksComment, Model model, HttpServletResponse response) throws Exception{
 		System.out.println("StockController commentWriteAf() " + new Date());
-		System.out.println("------------------------------");	
-		System.out.println("작성자 아이디 :"+stocksComment.getUser_id());
-		System.out.println("작성일:"+stocksComment.getWrite_date());
-		System.out.println("작성내용:"+stocksComment.getContent());
-		System.out.println("주식 코드:"+stocksComment.getSymbol());
 		
 		int symbolNum = Integer.parseInt(stocksComment.getSymbol());
 		String symbol = String.format("%06d", symbolNum);
