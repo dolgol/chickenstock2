@@ -13,14 +13,22 @@ public class NewsComment implements Serializable {
 	private int step;
 	private int depth;
 	private int del;
+	private int pageNumber;
 	
 	public NewsComment() {
 	}
-	
+
 	public NewsComment(int post_num, int seq) {
 		super();
 		this.post_num = post_num;
 		this.seq = seq;
+	}
+	
+	public NewsComment(int post_num, int seq, int pageNumber) {
+		super();
+		this.post_num = post_num;
+		this.seq = seq;
+		this.pageNumber = pageNumber;
 	}
 	
 	public NewsComment( int post_num, int seq, String content, String user_id) {
@@ -128,11 +136,19 @@ public class NewsComment implements Serializable {
 		this.del = del;
 	}
 
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(int pageNumber) {
+		this.pageNumber = pageNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "NewsComment [seq=" + seq + ", post_num=" + post_num + ", user_id=" + user_id + ", content=" + content
 				+ ", write_date=" + write_date + ", ref=" + ref + ", step=" + step + ", depth=" + depth + ", del=" + del
-				+ "]";
+				+ " pageNumber= " + pageNumber + "]";
 	}
 
 	

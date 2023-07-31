@@ -88,14 +88,21 @@
 
 <update id="newsupdate" parameterType="ssg.com.a.dto.NewsDto" >
 	update news 
-	set title=#{title}, content=#{content} ,source=#{source}
+	set title=#{title}, content=#{content}, source=#{source}, write_id=#{write_id}
 	where seq=#{seq}
 </update>
 
 <update id="newsdelete" parameterType="ssg.com.a.dto.NewsDto">
-	update news
-	set del=1, title="", content="", source="", views=null, publication_date = "", write_id=""
-	where seq=#{seq}
+    update news 
+    set del = 1,
+        title = "",
+        content = "",
+        source = "",
+        views = null,
+        publication_date = "",
+        write_id = "",
+        user_id = null
+    where seq = #{seq}
 </update>
 
 <!-- 답글 -->

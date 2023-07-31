@@ -623,13 +623,13 @@
 					}),
 					success : function(data) {
 						if (data.success) {
-							alert(data.message);
+							//alert(data.message);
 						} else {
-							alert(data.message);
+							//alert(data.message);
 						}
 					},
 					error : function() {
-						alert('Error while sending verification code.');
+						//alert('Error while sending verification code.');
 					}
 				});
 			});
@@ -648,14 +648,14 @@
 					}),
 					success : function(data) {
 						if (data.success) {
-							alert(data.message);
+							//alert(data.message);
 							isCertified = true;
 						} else {
-							alert(data.message);
+							//alert(data.message);
 						}
 					},
 					error : function() {
-						alert('Error during verification.');
+						//alert('Error during verification.');
 					}
 				});
 			});
@@ -685,14 +685,17 @@
 					}),
 					success : function(data) {
 						if (data.success) {
-							alert(data.message);
+							//alert(data.message);
 							$("#findPwModal").modal("hide");
+							setTimeout(function() {
+								window.location.href = "login.do";
+							}, 200);
 						} else {
-							alert(data.message);
+							//alert(data.message);
 						}
 					},
 					error : function() {
-						alert('Error while resetting password.');
+						//alert('Error while resetting password.');
 					}
 				});
 			});

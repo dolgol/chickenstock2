@@ -309,18 +309,8 @@ if(search != ""){
 
 function searchBtn() {
 	let choice = document.getElementById("choice").value;
-//	let choice = $("#choice").val();
 	let search = document.getElementById("search").value;
-	/*
-	if(choice.trim() == ""){
-		alert("카테고리를 선택해 주십시오");
-		return;
-	}
-	if(search.trim() == ""){
-		alert("검색어를 입력해 주십시오");
-		return;
-	}
-	*/
+
 	location.href = "newslist.do?choice=" + choice + "&search=" + search;
 }
 
