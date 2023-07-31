@@ -339,11 +339,13 @@ $(document).ready(function() {
 	var likedSymbolsArray = <%= new Gson().toJson(like) %>;
 	  var currentSymbol = '<%= currentSymbol %>';
 
+
 	  function checkLikedSymbols(symbol) {
 	    return likedSymbolsArray.some(function(item) {
 	      return item.symbol === symbol;
 	    });
 	  }
+<<<<<<< HEAD
     if (checkLikedSymbols(currentSymbol)) {
     	$("#icon").children().css('color', '#FF9406');
     }else{
@@ -371,6 +373,16 @@ $(document).ready(function() {
       }
     
 	
+=======
+	  if (checkLikedSymbols(currentSymbol)) {
+        $("#icon").children().css('color', 'red');
+    }
+});
+
+$(document).ready(function() {
+
+    
+>>>>>>> 77b17afc379623198240b3d4e6e6e7323714d385
     $("#icon").on("click", function() {
         $.ajax({
             url: "like.do",

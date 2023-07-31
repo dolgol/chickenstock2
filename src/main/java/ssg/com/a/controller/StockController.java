@@ -311,7 +311,11 @@ public class StockController {
 			System.out.println("댓글 작성에 실패했습니다");
 		}
 		
+<<<<<<< HEAD
 		
+=======
+		// model.addAttribute("content","redirect:/stocksdetail.do?symbol="+symbol);
+>>>>>>> 77b17afc379623198240b3d4e6e6e7323714d385
 		
 		// redirect == sendRedirect  
 		return "redirect:/stocksdetail.do?symbol="+symbol;

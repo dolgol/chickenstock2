@@ -12,14 +12,17 @@ public class UserDto implements Serializable{
 	private String address;
 	private String nick_name;
 	private int auth;
+	private String newPassword;
 	
 	
 	public UserDto() {
 		
 	}
 
+	
+
 	public UserDto(String user_id, String password, String user_name, String birthday, String sex, String phone_number,
-			String address, String nick_name, int auth) {
+			String address, String nick_name, int auth, String newPassword) {
 		super();
 		this.user_id = user_id;
 		this.password = password;
@@ -30,7 +33,9 @@ public class UserDto implements Serializable{
 		this.address = address;
 		this.nick_name = nick_name;
 		this.auth = auth;
+		this.newPassword = newPassword;
 	}
+
 
 
 	public String getUser_id() {
@@ -38,9 +43,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+
 
 
 	public String getPassword() {
@@ -48,9 +55,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 
 
 	public String getUser_name() {
@@ -58,9 +67,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
+
 
 
 	public String getBirthday() {
@@ -68,9 +79,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
+
 
 
 	public String getSex() {
@@ -78,9 +91,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
 
 
 	public String getPhone_number() {
@@ -88,9 +103,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setPhone_number(String phone_number) {
 		this.phone_number = phone_number;
 	}
+
 
 
 	public String getAddress() {
@@ -98,9 +115,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 
 
 	public String getNick_name() {
@@ -108,9 +127,11 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setNick_name(String nick_name) {
 		this.nick_name = nick_name;
 	}
+
 
 
 	public int getAuth() {
@@ -118,9 +139,23 @@ public class UserDto implements Serializable{
 	}
 
 
+
 	public void setAuth(int auth) {
 		this.auth = auth;
 	}
+
+
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
 
 
 	@Override

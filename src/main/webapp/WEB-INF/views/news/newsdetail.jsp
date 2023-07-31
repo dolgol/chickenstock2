@@ -38,16 +38,119 @@ th{
 td{
 	text-align: left;	
 }
+
+
+.replyInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+#replyUsername {
+    padding: 5px;
+    font-size: 0.9em;
+}
+#replyContent {
+	flex-grow: 1; /* Add this line */
+
+}
+
+.table-info{
+	background-color: #FFFFFF;
+}
+
+.table-info > td{
+	background-color: #FFFFFF;
+}
+
+textarea {
+    resize: none; 
+}
+	.table {
+	   border-color: #EAE8E6;
+	}
+	.table > thead > tr > th {
+	    border-color: #EAE8E6;
+	}
+	.table > tbody > tr > td {
+	    border-color: #EAE8E6;
+	}
+	.table-hover tbody tr{
+	transition: 0.2s;
+	}
+	.table-hover tbody tr:hover {
+	background-color: #EAE8E6;
+	
+	}
+	.tr-hover tr{
+	transition: 0.2s;
+	}
+	.tr-hover tr:hover {
+	background-color: #EAE8E6;
+	
+	}
+	.page-item.disabled .page-link {
+		border-color: #EAE8E6;
+	}
+	
+	.page-item.active .page-link {
+		background-color: #ff9406;
+	    border-color: #ff9406;
+	}
+	
+	.page-link  {
+		color: #4E4E4E;
+	}
+	
+	.page-link:hover  {
+		color: #4E4E4E;
+		background-color: #EAE8E6;
+	}
+	a{
+	color: #4E4E4E;
+	}
+	a:hover{
+	color: #ff9406;
+	text-decoration: none;
+	}
+	
+	.mypage-container-top {
+		font-size: 32px;
+		font-weight: 500;
+		color: #ff9406;
+		margin-bottom: 20px;
+		letter-spacing: -2px !important;
+	}
+	.mypage-delete {
+	border: solid 1px #EAE8E6;
+	transition: 0.2s;
+	height: auto; /* This allows the height of the button to adapt based on its content */
+    white-space: nowrap;
+	}
+	.mypage-delete:hover {
+		color: #fff;
+		border-color: #ff9406;
+		background-color: #ff9406;
+	}
 </style>
 <script type="text/javascript" src="jquery/jquery.twbsPagination.min.js"></script>
 </head>
 <body onload="newsViewUpdate(<%=dto.getSeq() %>)">
 <br><br>
-<div class="center">
+<main class="container my-4 w-75 m-auto">
+    <div class="mypage-container-top">뉴스 상세 페이지</div>
+<br>
 
 <% if(login != null){ %>
 
-<table class="table">
+<table class="table table-hover">
 <col width="150px"><col width="500px">
 
 <tr>
@@ -73,7 +176,7 @@ td{
 </tr>
 <tr>	
 	<td colspan="2" style="background-color: white;">
-		<textarea rows="3" cols="30" id="content" class="form-control" readonly style="border: none; font-size: 20px;font-family: 고딕, arial;background-color: white"><%=dto.getContent() %></textarea>
+		<input rows="3" cols="30" id="content" class="form-control" readonly style="border: none; font-size: 20px;font-family: 고딕, arial;background-color: white"><%=dto.getContent() %></input>
 	</td>
 </tr>
 </table>
@@ -84,9 +187,9 @@ td{
 <%
 if(login != null && login.getAuth() == 1){
 	%>
-	<button type="button" class="btn btn-primary" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">글수정</button>
+	<button type="button" class="btn mypage-delete" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">글수정</button>
 	
-	<button type="button" class="btn btn-primary" onclick="deletenews(<%=dto.getSeq() %>)">글삭제</button>
+	<button type="button" class="btn mypage-delete" onclick="deletenews(<%=dto.getSeq() %>)">글삭제</button>
 	<%	
 }
 %>
@@ -129,14 +232,13 @@ function deletenews( seq ) {
 <col width="1500px"><col width="150px">
 <tr>
 	<td>comment</td>
-	<td style="padding-left: 30px">올리기</td>
 </tr>
 <tr>
 	<td>
 		<textarea rows="3" class="form-control" name="content" id="content"></textarea>
 	</td>
-	<td style="padding-left: 30px ">
-		<button type="submit" class="btn btn-primary btn-block p-4">완료</button>
+	<td style="padding-left: 10px ">
+		<button type="submit" class="btn mypage-delete btn-block p-4" >완료</button>
 	</td>
 </tr>
 
@@ -153,24 +255,31 @@ if (comDtoList.size() == 0){
 </table>
 
 </form>
-<br><br>
+
 
 <table class="table table-sm">
 <col width="500"><col width="500">
 
-<tbody id="tbody">
-	<div id="replyInput" style="display: none;">
-	    <b id="replyUsername"></b>
-	    <br>
-	    <input type="hidden" id="post_num">
-	    <input type="hidden" id="seq">
-	    <input type="hidden" id="ref">
-	    <input type="hidden" id="step">
-	    <input type="hidden" id="depth">
-	    <input type="text" id="replyContent" class="form-control">
-	    <button type="button" class="btn btn-primary" onclick="sendReply()">OK</button>
-	    <button type="button" class="btn btn-secondary" onclick="cancelReply()">Cancel</button>
-	</div>
+<tbody id="tbody" class="tr-hover">
+<table>
+<col width="1500px"><col width="150px"><col width="150px"><col width="150px">
+<td colspan="2" id="replyInput" class="table-content" style="display: none;">
+    <input type="hidden" id="post_num">
+    <input type="hidden" id="seq">
+    <input type="hidden" id="ref">
+    <input type="hidden" id="step">
+    <input type="hidden" id="depth">
+    <b id="replyUsername"></b>
+    <div class="replyInput">
+        <textarea rows="3" class="form-control" name="replyContent" id="replyContent"></textarea>
+        <div class="buttonContainer">
+            <button type="button" class="btn mypage-delete" onclick="sendReply()">완료</button> 
+            <button type="button" class="btn mypage-delete" onclick="cancelReply()">취소</button>
+        </div>
+    </div>
+</td>
+
+</table>
 </tbody>
 
 </table>
@@ -182,7 +291,7 @@ if (comDtoList.size() == 0){
         <ul class="paginationComment" id="paginationComment" style="justify-content:center"></ul>
     </nav>
 </div>
-
+</main>
 <br><br>
 
 <script type="text/javascript">
@@ -231,26 +340,26 @@ $(document).ready(function(){
 				if (del == 0){
 					count ++;
 					console.log("Condition met: del == 0");
-					str = "<tr class='table-info' >"
-						+		"<td><div ' style='padding-left:" + padding_range + "px;'>작성자:" + item.user_id + "</div></td>"
-						+		"<td>작성일:" + item.write_date + "</td>"
+					str = "<tr class='tr-hover' >"
+						+		"<td><div ' style='padding-left:" + padding_range + "px;'>" + item.user_id + "</div></td>"
+						+		"<td class='text'>" + item.write_date + "</td>"
 						+		"<td>"
-						+			"<button type='button' id='replyBtn-" + item.seq + "' class='reply' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
+						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-delete' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
 						+		"</td>"
 						+		"<td>"
-						+			"<button type='button' class='commentDelete' onclick='commentDelete(" + post_num + "," + item.seq + ")'>X</button>"
+						+			"<button type='button' class='commentDelete btn mypage-delete' onclick='commentDelete(" + post_num + "," + item.seq + "," + item.pageNumber +")'>X</button>"
 						+		"</td>"
 						+	"</tr>"
 						+	"<tr id='commentRow-" + item.seq + "'>"
-						+		"<td colspan='2' class='table-content'><div <div ' style='padding-left:" + padding_range + "px;'>" + item.content + "</div></td>"
+						+		"<td colspan='2' class='table-content'><div ' style='padding-left:" + padding_range + "px;'>" + item.content + "</div></td>"
 						+	"</tr>"
 				}else{
 					console.log("Condition met: del == 1 '");
 					str = "<tr class='table-info'>"
-						+		"<td><div ' style='padding-left:" + padding_range + "px;'>작성자:" + item.user_id + "</div></td>"
-						+		"<td>작성일:" + item.write_date + "</td>"
+						+		"<td><div ' style='padding-left:" + padding_range + "px;'>" + item.user_id + "</div></td>"
+						+		"<td>" + item.write_date + "</td>"
 						+	"<tr>"
-						+		"<td><div ' style='padding-left:" + padding_range + "px;'>"
+						+		"<td colspan='2'><div ' style='padding-left:" + padding_range + "px;'>"
 						+			"<font color='#ff0000'> ****** 이 글은 작성자에 의해서 삭제되었습니다</font>"
 						+	  	"</div></td>"
 						+	"</tr>"
@@ -287,7 +396,7 @@ function reply(post_num, comment_user_id, seq) {
 }
 function commentDelete( post_num, seq ) {
 
-	location.href = "commentDelete.do?post_num=" + post_num + "&seq=" + seq;
+	location.href = "commentDelete.do?post_num=" + post_num + "&seq=" + seq + "&pageNumber=" + pageNumber ;
 }
 
 function sendReply() {
@@ -339,6 +448,19 @@ function newsViewUpdate(seq) {
         }
     });
 }
+
+
+$(document).ready(function() {
+    // Existing code
+	$('textarea').on('input', function () {
+	    this.style.height = 'auto';
+	    this.style.height = (this.scrollHeight) + 'px';
+	});
+
+
+});
+
+
 </script>
 
 </div>
