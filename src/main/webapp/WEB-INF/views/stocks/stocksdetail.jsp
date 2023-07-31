@@ -81,6 +81,17 @@ margin-left: 8px;
  .first > table > tbody > tr > th{
  	width: 50%;
  }
+ .tdb table{
+ 	width: 100%;
+ }
+ .tdb table tbody tr td{
+ 	width: 50%;
+ }
+ .tdb table tbody tr th{
+ 	width: 50%;
+ }
+ 
+ 
 .link_site{
 	color: #4E4E4E;
 	cursor: default;
@@ -276,19 +287,23 @@ h2 a{
 
 
 <script type="text/javascript">
+
 // 뒤로가기
 $(document).ready(function(){
+	
 	
 	$("#back").click(function() {
 		location.href = "stockMain.do";
 	});
+	
+	
 	
 });
 
 </script>
 <br><br>
 <div id="app" class="container m-auto w-75">
-  <form action="commentWriteAf.do" method="post">
+  <form action="commentWriteAf.do" method="post" onsubmit="return checkInput();">
   <input type="hidden" name="symbol" value="<%=dto.getSymbol() %>">
   <input type="hidden" name="user_id" value="<%=login.getUser_id()%>">
     <table class="w-75 m-auto">
@@ -297,7 +312,7 @@ $(document).ready(function(){
       <tr>
         <td>
         	<div class="comment-container">
-        	  <label for="commentInput" style="color:#ffffff;">댓글</label>
+        	  <label for="commentInput" style="color:#ffffff;">댓글</label>    	  
 	          <textarea rows="4" cols="15"  class="form-control"  name="content"> </textarea>       
 	          <button type="submit" class="btn btn-light">작성</button>
 	        </div>
@@ -377,7 +392,19 @@ $(document).ready(function() {
 	  if (checkLikedSymbols(currentSymbol)) {
         $("#icon").children().css('color', 'red');
     }
+	  
+	  
 });
+
+
+function checkInput() {
+  var inputText = document.querySelector('.form-control').value;
+  if (inputText.trim().length <= 1) {
+    alert("1글자 이상 입력해주세요");
+    return false; // 폼 제출을 막기 위해 false를 반환
+  }
+}
+
 
 $(document).ready(function() {
 
