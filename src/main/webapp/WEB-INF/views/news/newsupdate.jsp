@@ -127,7 +127,9 @@ textarea {
             <col width="200"><col width="500">
             <tr>
             	<th>아이디</th>
-            	<td style="text-align: left"><%=login.getUser_id() %></td><!-- 원본 기사 작성자로 수정해야함 -->
+            	<td>
+            		<input type="text" class="form-control" name="write_id" style="text-align: left" value="<%=dto.getWrite_id() %>"><!-- 원본 기사 작성자로 수정해야함 -->
+            	</td>
             </tr>
             <tr>
                 <th>제목</th>

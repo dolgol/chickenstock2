@@ -248,7 +248,7 @@ function deletenews( seq ) {
 <br><br>
 <!-- 댓글 -->
 <div id="app" class="container">
-<form action="commentWrite.do" method="post">
+<form onsubmit="return checkInput();" action="commentWrite.do" method="post">
 <input type="hidden" name="seq" id="seq" value="<%=dto.getSeq() %>">
 <% if (login != null) { %>
 <input type="hidden" name="user_id" id="user_id" value="<%=login.getUser_id() %>">
@@ -324,6 +324,14 @@ if (comDtoList.size() == 0){
 <br><br>
 
 <script type="text/javascript">
+function checkInput() {
+	var inputText = document.querySelector('.form-control').value;
+	if (inputText.trim().length < 1) {
+		alert("1글자 이상 입력해주세요");
+		return false;
+	}
+}
+
 $("#paginationComment").twbsPagination({
 	startPage:<%=param.getPageNumber()+1 %>,
 	totalPages:<%=pageBbs %>,
@@ -347,21 +355,13 @@ $(document).ready(function(){
 		data:{seq:<%=dto.getSeq() %>,
 			  pageNumber:<%=param.getPageNumber()%> },
 		success: function(list){
-			/*
-			alert('success');
-			alert(JSON.stringify(list));
-			*/
-			/*
-			for(i = 0; i < list.length; i++){
-				list[i].seq
-				list[i].content
-			}
-			*/
 			
 			// tbody 태그안의 값을 모두 초기화 후 다시 게시
+			
 			$("#tbody").html("");
 			let count = 0;
 			$.each(list, function(i, item){
+				let pageNumber = <%=param.getPageNumber()%>;
 				let post_num = <%=dto.getSeq()%>;
 				let del = item.del;
 				let str = "";
@@ -369,6 +369,7 @@ $(document).ready(function(){
 				if (del == 0){
 					
 					console.log("Condition met: del == 0");
+					
 					str = "<tr class='tr-hover' >"
 						+		"<td><div ' style='padding-left:" + padding_range + "px;'>" + item.user_id + "</div></td>"
 						+		"<td class='text'>" + item.write_date + "</td>"
@@ -376,7 +377,7 @@ $(document).ready(function(){
 						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-btn' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
 						+		"</td>"
 						+		"<td style='padding: 2px;'>"
-						+			"<button type='button' class='commentDelete btn mypage-btn' onclick='commentDelete(" + post_num + "," + item.seq + "," + item.pageNumber +")'>삭제</button>"
+						+			"<button type='button' class='commentDelete btn mypage-btn' onclick='commentDelete(" + post_num + "," + item.seq + "," + pageNumber + ")'>삭제</button>"
 						+		"</td>"
 						+	"</tr>"
 						+	"<tr id='commentRow-" + item.seq + "'>"
@@ -425,11 +426,11 @@ function reply(post_num, comment_user_id, seq) {
     
 	//location.href = "commentAnswer.do?user_id=" + user_id + "&post_num=" + post_num + "&seq=" + seq;
 }
-function commentDelete( post_num, seq ) {
+function commentDelete( post_num, seq, pageNumber ) {
+	console.log("pageNumber = " + pageNumber);
 
 	location.href = "commentDelete.do?post_num=" + post_num + "&seq=" + seq + "&pageNumber=" + pageNumber ;
 }
-
 function sendReply() {
     const post_num = $("#post_num").val();
     const seq = $("#seq").val(); // 댓글에 대한 답글이므로 이것을 parent_seq로 사용합니다.

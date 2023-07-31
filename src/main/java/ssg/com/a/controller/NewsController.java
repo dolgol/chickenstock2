@@ -189,7 +189,6 @@ public class NewsController {
 		model.addAttribute("param", param);
 		model.addAttribute("commentCount", count);
 		model.addAttribute("content", "news/newsdetail");
-		//model.addAttribute("content", "news/newsdetail?seq=" + param.getSeq());
 		return "main";
 	}
 	
@@ -267,9 +266,7 @@ public class NewsController {
 	public List<NewsComment> commentList(int seq, int pageNumber){
 		System.out.println("newsController commentList() "+ seq + " " + new Date());
 		NewsParam param = new NewsParam(seq, pageNumber);
-		//param.setSeq(seq);
 		List<NewsComment> temp = service.commentList(param);
-		//System.out.println(temp.toString());
 				
 		return temp;
 	}
@@ -277,8 +274,9 @@ public class NewsController {
 	
 	
 	@GetMapping("commentDelete.do")
-	public String commentDelete(int post_num, int seq, Model model) {
+	public String commentDelete(int post_num, int seq, int pageNumber, Model model) {
 		System.out.println("NewsController commentDeleteAf() " + new Date());
+		System.out.println("page=" + pageNumber);
 		NewsComment temp = new NewsComment(post_num, seq);
 		NewsComment comDto = service.commentGet(temp);
 
@@ -289,6 +287,7 @@ public class NewsController {
 			message = "COMMENTDELETE_NO";
 		}
 		model.addAttribute("commentDelete", message);
+		model.addAttribute("pageNumber" + pageNumber);
 		
 		return "message";
 		
@@ -297,7 +296,6 @@ public class NewsController {
 	@PostMapping("commentAnswer.do")
 	public String commentAnswer(int post_num, int seq, String content, String user_id, Model model) {
 		System.out.println("NewsController commentAnswer() " + new Date());
-		//System.out.println(content);
 		NewsComment temp = new NewsComment(post_num, seq, content, user_id);
 		NewsComment comDto = service.commentGet(temp);	
 		comDto.setContent(content);
@@ -341,71 +339,63 @@ public class NewsController {
 	        	System.out.println("title = " + title);
 	        	Element linkElement = headline.selectFirst("a");
 	        	String link = linkElement.absUrl("href");
-	        	
-	        	//Element articleAuthorTemp = headline.select(".textDiv > .articleDetails > span").first(); // 기사 작성자
-	        	//String articleAuthor = articleAuthorTemp.text();
-	        	
-	        	
-	        		Document articleDoc = Jsoup.connect(link).get();
-	        		
-	        		Elements articleDateTempList = articleDoc.select("div.contentSectionDetails"); // 기사 작성일
-	        		System.out.println("articleDateTemp = " + articleDateTempList.get(0).select("span").text());
-	        		String articleDateTemp = "";
-	        		for (Element articleDateTempOne: articleDateTempList) {
-	        			articleDateTemp = articleDateTempOne.select("span").text();
-	        			if (articleDateTemp.trim().isEmpty()) {
-		                	articleDateTemp = "";
-		        		}else {
-		        			break;
-		        		}
+
+        		Document articleDoc = Jsoup.connect(link).get();
+        		
+        		Elements articleDateTempList = articleDoc.select("div.contentSectionDetails"); // 기사 작성일
+        		System.out.println("articleDateTemp = " + articleDateTempList.get(0).select("span").text());
+        		String articleDateTemp = "";
+        		for (Element articleDateTempOne: articleDateTempList) {
+        			articleDateTemp = articleDateTempOne.select("span").text();
+        			if (articleDateTemp.trim().isEmpty()) {
+	                	articleDateTemp = "";
+	        		}else {
+	        			break;
 	        		}
-	        		
-	        		String specificString = "Published ";
-	                int findPublished = articleDateTemp.indexOf("Published ");
-	                if(findPublished != -1) {
-	                	findPublished = findPublished + specificString.length() - 1;
-	                }else {
-	                	findPublished = 0;
-	                }
-	                System.out.println("Published= " + findPublished);
-	                int findET = articleDateTemp.indexOf("ET");
-	                
-	                articleDate = articleDateTemp.substring(findPublished, findET);
-	                System.out.println("articleDate= " + articleDate);
-	        		
-	        		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
-	        		//System.out.println("paragraphs: " + paragraphs.toString());
-	        		// 작성자 저장
-	        		articleAuthor = paragraphs.get(0).text();
-	        		if(articleAuthor.length() > 20 || articleAuthor.length() > 20 ) {
-	        			articleAuthor = "investing.com";
-	        			if(articleAuthor.isBlank() || articleAuthor.isEmpty()) {
-	        				articleAuthor = "investing.com";
-	        			}else if(articleAuthor.contains("(Reuters)")) {
-	        				articleAuthor = "Reuters";
-	        			}else {
-	        				articleAuthor = "Reuters";
-	        			}
-	        		}
-	        		
-	        		
-	        		// 기사 내용 저장
-	        		StringBuilder articleContent = new StringBuilder();
-	        		for (int i = 1; i < paragraphs.size(); i++) {
-	        			articleContent.append(paragraphs.get(i).text()); // 각 <p> 태그의 텍스트 추출
-	                    articleContent.append("\n\n"); // 줄바꿈 추가
-	        		}
-	        		
-	        		content = articleContent.toString();
-	        		String contentTemp = articleContent.toString();
-	        		//System.out.println(contentTemp);
-	        		if (contentTemp.trim().isEmpty()) {
-	        			content = title;
-	        		}
-	        		//System.out.println("test: " + content);
+        		}
+        		
+        		String specificString = "Published ";
+                int findPublished = articleDateTemp.indexOf("Published ");
+                if(findPublished != -1) {
+                	findPublished = findPublished + specificString.length() - 1;
+                }else {
+                	findPublished = 0;
+                }
+                System.out.println("Published= " + findPublished);
+                int findET = articleDateTemp.indexOf("ET");
+                
+                articleDate = articleDateTemp.substring(findPublished, findET);
+                System.out.println("articleDate= " + articleDate);
+        		
+        		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
+        		// 작성자 저장
+        		articleAuthor = paragraphs.get(0).text();
+        		if(articleAuthor.length() > 20 || articleAuthor.length() > 20 ) {
+        			articleAuthor = "investing.com";
+        			if(articleAuthor.isBlank() || articleAuthor.isEmpty()) {
+        				articleAuthor = "investing.com";
+        			}else if(articleAuthor.contains("(Reuters)")) {
+        				articleAuthor = "Reuters";
+        			}else {
+        				articleAuthor = "Reuters";
+        			}
+        		}
+        		
+        		
+        		// 기사 내용 저장
+        		StringBuilder articleContent = new StringBuilder();
+        		for (int i = 1; i < paragraphs.size(); i++) {
+        			articleContent.append(paragraphs.get(i).text()); // 각 <p> 태그의 텍스트 추출
+                    articleContent.append("\n\n"); // 줄바꿈 추가
+        		}
+        		
+        		content = articleContent.toString();
+        		String contentTemp = articleContent.toString();
+        		if (contentTemp.trim().isEmpty()) {
+        			content = title;
+        		}
 	        	
         		NewsDto newsOrigin = new NewsDto(title, articleAuthor, articleDate, content, link);
-        		//System.out.println("\n new news = " + newsOrigin);
         		// 동일한 제목이 있으면 해당 제목 return
         		if(service.newsFind(newsOrigin) != null) {
         			System.out.println("\n news skip check \n");
@@ -423,7 +413,6 @@ public class NewsController {
         	Document doc = Jsoup.connect(url).get();
         	Elements newsElementsAuthor = doc.select("#contentarea_left > .realtimeNewsList > li > dl > .articleSummary");
         	Elements newsElementsLink = doc.select("#contentarea_left > .realtimeNewsList > li > dl > .articleSubject");
-        	//System.out.println("뉴스 수량: " + newsElementsLink.size());
         	for (int i = 0; i < newsElementsLink.size(); i++) {
         		if (count >= CrawlLimit) {
 	        		break;
@@ -433,7 +422,6 @@ public class NewsController {
         		articleAuthor = elementAuthor.select("span.press").text();
         		articleDate = elementAuthor.select("span.wdate").text();
         		String link = "https://finance.naver.com" + elementLink.select("a").attr("href");
-        		//System.out.println("in for 2 " + articleAuthor + articleDate + link);
         		Document articleDoc = Jsoup.connect(link).get();
 
         		String title = articleDoc.selectFirst("div.article_info > h3").text();
@@ -448,7 +436,6 @@ public class NewsController {
         		content = paragraphs.text();
 
 	    	    NewsDto newsOrigin = new NewsDto(title, articleAuthor, articleDate, content, link);
-	    		//System.out.println("\n new news = " + newsOrigin);
 	        	if(service.newsFind(newsOrigin) != null) {
 	    			System.out.println("\n news skip check \n");
 	    			break;
@@ -483,16 +470,7 @@ public class NewsController {
             httpPost.setHeader("Authorization", "Bearer " + apiKey);
             
             for (int i = 0; i < newsList.size(); i++) {
-            	
-            	/*
-            	String prompt = "Original text: " + newsList.get(i).getOriginContent() + "\nSummarize for a beginner investor"; // Prompt for summary
-            	
-            	// Create request body as a map
-                Map<String, Object> requestBody = new HashMap<>();
-                requestBody.put("prompt", prompt);
-                requestBody.put("max_tokens", maxTokens);
-				*/
-            	
+
             	// Extract content outside of the inner class
             	final Object summaryContent = "You are a helpful assistant that summarizes news articles.";
             	
@@ -503,17 +481,14 @@ public class NewsController {
             		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor";
             	}
             	final Object originalText = originalTextTemp;
-            	//System.out.print("originalText= " + originalText);
-            	//System.out.println(originalText);
+
             	// Create request body as a map
-            	
                 Map<String, Object> requestBody = new HashMap<>();
                 requestBody.put("model", "gpt-3.5-turbo");
                 requestBody.put("messages", Arrays.asList(
             		new MessageDto("system", summaryContent),
                     new MessageDto("user", originalText)
                 ));
-                //System.out.println(requestBody.toString());
                 requestBody.put("max_tokens", maxTokens);
                 // Convert the map to JSON string
                 String requestBodyJson = gson.toJson(requestBody);
@@ -528,31 +503,18 @@ public class NewsController {
                 
                 // Extract summary from response JSON (you should replace this with actual code to parse JSON)
                 String summary = extractSummaryFromResponse(response);
-                //String summary = responseJson.get("choices").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsJsonObject().get("content").getAsString();
                 
                 NewsDto summaryTemp = new NewsDto(newsList.get(i).getTitle(), newsList.get(i).getWrite_id(), newsList.get(i).getPublication_date() , summary, newsList.get(i).getSource());
                 
                 summaryList.add(summaryTemp);
-                //System.out.println(response);
-
             }
-        }
-        for (int i = 0; i < summaryList.size(); i++) {
-        	
-        	//System.out.print(summaryList.get(i).toString()+"\n");
         }
         return summaryList; // 요약 기사 NewsParam 객체 리스트     
     }
 	
 	private String extractSummaryFromResponse(String response) {
 		JsonElement responseJson = JsonParser.parseString(response);
-	    //System.out.println(responseJson.toString());  // Add this line to print the JSON structure
-		/*
-		
-		JsonElement responseJson = JsonParser.parseString(response);
-	    String summary = responseJson.getAsJsonObject().get("choices").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString();
-	    */
-		//System.out.print("\nin extractSummary\n");
+
 		String responseJsonTemp = responseJson.getAsJsonObject() 
 									.get("choices")
 									.getAsJsonArray()
@@ -561,7 +523,6 @@ public class NewsController {
 									.get("message").getAsJsonObject()
 									.get("content").getAsString();
 		
-		//System.out.print("\n after extractSummary\n: " + responseJsonTemp);
 		String responseJsonResult = translateToKorean(responseJsonTemp);
 		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
 	    return responseJsonResult; 
@@ -650,13 +611,11 @@ public class NewsController {
 		        HttpPost httpPost = new HttpPost(apiUrl);
 		        httpPost.addHeader("X-Naver-Client-Id", clientId);
 		        httpPost.addHeader("X-Naver-Client-Secret", clientSecret);
-		        //System.out.println("text= " + text);
 		        // 번역할 텍스트를 List 형태로 요청 본문에 추가
 		        List<NameValuePair> params = new ArrayList<>();
 		        params.add(new BasicNameValuePair("source", "en"));
 		        params.add(new BasicNameValuePair("target", "ko"));
 		        params.add(new BasicNameValuePair("text", text));
-		        //System.out.println("\n body= " + params + "\n");
 		        httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 	
 		        // 요청을 실행하고 응답을 받아옴
@@ -664,10 +623,8 @@ public class NewsController {
 		        String responseJson = EntityUtils.toString(response.getEntity(), "UTF-8");
 		        
 		        JSONObject jsonResponse = new JSONObject(responseJson);
-		        //System.out.println("\n jsonResponse= " + jsonResponse.toString() + "\n");
 		        // 응답 JSON에서 번역된 텍스트를 가져옴
 		        String translatedText = jsonResponse.getJSONObject("message").getJSONObject("result").getString("translatedText");
-		        //System.out.println(translatedText);
 		        
 		    	// Store the translation in the cache for future use
 				translationCache.put(text, translatedText);

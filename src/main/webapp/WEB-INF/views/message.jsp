@@ -34,7 +34,7 @@ if(newswrite != null && !newswrite.equals("")){
 	else{
 		%>
 		<script type="text/javascript">
-		alert("글쓰기 실패");
+		alert("다시 작성해주세요");
 		location.href = "newswrite.do";
 		</script>
 		<%
@@ -48,7 +48,7 @@ if(newsupdate != null && !newsupdate.equals("")){
 		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
-		alert("수정되었습니다.");
+		console.log("수정 완료");
 		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
@@ -57,7 +57,7 @@ if(newsupdate != null && !newsupdate.equals("")){
 		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
-		alert("수정 실패했습니다.");
+		console.log("수정 실패");
 		
 		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
@@ -70,7 +70,7 @@ if(newsdelete != null && !newsdelete.equals("")){
 
 		%>
 		<script>
-	    alert('글 삭제 성공!');
+		console.log("글 삭제");
 	    location.href = "newslist.do";
 		</script>
 		<%
@@ -79,7 +79,7 @@ if(newsdelete != null && !newsdelete.equals("")){
 		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		%>
 		<script>
-	    alert('글 삭제 실패~');
+		console.log("글 삭제 실패");
 	    location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%		
@@ -92,7 +92,7 @@ if(commentwrite != null && !commentwrite.equals("")){
 	if(commentwrite.equals("COMMENT_ADD_OK")){
 		%>
 		<script type="text/javascript">
-		alert("성공적으로 작성되었습니다");
+		console.log("댓글 작성 완료");
 		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
@@ -100,7 +100,7 @@ if(commentwrite != null && !commentwrite.equals("")){
 	else{
 		%>
 		<script type="text/javascript">
-		alert("다시 작성해 주십시오");
+		console.log("댓글 작성 실패");
 		location.href = "newsdetail.do?seq=" + <%=seq %> +"&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
@@ -110,19 +110,21 @@ if(commentwrite != null && !commentwrite.equals("")){
 String commentDelete = (String)request.getAttribute("commentDelete");
 if(commentDelete != null && !commentDelete.equals("")){
 	int post_num = Integer.parseInt(request.getParameter("post_num"));
+	int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+	System.out.println("message=" + pageNumber);
 	if(commentDelete.equals("COMMENTDELETE_YES")){
 		%>
 		<script type="text/javascript">
-		alert("성공적으로 작성되었습니다");
-		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		console.log("댓글 삭제 완료");
+		location.href = "newsdetail.do?seq=" + <%=post_num %> + "&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
 	else{
 		%>
 		<script type="text/javascript">
-		alert("다시 작성해 주십시오");
-		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		console.log("댓글 삭제 실패");
+		location.href = "newsdetail.do?seq=" + <%=post_num %> + "&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
@@ -131,19 +133,20 @@ if(commentDelete != null && !commentDelete.equals("")){
 String commentAnswer = (String)request.getAttribute("commentAnswer");
 if(commentAnswer != null && !commentAnswer.equals("")){
 	int post_num = Integer.parseInt(request.getParameter("post_num"));
+	int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	if(commentAnswer.equals("COMMENTANSWER_YES")){
 		%>
 		<script type="text/javascript">
-		alert("성공적으로 작성되었습니다");
-		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		console.log("답글 작성 완료");
+		location.href = "newsdetail.do?seq=" + <%=post_num %> + "&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
 	else{
 		%>
 		<script type="text/javascript">
-		alert("다시 작성해 주십시오");
-		location.href = "newsdetail.do?seq=" + <%=post_num %>;
+		console.log("답글 작성 실패");
+		location.href = "newsdetail.do?seq=" + <%=post_num %> + "&pageNumber=" + <%=pageNumber%>;
 		</script>
 		<%
 	}
