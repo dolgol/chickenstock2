@@ -15,178 +15,209 @@
 
 <style>
 body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	background-color: white;
-	margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-color: white;
+    margin: 0;
+    padding: 10px;
 }
 
-.div {
-	width: 550px;
-	height: 700px;
-	border: 0;
-	background-color: white;
+.centerDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    border: 0;
+    background-color: white;
+    margin : 0 auto;
 }
 
-.centerTr {
-	display: flex;
-	justify-content: center;
+.form-group {
+    width: 100%;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
 }
 
-#idTr {
-	margin-left: 70px;
+.form-group > div {
+    margin-bottom: 0.5em;
 }
 
-/* 추가 */
-th, td {
-	text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+input[type="text"], input[type="password"], input[type="date"] {
+    border-color: #EAE8E6 !important;
+    background-color: #f0f0f0;
+    width: 100%;
+    font-size: 15px;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 10px;
 }
 
-th { //
-	display: flex; //
-	align-items: center;
-	float: left;
-	background-color: white;
-	width: 120px;
-	height: 48px;
-	font-size: 15px;
-	padding-left: 5px;
-	margin-bottom: 10px;
+input[type="text"]:disabled {
+    background-color: #EAE8E6;
 }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
+input::placeholder {
+    opacity: 0.5 !important;
+    font-size: 14px;
 }
 
-.text {
-	width: 250px;
-	height: 47px;
-	background-color: #f0f0f0;
-	font-size: 15px;
-	border: 0;
-}
-
-.logo {
-	display: block;
-	margin: 0 auto;
-	width: 540px;
-	height: 180px;
-	margin-bottom: 30px;
-}
-
-#id_chk_btn {
-	background-color: white;
-	width: 65px;
-	height: 50px;
-	border: 0;
-}
-
-#nickname_chk_btn {
-	background-color: white;
-	width: 65px;
-	height: 50px;
-	border: 0;
-}
-
-.regi {
-	width: 385px;
-	height: 45px;
-	background-color: black;
-	color: white;
-	margin-top: 30px;
-	font-size: 24px;
-}
-
-.table-container {
-	margin-top: 100px;
-} /* 필요에 따라 값을 조정하세요 */
-
-/* 성별 입력 필드에 대한 스타일 */
 input[type="radio"] {
-	margin-right: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    accent-color: rgb(239, 98, 16);
+}
+
+/* .form-group > div {
+    margin-left: 40px;
+    margin-right: 20px;
+}
+ */
+.regi {
+    color: #fff;
+    border-color: #ff9406 !important;
+    background-color: #ff9406;
+    transition: 0.2s;
+    width: 30%;  /* 이전의 width를 30%에서 80%로 변경하였습니다. */
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 0.25rem;
+    margin-top: 30px;
+}
+
+.regi_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.regi:hover {
+    color: #fff;
+    border-color: #FF8205 !important;
+    background-color: #FF8205;
+}
+
+
+#id_chk_btn, #nickname_chk_btn {
+    background-color: #ff9406;
+    color: #fff;
+    border: 0;
+   width: 30%;
+    height: 36px;
+    border-radius: 0.25rem;
+    margin-left: 10px;
+}
+
+#id_chk_btn:hover, #nickname_chk_btn:hover {
+    background-color: #FF8205;
+}
+
+.nonView {
+    display: none;
+}
+
+.mypage-warning {
+    color: red;
+    font-size: 14px;
+}
+
+header, footer {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* .input-box {
+    margin-left: 40px;
+} */
+
+.label-spacing {
+    margin-top: 20px;
+    display: block;
+}
+
+#user_id, #password, #chk_pw, #user_name, #nick_name,#phone_number, #birthday, #address {
+	background-color :#EAE8E6;
 }
 
 </style>
 
+
 </head>
 <body>
-	<div class="table-container">
-		<table>
-			<!-- 테이블 내용은 여기에 들어갑니다 -->
-		</table>
-	</div>
-	<div class="div">
-		<form action="regiAf.do" method="post">
-			<table>
+	<div class="centerDiv">
+	 <form action="regiAf.do" method="post">
+    <div class="form-group">
+        <label for="user_id" class="label-spacing">아이디*</label>
+         <div style="display: flex;">
+	        <input type="text" size="20" id="user_id" name="user_id" class="text" placeholder="아이디를 입력하세요.">
+	        <input type="button" id="id_chk_btn" value="중복확인">
+         </div>
+        <p id="idcheck" style="font-size: 8px"></p>
+    </div>
+    <div class="form-group">
+        <label for="password">비밀번호*</label>
+        <div class="input-box">
+        <input type="password" size="20" id="password" name="password" class="text" placeholder="비밀번호를 입력하세요.">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="chk_pw">비밀번호 확인*</label>
+        <div class="input-box">
+        <input type="password" size="20" id="chk_pw" name="chk_pw" class="text" placeholder="비밀번호를 재입력하세요.">
+        </div>
+        <p id="pwcheck" style="font-size: 10x"></p>
+    </div>
+    <div class="form-group">
+        <label for="user_name">이름</label>
+        <div class="input-box">
+        <input type="text" size="20" id="user_name" name="user_name" class="text" placeholder="이름을 입력하세요">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="sex">성별</label>
+        <div>
+        <label><input type="radio" name="sex" value="male">남성</label>
+        <label><input type="radio" name="sex" value="female">여성</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nick_name">닉네임*</label>
+        <div style="display: flex;">
+      	 	 <input type="text" size="20" id="nick_name" name="nick_name" class="text" placeholder="닉네임을 입력하세요.">
+       		 <input type="button" id="nickname_chk_btn" value="중복확인">
+         </div>
+        <p id="nicknamecheck" style="font-size: 10px"></p>
+    </div>
+    <div class="form-group">
+        <label for="birthday">생년월일</label>
+        <div class="input-box">
+        <input type="text" size="20" id="birthday" name="birthday" placeholder="생년월일을 입력하세요." class="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="phone_number">휴대폰 번호</label>
+        <div class="input-box">
+        <input type="text" size="20" id="phone_number" name="phone_number" class="text" placeholder="휴대폰 번호를 입력하세요">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="address">이메일*</label>
+        <div class="input-box">
+        <input type="text" size="20" id="address" name="address" class="text" placeholder="예 : chickenstock@gamil.com">
+        </div>
+        <p id="addresscheck" style="font-size: 10px"></p>
+    </div>
+    <div class="form-group regi_wrapper">
+        <input type="submit" value="가입하기" class="regi">
+    </div>
+      </form>
+</div>
 
-				<tr id="idTr" class="centerTr">
-					<th>아이디*</th>
-					<td><input type="text" size="20" id="user_id" name="user_id"
-						class="text" placeholder="아이디를 입력하세요."> <input
-						type="button" id="id_chk_btn" value="중복확인"> <br>
-						<p id="idcheck" style="font-size: 8px"></p></td>
-
-				</tr>
-				<tr class="centerTr">
-					<th>비밀번호*</th>
-					<td><input type="password" size="20" id="password" name="password"
-						class="text" placeholder="비밀번호를 입력하세요."></td>
-				</tr>
-				<tr class="centerTr">
-					<th>비밀번호 확인*</th>
-					<td><input type="password" size="20" id="chk_pw" name="chk_pw"
-						class="text" placeholder="비밀번호를 재입력하세요."> <br>
-						<p id="pwcheck" style="font-size: 8px"></p></td>
-				</tr>
-				<tr class="centerTr">
-					<th>이름</th>
-					<td><input type="text" size="20" id="user_name" name="user_name"
-						class="text" placeholder="이름을 입력하세요"></td>
-				</tr>
-
-				<tr class="centerTr">
-					<th>성별</th>
-					<td><label><input type="radio" name="sex" value="male">남성</label>
-						<label><input type="radio" name="sex" value="female">여성</label></td>
-				</tr>
-
-				<tr class="centerTr">
-					<th>닉네임*</th>
-					<td><input type="text" size="20" id="nick_name"
-						name="nick_name" class="text" placeholder="닉네임을 입력하세요."> <input
-						type="button" id="nickname_chk_btn" value="중복확인"> <br>
-						<p id="nicknamecheck" style="font-size: 8px"></p></td>
-				</tr>
-
-				<tr class="centerTr">
-					<th>생년월일*</th>
-					<td><input type="text" size="20" id="birthday" name="birthday"
-						placeholder="생년월일을 입력하세요." class="text"></td>
-				</tr>
-
-
-				<tr class="centerTr">
-					<th>휴대폰 번호</th>
-					<td><input type="text" size="20" id="phone_number"
-						name="phone_number" class="text" placeholder="휴대폰 번호를 입력하세요"></td>
-				</tr>
-
-				<tr class="centerTr">
-					<th>이메일</th>
-					<td><input type="text" size="20" id="address" name="address"
-						class="text" placeholder="예 : chickenstock@gamil.com"> <br>
-						<p id="addresscheck" style="font-size: 8px"></p></td>
-				</tr>
-				<tr class="centerTr">
-					<td colspan="2"><input type="submit" value="가입하기" class="regi">
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
 
 	<script>
 	$(document).ready(function() { // 중복확인
@@ -257,7 +288,7 @@ input[type="radio"] {
 	    });
 
 	    // 이메일 형식 확인
-	    $("#address").on("input", function() {
+	    $("#address").on("input", function(event) {
 	        var address = $("#address").val().trim();
 	        var addressPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
