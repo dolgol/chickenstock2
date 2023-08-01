@@ -374,8 +374,7 @@ $(document).ready(function(){
 				let str = "";
 				let padding_range = (item.depth*25);
 				const user_id = "<%=login.getUser_id() %>";
-				const comment_id = "<%=comDtoList.get(j).getUser_id()%>";
-				<%System.out.println(comDtoList.get(j).getUser_id());%>
+
 				if (del == 0){
 					
 					console.log("Condition met: del == 0");

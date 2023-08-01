@@ -488,7 +488,7 @@ public class NewsController {
             	if(NewsUtil.isMostlyKorean(newsList.get(i).getContent())){
             		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor in Korean";
             	}else {
-            		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor in Korean";
+            		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor";
             	}
             	final Object originalText = originalTextTemp;
 
@@ -536,8 +536,8 @@ public class NewsController {
 									.get("message").getAsJsonObject()
 									.get("content").getAsString();
 		
-		//String responseJsonResult = translateToKorean(responseJsonTemp);
-		String responseJsonResult = responseJsonTemp;
+		String responseJsonResult = translateToKorean(responseJsonTemp);
+		//String responseJsonResult = responseJsonTemp;
 		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
 	    return responseJsonResult; 
 	    
