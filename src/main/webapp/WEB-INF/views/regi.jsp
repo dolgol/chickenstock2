@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
 
 <link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
@@ -34,8 +34,8 @@
     border: 0;
     background-color: white;
     margin : 0 auto; */
-   	width: 25%;
-   	padding: 40px 0;
+      width: 25%;
+      padding: 40px 0;
 }
 
 .form-group {
@@ -143,15 +143,15 @@ input[type="radio"] {
 }
 
 #user_id, #password, #chk_pw, #user_name, #nick_name,#phone_number, #birthday, #address {
-	background-color :#EAE8E6;
+   background-color :#EAE8E6;
 }
 
 .mypage-container-top {
-	font-size: 32px;
-	font-weight: 500;
-	color: #ff9406;
-	margin-bottom: 20px;
-	letter-spacing: -2px !important;
+   font-size: 32px;
+   font-weight: 500;
+   color: #ff9406;
+   margin-bottom: 20px;
+   letter-spacing: -2px !important;
 }
 
 </style>
@@ -160,15 +160,15 @@ input[type="radio"] {
 </head>
 <body>
 
-	<div class="centerDiv m-auto">
-	
-	<div class="mypage-container-top">회원가입</div>
-	<form action="regiAf.do" method="post">
+   <div class="centerDiv m-auto">
+   
+   <div class="mypage-container-top">회원가입</div>
+   <form action="regiAf.do" method="post">
     <div class="form-group">
         <label for="user_id" class="label-spacing">아이디*</label>
          <div style="display: flex;">
-	        <input type="text" size="20" id="user_id" name="user_id" class="text" placeholder="아이디를 입력하세요.">
-	        <input type="button" id="id_chk_btn" value="중복확인">
+           <input type="text" size="20" id="user_id" name="user_id" class="text" placeholder="아이디를 입력하세요.">
+           <input type="button" id="id_chk_btn" value="중복확인">
          </div>
         <p id="idcheck" style="font-size: 8px"></p>
     </div>
@@ -201,8 +201,8 @@ input[type="radio"] {
     <div class="form-group">
         <label for="nick_name">닉네임*</label>
         <div style="display: flex;">
-      	 	 <input type="text" size="20" id="nick_name" name="nick_name" class="text" placeholder="닉네임을 입력하세요.">
-       		 <input type="button" id="nickname_chk_btn" value="중복확인">
+              <input type="text" size="20" id="nick_name" name="nick_name" class="text" placeholder="닉네임을 입력하세요.">
+              <input type="button" id="nickname_chk_btn" value="중복확인">
          </div>
         <p id="nicknamecheck" style="font-size: 10px"></p>
     </div>
@@ -232,90 +232,85 @@ input[type="radio"] {
 </div>
 
 
-	<script>
-	$(document).ready(function() { // 중복확인
-	    $("#id_chk_btn").click(function() {
-	        $.ajax({
-	            url : "idcheck.do",
-	            type : "post",
-	            data : { "user_id" : $("#user_id").val() },
-	            success : function(answer) {
-	// 빈칸일때 중복확인 눌리는 경우 
-	/* 안해도 나옴
-	if( $("#id").val().trim()=="" ){
-	$("#idcheck").css("color", "#ff0000")
-	;$("#idcheck").text("사용할 수 없는 아이디입니다!!!!!")
-	;$("#id").focus();}*/
-	                if (answer == "YES") {
-	                    $("#idcheck").css("color", "#0000ff");
-	                    $("#idcheck").text("사용할 수 있는 아이디입니다.");
-	                } else {
-	                    $("#idcheck").css("color", "#ff0000");
-	                    $("#idcheck").text("사용할 수 없는 아이디입니다.");
-	                    $("#user_id").val("");
-	                }
-	            },
-	            error : function() {
-	                alert("error");
-	            }
-	        });
-	    });
-	});
+   <script>
+   $(document).ready(function() { // 중복확인
+       $("#id_chk_btn").click(function() {
+           $.ajax({
+               url : "idcheck.do",
+               type : "post",
+               data : { "user_id" : $("#user_id").val() },
+               success : function(answer) {
+   
+                   if (answer == "YES") {
+                       $("#idcheck").css("color", "#0000ff");
+                       $("#idcheck").text("사용할 수 있는 아이디입니다.");
+                   } else {
+                       $("#idcheck").css("color", "#ff0000");
+                       $("#idcheck").text("사용할 수 없는 아이디입니다.");
+                       $("#user_id").val("");
+                   }
+               },
+               error : function() {
+                   alert("error");
+               }
+           });
+       });
+   });
 
-	// 비밀번호 확인
-	$("form").submit(function(event) {
-	    var pw = $("#password").val().trim();
-	    var chkPw = $("#chk_pw").val().trim();
+   // 비밀번호 확인
+   $("form").submit(function(event) {
+       var pw = $("#password").val().trim();
+       var chkPw = $("#chk_pw").val().trim();
 
-	    if (pw !== chkPw) {
-	        event.preventDefault(); // 폼 제출을 막음
-	        $("#pwcheck").css("color", "#ff0000");
-	        $("#pwcheck").text("비밀번호가 일치하지 않습니다.");
-	        $("#password").focus();
-	    }
-	});
+       if (pw !== chkPw) {
+           event.preventDefault(); 
+           $("#pwcheck").css("color", "#ff0000");
+           $("#pwcheck").text("비밀번호가 일치하지 않습니다.");
+           $("#password").focus();
+       }
+   });
 
-	$(document).ready(function() {
-	    // 닉네임 중복확인
-	    $("#nickname_chk_btn").click(function() {
-	    	// 입력값 확인을 위한 콘솔 출력
-	        console.log($("#nick_name").val());
-	        $.ajax({
-	            url : "nicknamecheck.do",
-	            type : "post",
-	            data : { "nick_name" : $("#nick_name").val() },
-	            success : function(answer) {
-	                if (answer == "YES") {
-	                    $("#nicknamecheck").css("color", "#0000ff");
-	                    $("#nicknamecheck").text("사용할 수 있는 닉네임입니다.");
-	                } else {
-	                    $("#nicknamecheck").css("color", "#ff0000");
-	                    $("#nicknamecheck").text("사용할 수 없는 닉네임입니다.");
-	                    $("#nick_name").val("");
-	                }
-	            },
-	            error : function() {
-	                alert("error");
-	            }
-	        });
-	    });
+   $(document).ready(function() {
+       // 닉네임 중복확인
+       $("#nickname_chk_btn").click(function() {
+          
+           console.log($("#nick_name").val());
+           $.ajax({
+               url : "nicknamecheck.do",
+               type : "post",
+               data : { "nick_name" : $("#nick_name").val() },
+               success : function(answer) {
+                   if (answer == "YES") {
+                       $("#nicknamecheck").css("color", "#0000ff");
+                       $("#nicknamecheck").text("사용할 수 있는 닉네임입니다.");
+                   } else {
+                       $("#nicknamecheck").css("color", "#ff0000");
+                       $("#nicknamecheck").text("사용할 수 없는 닉네임입니다.");
+                       $("#nick_name").val("");
+                   }
+               },
+               error : function() {
+                   alert("error");
+               }
+           });
+       });
 
-	    // 이메일 형식 확인
-	    $("#address").on("input", function(event) {
-	        var address = $("#address").val().trim();
-	        var addressPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+       // 이메일 형식 확인
+       $("#address").on("input", function(event) {
+           var address = $("#address").val().trim();
+           var addressPattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-	        if (!addressPattern.test(address)) {
-	            event.preventDefault(); // 폼 제출을 막음
-	            $("#addresscheck").css("color", "#ff0000");
-	            $("#addresscheck").text("유효하지 않은 이메일 형식입니다.");
-	        } else {
-	            $("#addresscheck").css("color", "#0000ff");
-	            $("#addresscheck").text("올바른 이메일 형식입니다.");
-	        }
-	    });
-	});
+           if (!addressPattern.test(address)) {
+               event.preventDefault();
+               $("#addresscheck").css("color", "#ff0000");
+               $("#addresscheck").text("E-mail을 올바르게 입력해주세요.");
+           } else {
+               $("#addresscheck").css("color", "#0000ff");
+               $("#addresscheck").text("E-mail 형식이 맞습니다!");
+           }
+       });
+   });
 
-	</script>
+   </script>
 </body>
 </html>

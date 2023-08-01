@@ -14,7 +14,7 @@
 	int pageNumber = param.getPageNumber();
 	String choice = param.getChoice();
 	String search = param.getSearch();
-	
+	UserDto login = (UserDto)session.getAttribute("login");
 	
 %>    
     
@@ -269,9 +269,12 @@ if(list == null || list.size() == 0){
 </tbody>
 </table>
 </div>
-
+<%
+if(login != null && login.getAuth() == 0){
+	%>
 <!-- Pagination -->
 <a href="newsnotice.do" class="btn mypage-delete">글쓰기</a>
+<%} %>
 <div class="container">
     <nav aria-label="Page navigation">
         <ul class="pagination" id="pagination" style="justify-content:center"></ul>
@@ -290,7 +293,7 @@ if(list == null || list.size() == 0){
 <!-- Additional JS -->
 <script type="text/javascript">	
 function goToNewsDetail(seq, pageNumber) {
-    <% UserDto login = (UserDto) session.getAttribute("login"); %>
+    
     <% if(login == null) { %>
     	alert("로그인 해주세요");
         location.href = "login.do";

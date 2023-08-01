@@ -37,6 +37,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -112,6 +113,7 @@ public class NewsController {
         
         if (existingNews == null) {
             NewsDto newNews = new NewsDto(news.getTitle(), news.getWrite_id(), news.getPublication_date(), news.getContent(), news.getSource());
+            
             service.newswrite(newNews);
 	    }else {
 	    	System.out.println("NewsController newsFind() no news to add " + new Date());
@@ -125,6 +127,7 @@ public class NewsController {
     	int investing = 0;
     	int naver = 1;
     	int scrapCount = 3;
+    	
         List<NewsDto> investingNewsList = newsScrap(investing, scrapCount);  // 뉴스를 가져오고 번역하는 메소드
         
         for (NewsDto news : investingNewsList) {
@@ -137,6 +140,7 @@ public class NewsController {
         	System.out.println("NewsController scheduleNewsSaving() " + new Date());
         	newsFind(news);
         }
+        
     }
 	
 	@GetMapping("newsnotice.do")
@@ -364,8 +368,16 @@ public class NewsController {
                 System.out.println("Published= " + findPublished);
                 int findET = articleDateTemp.indexOf("ET");
                 
-                articleDate = articleDateTemp.substring(findPublished, findET);
+                Date DateTemp = new Date();
+                SimpleDateFormat Date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                articleDate = Date.format(DateTemp);//articleDateTemp.substring(findPublished, findET);
                 System.out.println("articleDate= " + articleDate);
+                
+                
+				/*
+				 * articleDate = articleDateTemp.substring(findPublished, findET);
+				 * System.out.println("articleDate= " + articleDate);
+				 */
         		
         		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
         		// 작성자 저장
@@ -398,7 +410,8 @@ public class NewsController {
         		NewsDto newsOrigin = new NewsDto(title, articleAuthor, articleDate, content, link);
         		// 동일한 제목이 있으면 해당 제목 return
         		if(service.newsFind(newsOrigin) != null) {
-        			System.out.println("\n news skip check \n");
+        			
+        			System.out.println("\n news skip check: \n" + service.newsFind(newsOrigin));
         			break;
         		}
         		newsOrigins.add(newsOrigin); // 각각 Author, title, content 정보가 들어있는 NewsParam 객체 리스트 
@@ -452,9 +465,9 @@ public class NewsController {
 	
 	private List<NewsDto> newsSummary(List<NewsDto> newsList) throws Exception {
 		Gson gson = new Gson();
-        String apiKey = "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"; // OpenAI API Key
+        String apiKey = "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"; // OpenAI API Key
         //String engine = "gpt-3.5-turbo"; // Engine id
-        int maxTokens = 10;//300; // Maximum number of tokens in the response
+        int maxTokens = 1000; // Maximum number of tokens in the response
         // Prepare the API URL
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         
@@ -478,7 +491,7 @@ public class NewsController {
             	if(NewsUtil.isMostlyKorean(newsList.get(i).getContent())){
             		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor in Korean";
             	}else {
-            		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor";
+            		originalTextTemp = "Original text: " + newsList.get(i).getContent() + "\nSummarize for a beginner investor in Korean";
             	}
             	final Object originalText = originalTextTemp;
 
@@ -503,6 +516,9 @@ public class NewsController {
                 
                 // Extract summary from response JSON (you should replace this with actual code to parse JSON)
                 String summary = extractSummaryFromResponse(response);
+                // 마침표 뒤에 줄 바꿈
+                
+                summary = summary.replace(". ", ".<br/><br/>");
                 
                 NewsDto summaryTemp = new NewsDto(newsList.get(i).getTitle(), newsList.get(i).getWrite_id(), newsList.get(i).getPublication_date() , summary, newsList.get(i).getSource());
                 
@@ -523,7 +539,8 @@ public class NewsController {
 									.get("message").getAsJsonObject()
 									.get("content").getAsString();
 		
-		String responseJsonResult = translateToKorean(responseJsonTemp);
+		//String responseJsonResult = translateToKorean(responseJsonTemp);
+		String responseJsonResult = responseJsonTemp;
 		System.out.print("\n last extractSummary\n: " + responseJsonResult + "\n");
 	    return responseJsonResult; 
 	    
@@ -601,7 +618,7 @@ public class NewsController {
 			try {
 		        // Papago API에 필요한 정보를 설정
 		        String clientId = "EmpNiTFgTYBn4eJ30Af1";
-		        String clientSecret = "pbLWB1ldWq";
+		        String clientSecret = "3CDqFwlFtU";
 		        String apiUrl = "https://openapi.naver.com/v1/papago/n2mt";
 	
 		        // HTTP 클라이언트를 생성

@@ -36,6 +36,6 @@
 	<mvc:default-servlet-handler/>
 	
 	<!-- JavaMailSender 빈 등록 -->
-   <bean id="javaMailSender" class="ssg.com.a.config.MailConfig" />
+   	<bean id="javaMailSender" class="ssg.com.a.config.MailConfig" />
             
 </beans>
