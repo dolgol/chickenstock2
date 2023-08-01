@@ -3,6 +3,7 @@
 <%@page import="ssg.com.a.dto.NewsComment"%>
 <%@page import="ssg.com.a.dto.NewsDto"%>
 <%@page import="ssg.com.a.dto.UserDto"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -22,10 +23,12 @@
 
 	NewsDto dto = (NewsDto)request.getAttribute("newsdto");
 	List<NewsComment> comDtoList = (List)request.getAttribute("comdto");
+	//String Dt = comDtoList.get(0).getUser_id()
 	int commentCount = (Integer)request.getAttribute("commentCount");
-	int j = 0;
+	
 	int pageBbs = (Integer)request.getAttribute("pagenews");
 	NewsParam param = (NewsParam)request.getAttribute("param");
+	int j = 0;
 %>    
     
 <!DOCTYPE html>
@@ -209,9 +212,10 @@ textarea {
 <div align="right">
 <button type="button" class="btn mypage-delete" onclick="cancel()">목록</button>
 <%
-if(login != null && login.getAuth() ==0){
+if(login != null && login.getAuth() == 0){
 	%>
 	
+
 	<button type="button" class="btn mypage-delete" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">수정</button>
 	
 	<button type="button" class="btn mypage-delete" onclick="deletenews(<%=dto.getSeq() %>)">삭제</button>
@@ -349,11 +353,13 @@ $("#paginationComment").twbsPagination({
 });
 
 $(document).ready(function(){
+	
 	$.ajax({
 		url:"newscommentList.do",
 		type:"get",
 		data:{seq:<%=dto.getSeq() %>,
-			  pageNumber:<%=param.getPageNumber()%> },
+			  pageNumber:<%=param.getPageNumber()%>,
+			  },
 		success: function(list){
 			
 			// tbody 태그안의 값을 모두 초기화 후 다시 게시
@@ -361,11 +367,15 @@ $(document).ready(function(){
 			$("#tbody").html("");
 			let count = 0;
 			$.each(list, function(i, item){
+				
 				let pageNumber = <%=param.getPageNumber()%>;
 				let post_num = <%=dto.getSeq()%>;
 				let del = item.del;
 				let str = "";
 				let padding_range = (item.depth*25);
+				const user_id = "<%=login.getUser_id() %>";
+				const comment_id = "<%=comDtoList.get(j).getUser_id()%>";
+				<%System.out.println(comDtoList.get(j).getUser_id());%>
 				if (del == 0){
 					
 					console.log("Condition met: del == 0");
@@ -374,7 +384,7 @@ $(document).ready(function(){
 						+		"<td><div ' style='padding-left:" + padding_range + "px;'>" + item.user_id + "</div></td>"
 						+		"<td class='text'>" + item.write_date + "</td>"
 						+		"<td style='padding: 2px;'>"
-						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-btn' onclick='reply(" + post_num + ", \"" + item.user_id + "\"," + item.seq + ")'>답글</button>"
+						+			"<button type='button' id='replyBtn-" + item.seq + "' class='btn mypage-btn' onclick='reply(" + post_num + ", \"" + user_id + "\"," + item.seq + ")'>답글</button>"
 						+		"</td>"
 						+		"<td style='padding: 2px;'>"
 						+			"<button type='button' class='commentDelete btn mypage-btn' onclick='commentDelete(" + post_num + "," + item.seq + "," + pageNumber + ")'>삭제</button>"
@@ -397,7 +407,7 @@ $(document).ready(function(){
 
 				}
 
-						
+				<%=j = j+1%>
 				$("#tbody").append(str);
 			});
 			$("#comment-count").text(<%=commentCount%>);

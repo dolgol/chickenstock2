@@ -127,7 +127,7 @@ public class NewsController {
     	int investing = 0;
     	int naver = 1;
     	int scrapCount = 3;
-    	
+    	/*
         List<NewsDto> investingNewsList = newsScrap(investing, scrapCount);  // 뉴스를 가져오고 번역하는 메소드
         
         for (NewsDto news : investingNewsList) {
@@ -140,7 +140,7 @@ public class NewsController {
         	System.out.println("NewsController scheduleNewsSaving() " + new Date());
         	newsFind(news);
         }
-        
+        */
     }
 	
 	@GetMapping("newsnotice.do")
@@ -271,7 +271,10 @@ public class NewsController {
 		System.out.println("newsController commentList() "+ seq + " " + new Date());
 		NewsParam param = new NewsParam(seq, pageNumber);
 		List<NewsComment> temp = service.commentList(param);
-				
+		for(NewsComment t:temp) {
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@NewsCommentList =  " + t.toString());
+		}
+		
 		return temp;
 	}
 	
@@ -300,9 +303,12 @@ public class NewsController {
 	@PostMapping("commentAnswer.do")
 	public String commentAnswer(int post_num, int seq, String content, String user_id, Model model) {
 		System.out.println("NewsController commentAnswer() " + new Date());
+		System.out.println("NewsController commentAnswer() " + user_id);
 		NewsComment temp = new NewsComment(post_num, seq, content, user_id);
 		NewsComment comDto = service.commentGet(temp);	
+		System.out.println("NewsController commentAnswer() " + comDto.toString());
 		comDto.setContent(content);
+		comDto.setUser_id(user_id);
 		boolean isS = service.commentAnswer(comDto);
 		String message = "COMMENTANSWER_YES";
 		if(isS == false) {
@@ -367,17 +373,10 @@ public class NewsController {
                 }
                 System.out.println("Published= " + findPublished);
                 int findET = articleDateTemp.indexOf("ET");
-                
                 Date DateTemp = new Date();
                 SimpleDateFormat Date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 articleDate = Date.format(DateTemp);//articleDateTemp.substring(findPublished, findET);
                 System.out.println("articleDate= " + articleDate);
-                
-                
-				/*
-				 * articleDate = articleDateTemp.substring(findPublished, findET);
-				 * System.out.println("articleDate= " + articleDate);
-				 */
         		
         		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
         		// 작성자 저장
@@ -467,7 +466,7 @@ public class NewsController {
 		Gson gson = new Gson();
         String apiKey = "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"; // OpenAI API Key
         //String engine = "gpt-3.5-turbo"; // Engine id
-        int maxTokens = 1000; // Maximum number of tokens in the response
+        int maxTokens = 400; // Maximum number of tokens in the response
         // Prepare the API URL
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         

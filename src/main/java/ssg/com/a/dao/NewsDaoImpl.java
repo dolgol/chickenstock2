@@ -104,10 +104,6 @@ public class NewsDaoImpl implements NewsDao{
 	public NewsDto newsFind(NewsDto dto) {
 		return session.selectOne(ns + "newsFind", dto);
 	}
-
-	
-	
-
 	
 	@Override
 	public int mypageNewsAllComment(String user_id) {
