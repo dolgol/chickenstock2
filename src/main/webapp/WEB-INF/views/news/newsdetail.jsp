@@ -207,11 +207,11 @@ textarea {
 <% } %>
 
 <div align="right">
+<button type="button" class="btn mypage-delete" onclick="cancel()">목록</button>
 <%
-if(login != null && login.getAuth() == 1){
+if(login != null && login.getAuth() ==0){
 	%>
-	<button type="button" class="btn mypage-delete" onclick="cancel()">목록</button>
-
+	
 	<button type="button" class="btn mypage-delete" onclick="updatenews(<%=dto.getSeq() %>, <%=param.getPageNumber()%>)">수정</button>
 	
 	<button type="button" class="btn mypage-delete" onclick="deletenews(<%=dto.getSeq() %>)">삭제</button>

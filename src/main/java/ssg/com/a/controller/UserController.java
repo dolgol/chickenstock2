@@ -300,11 +300,11 @@ public class UserController {
 	
 	
 	private final EmailService emailService;
-
-	   @Autowired
-	   public UserController(EmailService emailService) {
-	      this.emailService = emailService;
-	   }
+	
+	@Autowired
+	public UserController(EmailService emailService) {
+		this.emailService = emailService;
+	}
 
 	@PostMapping("findPw.do")
 	public ResponseEntity<Map<String, Object>> sendVerificationCode(@RequestBody UserDto userDto, HttpSession session) {

@@ -6,8 +6,8 @@ public class BbsUtil {
 	public static String titleDot(String title) {
 		String newTitle;
 		
-		if(title.length() > 40) {
-			newTitle = title.trim().substring(0, 40);
+		if(title.length() > 50) {
+			newTitle = title.trim().substring(0, 50);
 			newTitle += "...";
 		}else {
 			newTitle = title.trim();

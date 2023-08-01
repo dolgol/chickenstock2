@@ -57,7 +57,7 @@
 <update id="stockcommentdelete" parameterType="ssg.com.a.dto.StocksComment">
 	update stocks_comment
 	set del=1
-	where post_num=#{post_num} and seq=#{seq}
+	where Symbol=#{symbol} and seq=#{seq}
 </update>
 
 <select id="stockcommentget" parameterType="ssg.com.a.dto.StocksComment" resultType="ssg.com.a.dto.StocksComment">
