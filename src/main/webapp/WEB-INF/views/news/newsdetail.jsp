@@ -276,9 +276,9 @@ function deletenews( seq ) {
 <%
 if (comDtoList.size() == 0){ 
 %>
-<td colspan="4"><p style="display: inline-block; margin-right: 10px;">총 댓글 수: <h4 style="display: inline-block; color:red;">0</h4></p></td>
+<td colspan="4"><p style="display: inline-block; margin-right: 10px;">총 댓글 수: <h4 style="display: inline-block; color:#FF9406;">0</h4></p></td>
 <%}else{%>
-	<td colspan="4"><p style="display: inline-block; margin-right: 10px;">총 댓글 수: <h4 style="display: inline-block; color:red;" id="comment-count"></h4></p></td>
+	<td colspan="4"><p style="display: inline-block; margin-right: 10px;">총 댓글 수: <h4 style="display: inline-block; color:#FF9406;" id="comment-count"></h4></p></td>
 <%} %>
 </tr>
 </table>
