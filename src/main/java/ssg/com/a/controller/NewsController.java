@@ -127,7 +127,7 @@ public class NewsController {
     	int investing = 0;
     	int naver = 1;
     	int scrapCount = 3;
-    	
+    	/*
         List<NewsDto> investingNewsList = newsScrap(investing, scrapCount);  // 뉴스를 가져오고 번역하는 메소드
         
         for (NewsDto news : investingNewsList) {
@@ -140,7 +140,7 @@ public class NewsController {
         	System.out.println("NewsController scheduleNewsSaving() " + new Date());
         	newsFind(news);
         }
-        
+        */
     }
 	
 	@GetMapping("newsnotice.do")
@@ -271,7 +271,7 @@ public class NewsController {
 		System.out.println("newsController commentList() "+ seq + " " + new Date());
 		NewsParam param = new NewsParam(seq, pageNumber);
 		List<NewsComment> temp = service.commentList(param);
-				
+		
 		return temp;
 	}
 	
@@ -280,7 +280,7 @@ public class NewsController {
 	@GetMapping("commentDelete.do")
 	public String commentDelete(int post_num, int seq, int pageNumber, Model model) {
 		System.out.println("NewsController commentDeleteAf() " + new Date());
-		System.out.println("page=" + pageNumber);
+
 		NewsComment temp = new NewsComment(post_num, seq);
 		NewsComment comDto = service.commentGet(temp);
 
@@ -300,9 +300,12 @@ public class NewsController {
 	@PostMapping("commentAnswer.do")
 	public String commentAnswer(int post_num, int seq, String content, String user_id, Model model) {
 		System.out.println("NewsController commentAnswer() " + new Date());
+
 		NewsComment temp = new NewsComment(post_num, seq, content, user_id);
 		NewsComment comDto = service.commentGet(temp);	
+
 		comDto.setContent(content);
+		comDto.setUser_id(user_id);
 		boolean isS = service.commentAnswer(comDto);
 		String message = "COMMENTANSWER_YES";
 		if(isS == false) {
@@ -340,14 +343,14 @@ public class NewsController {
 	        	}
 	        	
 	        	String title = headline.select("div > a").text();
-	        	System.out.println("title = " + title);
+
 	        	Element linkElement = headline.selectFirst("a");
 	        	String link = linkElement.absUrl("href");
 
         		Document articleDoc = Jsoup.connect(link).get();
         		
         		Elements articleDateTempList = articleDoc.select("div.contentSectionDetails"); // 기사 작성일
-        		System.out.println("articleDateTemp = " + articleDateTempList.get(0).select("span").text());
+
         		String articleDateTemp = "";
         		for (Element articleDateTempOne: articleDateTempList) {
         			articleDateTemp = articleDateTempOne.select("span").text();
@@ -365,20 +368,14 @@ public class NewsController {
                 }else {
                 	findPublished = 0;
                 }
-                System.out.println("Published= " + findPublished);
+
                 int findET = articleDateTemp.indexOf("ET");
-                
+                /*
                 Date DateTemp = new Date();
                 SimpleDateFormat Date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                articleDate = Date.format(DateTemp);//articleDateTemp.substring(findPublished, findET);
-                System.out.println("articleDate= " + articleDate);
-                
-                
-				/*
-				 * articleDate = articleDateTemp.substring(findPublished, findET);
-				 * System.out.println("articleDate= " + articleDate);
-				 */
-        		
+                articleDate = Date.format(DateTemp);
+				*/
+                articleDateTemp.substring(findPublished, findET);
         		Elements paragraphs = articleDoc.select("div.WYSIWYG.articlePage > p "); // 기사 내용(모든 <p> 태그 선택)
         		// 작성자 저장
         		articleAuthor = paragraphs.get(0).text();
@@ -465,7 +462,7 @@ public class NewsController {
 	
 	private List<NewsDto> newsSummary(List<NewsDto> newsList) throws Exception {
 		Gson gson = new Gson();
-        String apiKey = "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"; // OpenAI API Key
+        String apiKey = ""; // OpenAI API Key
         //String engine = "gpt-3.5-turbo"; // Engine id
         int maxTokens = 1000; // Maximum number of tokens in the response
         // Prepare the API URL
@@ -617,8 +614,8 @@ public class NewsController {
 			}
 			try {
 		        // Papago API에 필요한 정보를 설정
-		        String clientId = "EmpNiTFgTYBn4eJ30Af1";
-		        String clientSecret = "3CDqFwlFtU";
+		        String clientId = "";
+		        String clientSecret = "";
 		        String apiUrl = "https://openapi.naver.com/v1/papago/n2mt";
 	
 		        // HTTP 클라이언트를 생성
