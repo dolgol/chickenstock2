@@ -78,6 +78,7 @@
 					<input type="text" id="nick_name" name="nick_name" 
 							value="<%=user.getNick_name() == null ? "" : user.getNick_name() %>" 
 							class="form-control" disabled="disabled" />
+					<input type="hidden" name="nick_name" value="<%=user.getNick_name() %>" />
 				</div>
 				<p id="nick_name_warning" class="nonView">&nbsp;&nbsp;닉네임을 입력해주세요</p>
 			</div>
@@ -110,7 +111,7 @@
 				<p id="sex_warning" class="nonView">&nbsp;&nbsp;성별을 선택해주세요</p>
 			</div>
 			<div class="mb-4">
-				<div class="mb-2">이메일</div>
+				<div class="mb-2">이메일 *</div>
 				<div>
 					<input type="text" id="email" name="address" value="<%=user.getAddress() %>" class="form-control" placeholder="예) chickenstock@kdt.com" />
 				</div>
@@ -144,6 +145,7 @@
 			else if("<%=user.getSex() %>" == "female") {
 				$("#female").prop("checked", true);
 			}
+		    
 		});
 	
 		function mypageEdit() {
@@ -158,14 +160,14 @@
 			
 			let isAllPass = true;
 			
-			if($("#user_name").val().trim() == "") {
+			/* if($("#user_name").val().trim() == "") {
 				$("#user_name_warning").removeClass("nonView");
 				$("#user_name_warning").addClass("mypage-warning");
 				isAllPass = false;
 			} else {
 				$("#user_name_warning").removeClass("mypage-warning");
 				$("#user_name_warning").addClass("nonView");
-			}
+			} */
 			
 			if($("#nick_name").val().trim() == "") {
 				$("#nick_name_warning").removeClass("nonView");
@@ -176,7 +178,7 @@
 				$("#nick_name_warning").addClass("nonView");
 			}
 			
-			if($("#birthday").val().trim() == "") {
+			/* if($("#birthday").val().trim() == "") {
 				$("#birthday_warning").removeClass("nonView");
 				$("#birthday_warning").addClass("mypage-warning");
 				isAllPass = false;
@@ -184,15 +186,15 @@
 				$("#birthday_warning").removeClass("mypage-warning");
 				$("#birthday_warning").addClass("nonView");
 			}
-			
-			if(sex == "") {
+			 */
+			/* if(sex == "") {
 				$("#sex_warning").removeClass("nonView");
 				$("#sex_warning").addClass("mypage-warning");
 				isAllPass = false;
 			} else {
 				$("#sex_warning").removeClass("mypage-warning");
 				$("#sex_warning").addClass("nonView");
-			}
+			} */
 			
 			if($("#email").val().trim() == "") {
 				$("#email_warning").removeClass("nonView");
@@ -203,14 +205,14 @@
 				$("#email_warning").addClass("nonView");
 			}
 			
-			if($("#phone_number").val().trim() == "") {
+			/* if($("#phone_number").val().trim() == "") {
 				$("#phone_number_warning").removeClass("nonView");
 				$("#phone_number_warning").addClass("mypage-warning");
 				isAllPass = false;
 			} else {
 				$("#phone_number_warning").removeClass("mypage-warning");
 				$("#phone_number_warning").addClass("nonView");
-			}
+			} */
 			
 			if(isAllPass) {
 				/* alert("pass"); */
