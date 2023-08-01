@@ -58,7 +58,8 @@ font-size: 36px;
 margin-left: 8px;
 }
 .wrap_company h2 a{
-	font-size: 48px;
+	/* font-size: 48px; */
+	font-size: 32px;
 }
 
 #tab_con1, #tab_con1 * {
@@ -169,7 +170,8 @@ h2 a{
   	 border-collapse: separate;
     border-spacing: 0;
     border: 1px solid #ccc;
-    border-radius: 30px;
+    /* border-radius: 30px; */
+    border-radius: 0.25rem;
     padding-left: 20px;
     padding-bottom: 15px;
     padding-top: 15px;
@@ -180,7 +182,8 @@ h2 a{
   	 border-collapse: separate;
     border-spacing: 0;
     border: 1px solid #ccc;
-    border-radius: 30px;
+    /* border-radius: 30px; */
+    border-radius: 0.25rem;
     padding: 20px;
     margin-top: 20px;
     padding-right: 47px;
@@ -190,7 +193,8 @@ h2 a{
   	 border-collapse: separate;
     border-spacing: 0;
     border: 1px solid #ccc;
-    border-radius: 30px;
+    /* border-radius: 30px; */
+    border-radius: 0.25rem;
   }  
   .data-table td + td {
     border-left: 1px solid #ccc;    
@@ -200,7 +204,8 @@ h2 a{
    border-collapse: separate;
     border-spacing: 0;
     border: 1px solid #ccc;
-    border-radius: 30px;
+    /* border-radius: 30px; */
+    border-radius: 0.25rem;
     margin-left: 20px;
     margin-right: 20px;
     padding-top: 20px;
@@ -212,7 +217,8 @@ h2 a{
   border-collapse: separate;
     border-spacing: 0;
     border: 1px solid #ccc;
-    border-radius: 30px;
+    /* border-radius: 30px; */
+    border-radius: 0.25rem;
     padding: 30px;
     margin-top: 20px;
     padding-right: 68px;
@@ -222,10 +228,19 @@ h2 a{
    color: #ffffff;
   }
   
+  table, thead, tbody, tr, th, td {
+  	border-color: #EAE8E6 !important;
+  }
+  
+  a {
+  	text-decoration: none !important;
+  }
 
 </style>
 </head>
 <body>
+
+<br/>
 <div align="center">
 	<table class="content-table">
 		<tbody>
@@ -349,6 +364,8 @@ $(document).ready(function(){
 		%>
 	</tbody>	
   </table>
+  
+  <br/><br/><br/><br/>
 </div>
 
 <script type="text/javascript">	
@@ -369,17 +386,23 @@ $(document).ready(function() {
     	$("#icon").children().css('color', '#d8c0c0');
     }
     
-    $('.no_up').children().css('color', 'red');
+    /* $('.no_up').children().css('color', 'red');
     $('.no_down').children().css('color', 'blue');
     $('.f_up').css('color', 'red');
     $('.f_up.up').css('color', 'red');
     $('.f_down').css('color', 'blue');
-    $('.f_down.down').css('color', 'blue');
+    $('.f_down.down').css('color', 'blue'); */
+    $('.no_up').children().css('color', '#EC6462');
+    $('.no_down').children().css('color', '#5789D8');
+    $('.f_up').css('color', '#EC6462');
+    $('.f_up.up').css('color', '#EC6462');
+    $('.f_down').css('color', '#5789D8');
+    $('.f_down.down').css('color', '#5789D8');
     
     var blindValue = parseInt($('.no_down .blind:first').text().replace(',', ''));
     var emValue = parseInt($('.first em .blind:first').text().replace(',', ''));
     
-    if (blindValue < emValue) {
+    /* if (blindValue < emValue) {
         $('.no_today .no_down:first').children().css('color', 'blue');
         $('.no_exday .no_down:first').children().css('color', 'blue');
       } else if (blindValue > emValue) {
@@ -391,6 +414,19 @@ $(document).ready(function() {
 
 	  if (checkLikedSymbols(currentSymbol)) {
         $("#icon").children().css('color', 'red');
+    } */
+    if (blindValue < emValue) {
+        $('.no_today .no_down:first').children().css('color', '#5789D8');
+        $('.no_exday .no_down:first').children().css('color', '#5789D8');
+      } else if (blindValue > emValue) {
+        $('.no_today .no_down:first').children().css('color', '#EC6462');
+        $('.no_exday .no_down:first').children().css('color', '#EC6462');
+      }else{
+    	  $('.no_today .no_down').children().css('color', '#4E4E4E');
+      }
+
+	  if (checkLikedSymbols(currentSymbol)) {
+        $("#icon").children().css('color', '#FF9406');
     }
 	  
 	  
